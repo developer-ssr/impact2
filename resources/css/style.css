@@ -1,0 +1,14 @@
+.sidebar-enter-active {
+    animation: sidebar-in 0.5s forwards;
+  }
+  .sidebar-leave-active {
+    animation: sidebar-in 0.5s reverse forwards;
+  }
+  @keyframes sidebar-in {
+    0% {
+      transform: translateX(-100%);
+    }
+    100% {
+      transform: translateX(0%);
+    }
+  }

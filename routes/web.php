@@ -15,6 +15,8 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\TestsController;
 use App\Http\Controllers\PreviewController;
 use App\Http\Controllers\EngineController;
+use App\Http\Controllers\MainDashboardController;
+
 use Inertia\Inertia;
 
 Route::get('/', function () {
@@ -159,6 +161,11 @@ Route::controller(RecordsController::class)->group(function () {
     Route::get('engine', 'index');
    
 });
+Route::controller(MainDashboardController::class)->group(function () {
+    Route::get('maindashboard', 'index');
+    
+});
+
 
 
 });
