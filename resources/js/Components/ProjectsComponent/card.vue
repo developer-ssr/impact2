@@ -107,7 +107,7 @@ const _method = {
         >
     </Notifcation>
 
-    <div class="grid grid-cols-4 gap-4">
+    <div class="grid grid-cols-4 gap-4 pt-3 pr-2 pl-2">
         <div v-for="(data, index) in props.props.data.data" :key="index">
             <div
                 class="max-w-sm p-2 ml-1 mr-1 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
@@ -119,7 +119,7 @@ const _method = {
                     :class="'ProjectText' + data.id"
                 >
                     <h5
-                        class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white"
+                        class="truncate mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white"
                     >
                         {{ data.project_name }}
                     </h5>
@@ -131,7 +131,7 @@ const _method = {
 
                 <button
                     @click="_method.locateProjects(data.uuid)"
-                    class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                    class="inline-flex items-center px-3 py-2 mr-1 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                 >
                     View Project
                 </button>

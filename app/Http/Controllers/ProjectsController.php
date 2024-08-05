@@ -28,7 +28,7 @@ class ProjectsController extends Controller
         return Inertia::render("Projects/index",[
             
             'menu'=>$menu,
-            'data'=>projects::paginate(10),
+            'data'=>projects::paginate(12),
             // 'data'=>DB::table('users')->join('folders','folders.user_id','=','users.id')->select('users.*','folders.*')->paginate(10)
         ]);
     } 

@@ -42,7 +42,7 @@ class TestsController extends Controller
         
         return Inertia::render("Tests/index",[
             'menu'=>$menu,
-            'data'=>tests::where('uuid',$request->query('uuid'))->paginate(10),
+            'data'=>tests::where('uuid',$request->query('uuid'))->paginate(12),
             'Project_title'=>tests::where('uuid',$request->query('uuid'))
         ]);
     }
