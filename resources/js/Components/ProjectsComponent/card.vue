@@ -99,14 +99,16 @@ const _method = {
             </button>
         </template>
     </Modal>
-
-    <Notifcation v-show="isNotificationVisible">
-        <template v-slot:body>
-            This project is updated to
-            <strong>{{ project.project_name }}</strong></template
-        >
-    </Notifcation>
-
+    <Teleport to="body">
+       
+            <Notifcation v-show="isNotificationVisible">
+                <template v-slot:body>
+                    This project is updated to
+                    <strong>{{ project.project_name }}</strong>
+                </template>
+            </Notifcation>
+        
+    </Teleport>
     <div class="grid grid-cols-4 gap-4">
         <div v-for="(data, index) in props.props.data.data" :key="index">
             <div
@@ -125,7 +127,6 @@ const _method = {
                     </h5>
                 </div>
                 <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">
-                
                     Date: {{ _method.dateTime(data.updated_at) }}
                 </p>
 
@@ -145,3 +146,8 @@ const _method = {
         </div>
     </div>
 </template>
+<style>
+.notification {
+    z-index: 99;
+}
+</style>

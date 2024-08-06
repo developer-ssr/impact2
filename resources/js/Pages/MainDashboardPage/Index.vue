@@ -1,5 +1,5 @@
 <script setup>
-import { reactive, onMounted, ref, inject, defineEmits } from "vue";
+import { reactive, onMounted, ref, provide, inject } from "vue";
 import AppLayout from "@/Layouts/AppLayout.vue";
 import MainDashboard from "@/Components/MainDashboardComponent/index.vue";
 import templates_coponent from "@/Components/MainDashboardComponent/Templates/index.vue";
@@ -12,12 +12,45 @@ import Sidebar2 from "@/Components/Sidebar2.vue";
 
 const sidebarVisible = ref(false);
 const activeElem = ref(false);
+
+const testData = reactive({
+    grid: {
+        header: {
+            bgColor: "red",
+            Xaxis: "--Xaxis",
+            Yaxis: "--Yaxis",
+            content: "Header",
+            Hheight: "5",
+            Hwidht: "5vmin",
+            textColor: "green",
+        },
+        grid_settings: {
+            rows: 5,
+            column: 7,
+            lineColor: "--lineColor",
+            aspectRatio: "--aspectRatio",
+        },
+        grid_image: {
+            imgSrc: "sample",
+            imgHeight: "--imgHeight",
+            ImgWidht: "--ImgWidht",
+            Xaxis: "--Xaxis",
+            Yaxis: "--Yaxis",
+        },
+        footer: {
+            bgColor: "--bgColor",
+            Xaxis: "--Xaxis",
+            Yaxis: "--Yaxis",
+            content: "Footer",
+        },
+    },
+});
+provide("testData", testData);
 </script>
 
 <template>
     <AppLayout>
-        <div >
-
+        <div>
             <MainDashboard
                 @show:menu="
                     (active) => {
@@ -30,7 +63,6 @@ const activeElem = ref(false);
                     }
                 "
             />
-
 
             <Transition name="sidebar">
                 <Sidebar2 v-show="sidebarVisible">

@@ -1,120 +1,73 @@
 <template>
-    <div class="grid_container bg-blue-500 relative w-[50%] h-full left-[25%]">
-        <!-- <input type="range" v-model="DivHeight" @change="setHeight" />
-        <input type="range" v-model="DivWidht" @change="setWidth" /> -->
-        <img
-            class="relative w-full h-full object-fill"
-            src="https://photographylife.com/wp-content/uploads/2014/02/Nikon-35mm-f1.8G-Sample-Image-1.jpg"
-        />
-        <!-- <div ref="drag">
-            <div>1</div>
-            <div>1</div>
-            <div>1</div>
-            <div>1</div>
-            <div>1</div>
-            <div>1</div>
-            <div>1</div>
-            <div>1</div>
-            <div>1</div>
-            <div>1</div>
-            <div>1</div>
-            <div>1</div>
-            <div>1</div>
-            <div>1</div>
-            <div>1</div>
-            <div>1</div>
-            <div>1</div>
-            <div>1</div>
-            <div>1</div>
-            <div>1</div>
-            <div>1</div>
-            <div>1</div>
-            <div>1</div>
-            <div>1</div>
-            <div>1</div>
-            <div>1</div>
-            <div>1</div>
-            <div>1</div>
-            <div>1</div>
-            <div>1</div>
-        </div> -->
+    <div class="bg-gray-300 relative w-full h-full">
+        <gridBody />
     </div>
 </template>
 <script setup>
-import { ref, defineEmits, inject, onMounted } from "vue";
+import { ref, onMounted, defineProps, inject } from "vue";
+import gridBody from "@/Components/EngineComponent/grid_editor_component/grid_editor_body.vue";
 const drag = ref(null);
+
 const ratio = ref(null);
-const DivHeight = ref(null);
-const DivWidht = ref(null);
 
-const setHeight = () => {
-    drag.value.style.height = DivHeight.value + "vmin";
-};
-const setWidth = () => {
-    drag.value.style.width = DivWidht.value + "vmin";
-};
+onMounted(() => {
+    const img = new Image();
 
-const pxToVmin = (px) => {
-    const vmin = Math.min(window.innerWidth, window.innerHeight);
-    return (px / vmin) * 100;
-};
+    img.onload = function () {
+        ratio.value = this.width / this.height;
+    };
 
-window.onclick = (event) => {
-    console.log(event.target);
-};
-// onMounted(() => {
-//     const img = new Image();
+    img.src = "http://www.google.com/intl/en_ALL/images/logo.gif";
 
-//     img.onload = function () {
-//         ratio.value = this.width / this.height;
-//     };
+    // window.onmousedown = (event2) => {
+    //     let Newevent = event2.target;
+    //     let SetEvent = Newevent.classList.contains("drag");
 
-//     img.src = "http://www.google.com/intl/en_ALL/images/logo.gif";
+    //     drag.value.style.height = DivHeight.value + "vmin";
+    //     drag.value.style.width = DivWidht.value + "vmin";
 
-//     window.onmousedown = (event2) => {
-//         let Newevent = event2.target;
-//         let SetEvent = Newevent.classList.contains("drag");
+    //     window.onmousemove = (event) => {
+    //         var height = window.innerHeight;
+    //         var width = window.innerWidth;
+    //         var x = (event.clientX / width) * 100;
+    //         var y = (event.clientY / height) * 100;
 
-//         drag.value.style.height = DivHeight.value + "vmin";
-//         drag.value.style.width = DivWidht.value + "vmin";
+    //         Newevent.dataset.currentX = x;
+    //         Newevent.dataset.currentY = y;
 
-//         window.onmousemove = (event) => {
-//             var height = window.innerHeight;
-//             var width = window.innerWidth;
-//             var x = (event.clientX / width) * 100;
-//             var y = (event.clientY / height) * 100;
+    //         Newevent.style.position = "fixed";
 
-//             Newevent.dataset.currentX = x;
-//             Newevent.dataset.currentY = y;
+    //         Newevent.style.top = y + "%";
+    //         Newevent.style.left = x + "%";
 
-//             Newevent.style.position = "fixed";
+    //         drag.value.style.height = DivHeight.value + "vmin";
+    //         drag.value.style.width = DivWidht.value + "vmin";
 
-//             Newevent.style.top = y + "%";
-//             Newevent.style.left = x + "%";
+    //         window.onmouseup = (event) => {
+    //             var height = window.innerHeight;
+    //             var width = window.innerWidth;
+    //             var x = (event.clientX / width) * 100;
+    //             var y = (event.clientY / height) * 100;
 
-//             drag.value.style.height = DivHeight.value + "vmin";
-//             drag.value.style.width = DivWidht.value + "vmin";
+    //             Newevent.style.position = "fixed";
 
-//             window.onmouseup = (event) => {
-//                 var height = window.innerHeight;
-//                 var width = window.innerWidth;
-//                 var x = (event.clientX / width) * 100;
-//                 var y = (event.clientY / height) * 100;
+    //             Newevent.style.top = y + "%";
+    //             Newevent.style.left = x + "%";
 
-//                 Newevent.style.position = "fixed";
+    //             drag.value.style.height = DivHeight.value + "vmin";
+    //             drag.value.style.width = DivWidht.value + "vmin";
 
-//                 Newevent.style.top = y + "%";
-//                 Newevent.style.left = x + "%";
-
-//                 drag.value.style.height = DivHeight.value + "vmin";
-//                 drag.value.style.width = DivWidht.value + "vmin";
-
-//                 window.onmousemove = null;
-//                 window.onmouseup = null;
-//             };
-//         };
-//     };
-// });
+    //             window.onmousemove = null;
+    //             window.onmouseup = null;
+    //         };
+    //     };
+    // };
+});
 </script>
 
-<style scoped></style>
+<style scoped>
+#canvas {
+    background: #fff;
+    margin: 20px;
+}
+</style>
