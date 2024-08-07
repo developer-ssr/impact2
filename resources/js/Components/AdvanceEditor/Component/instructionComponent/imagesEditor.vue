@@ -110,6 +110,7 @@ const handleImageUpload = (event) => {
 
         reader.onload = async (e) => {
             img.onload = async () => {
+                
                 resizeInput.value.style.display = "block";
                 imgX = 0;
                 imgY = 0;
