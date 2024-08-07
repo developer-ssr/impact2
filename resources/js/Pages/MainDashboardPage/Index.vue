@@ -16,11 +16,11 @@ const activeElem = ref(false);
 const testData = reactive({
     grid: {
         header: {
-            bgColor: "red",
+            bgColor: "white",
             Xaxis: "--Xaxis",
             Yaxis: "--Yaxis",
             content: "Header",
-            Hheight: "5",
+            Hheight: "5vmin",
             Hwidht: "5vmin",
             textColor: "green",
         },

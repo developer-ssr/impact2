@@ -1,22 +1,25 @@
 <template>
     <input type="range" v-model="header.Hheight" />
-    <div class="bg-gray-700 h-[8vmin] relative">
+    <input type="range" v-model="header.Hwidht" />
+
+    <div class="bg-gray-700 h-[8vmin] relative ">
         <div
-            class="headerStyling h-[8vmin] relative"
+            class="drag headerStyling h-[8vmin]"
             :style="{
                 '--BgColor': header.bgColor,
-                '--Hheight': header.Hheight,
-                '--Hwidht': header.Hwidht,
+                // height: header.Hheight + '%',
+                // width: header.Hwidht + '%',
             }"
         >
             {{ header.content }}
         </div>
     </div>
+
     <div class="bg-gray-500 relative h-[70vmin]">editor body</div>
     <div class="bg-gray-400 h-[10%] relative">Footer</div>
 </template>
 <script setup>
-import { inject, reactive } from "vue";
+import { inject, reactive, onMounted } from "vue";
 
 const props = inject("testData");
 const header = reactive({
@@ -28,12 +31,46 @@ const header = reactive({
     Hheight: props.grid.header.Hheight,
     Hwidht: props.grid.header.Hwidht,
 });
-console.log(header);
+onMounted(() => {
+    window.onmousedown = (event2) => {
+        let Newevent = event2.target;
+        let SetEvent = Newevent.classList.contains("drag");
+        if (SetEvent) {
+            window.onmousemove = (event) => {
+                var height = window.innerHeight;
+                var width = window.innerWidth;
+                var x = (event.clientX / width) * 100;
+                var y = (event.clientY / height) * 100;
+
+                Newevent.dataset.currentX = x;
+                Newevent.dataset.currentY = y;
+
+                Newevent.style.position = "fixed";
+
+                Newevent.style.top = y + "%";
+                Newevent.style.left = x + "%";
+
+                window.onmouseup = (event) => {
+                    var height = window.innerHeight;
+                    var width = window.innerWidth;
+                    var x = (event.clientX / width) * 100;
+                    var y = (event.clientY / height) * 100;
+
+                    Newevent.style.position = "fixed";
+
+                    Newevent.style.top = y + "%";
+                    Newevent.style.left = x + "%";
+
+                    window.onmousemove = null;
+                    window.onmouseup = null;
+                };
+            };
+        }
+    };
+});
 </script>
 <style scoped>
 .headerStyling {
     background-color: var(--BgColor);
-    height: v-bind("header.Hheight");
-    width: var(--Hwidht);
 }
 </style>
