@@ -108,9 +108,11 @@ const _method = {
     </Notifcation>
 
     <div class="grid grid-cols-4 gap-4 pt-3 pr-2 pl-2">
-        <div v-for="(data, index) in props.props.data.data" :key="index">
+        <div class="card-container" v-for="(data, index) in props.props.data.data" :key="index">
             <div
-                class="max-w-sm p-2 ml-1 mr-1 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
+            class=" pl-5 max-w-sm p-2 ml-1 mr-1 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
+
+               
             >
                 Project:
                 <div
@@ -145,3 +147,26 @@ const _method = {
         </div>
     </div>
 </template>
+
+<style scoped>
+.card-container{
+    margin-top: 18px;
+    position: relative;
+    height: 180px;
+    width: 300px;
+    background-color: white;
+    border-radius: 5px 25px 25px 25px;
+    filter: drop-shadow(0 6px 20px rgba(0, 0, 0, 0.19));
+}
+
+.card-container::before{
+    content: '';
+    position: absolute;
+    top: -18px;
+    width: 200px;
+    height: 25px;
+    background: white;
+    border-radius: 25px 0 0 0;
+    clip-path: path('M 0 0 L 160 0 C 185 2, 175 16, 200 18 L 0 50 z');
+}
+</style>
