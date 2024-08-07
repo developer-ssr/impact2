@@ -2,6 +2,7 @@
 import AppLayout from "@/Layouts/AppLayout.vue";
 import Sidebar from "@/Components/Sidebar.vue";
 import { provide } from "vue";
+
 const props = defineProps(["menu", "data"]);
 provide("props", { props });
 </script>
