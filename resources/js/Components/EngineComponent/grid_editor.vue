@@ -1,6 +1,43 @@
 <template>
-    <div class="bg-gray-300 relative w-full h-full">
-        <gridBody />
+    <div class="grid_container bg-blue-500 relative w-[50%] h-full left-[25%]">
+        <!-- <input type="range" v-model="DivHeight" @change="setHeight" />
+        <input type="range" v-model="DivWidht" @change="setWidth" /> -->
+        <img
+            class="relative w-full h-full object-fill"
+            src="https://photographylife.com/wp-content/uploads/2014/02/Nikon-35mm-f1.8G-Sample-Image-1.jpg"
+        />
+        <!-- <div ref="drag">
+            <div>1</div>
+            <div>1</div>
+            <div>1</div>
+            <div>1</div>
+            <div>1</div>
+            <div>1</div>
+            <div>1</div>
+            <div>1</div>
+            <div>1</div>
+            <div>1</div>
+            <div>1</div>
+            <div>1</div>
+            <div>1</div>
+            <div>1</div>
+            <div>1</div>
+            <div>1</div>
+            <div>1</div>
+            <div>1</div>
+            <div>1</div>
+            <div>1</div>
+            <div>1</div>
+            <div>1</div>
+            <div>1</div>
+            <div>1</div>
+            <div>1</div>
+            <div>1</div>
+            <div>1</div>
+            <div>1</div>
+            <div>1</div>
+            <div>1</div>
+        </div> -->
     </div>
 </template>
 <script setup>

@@ -1,7 +1,23 @@
 <script setup>
 import { provide, inject, ref, onMounted } from "vue";
-
+const textPage = ref(null)
 const props = inject("props");
+const page = props.props.data.links
+console.log(page)
+onMounted(()=>{
+ 
+    page.forEach(element => {
+        
+    if(element.label=="&laquo; Previous"){
+        element.label = "Previous"
+    }
+    else if(element.label=="Next &raquo;"){
+         element.label = "Next"
+    }
+ 
+});
+  
+})
 </script>
  
 <template>
@@ -56,13 +72,16 @@ const props = inject("props");
                                 v-for="(data, index) in props.props.data.links"
                                 :key="index"
                             >
+
                                 <a
                                     :href="data.url"
                                     ref="textPage"
                                     aria-current="page"
                                     class="relative z-10 inline-flex items-center bg-indigo-100 px-4 py-2 text-sm font-semibold text-indigo focus:z-20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-100"
-                                    >{{ data.label }}</a
-                                >
+                                     >{{ data.label }}
+                                        
+                                    </a>
+                               
                             </div>
 
                             <a
