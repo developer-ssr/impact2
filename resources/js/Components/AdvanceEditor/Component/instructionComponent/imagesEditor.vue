@@ -154,8 +154,11 @@ const drawImage = () => {
 };
 
 const convertCanvasToBlob = () => {
+
     canvas.value.toBlob((blob) => {
+
         const url = URL.createObjectURL(blob);
+        
         imageURL.value = url;
     }, "image/png");
 };

@@ -1,5 +1,5 @@
 <script setup>
-import { reactive, onMounted, ref, provide, inject } from "vue";
+import { reactive, onMounted, ref, provide, inject, defineProps } from "vue";
 import AppLayout from "@/Layouts/AppLayout.vue";
 import MainDashboard from "@/Components/MainDashboardComponent/index.vue";
 import templates_coponent from "@/Components/MainDashboardComponent/Templates/index.vue";
@@ -12,40 +12,66 @@ import Sidebar2 from "@/Components/Sidebar2.vue";
 
 const sidebarVisible = ref(false);
 const activeElem = ref(false);
+const insStatus = ref(false);
+// const headerCount_Practice = ref(1);
+// const headerCount_Dummy = ref(1);
+// const headerCount_Main = ref(1);
+// const demo = ref({});
 
-const testData = reactive({
-    grid: {
-        header: {
-            bgColor: "white",
-            Xaxis: "--Xaxis",
-            Yaxis: "--Yaxis",
-            content: "Header",
-            Hheight: "5vmin",
-            Hwidht: "5vmin",
-            textColor: "green",
+const ImageCount = ref(1);
+
+const Instructions = reactive({
+    practiceTrial: {
+        message: {
+            id: 1,
+            bgColor: "whitesmoke",
+            Xaxis: "50%",
+            Yaxis: "50%",
+            content: "Practice Instruction",
+            Hheight: "10",
+            Hwidht: "50",
+            textColor: "black",
+            borderRadius: "10px",
+            borderWidth: "5px",
+            borderColor: "gray",
         },
-        grid_settings: {
-            rows: 5,
-            column: 7,
-            lineColor: "--lineColor",
-            aspectRatio: "--aspectRatio",
+    },
+    DummyTrial: {
+        message: {
+            id: 2,
+            bgColor: "whitesmoke",
+            Xaxis: "50%",
+            Yaxis: "50%",
+            content: "Dummy Instruction",
+            Hheight: "10",
+            Hwidht: "50",
+            textColor: "black",
+            borderRadius: "10px",
+            borderWidth: "5px",
+            borderColor: "gray",
         },
-        grid_image: {
-            imgSrc: "sample",
-            imgHeight: "--imgHeight",
-            ImgWidht: "--ImgWidht",
-            Xaxis: "--Xaxis",
-            Yaxis: "--Yaxis",
-        },
-        footer: {
-            bgColor: "--bgColor",
-            Xaxis: "--Xaxis",
-            Yaxis: "--Yaxis",
-            content: "Footer",
+    },
+
+    MainTrial: {
+        message: {
+            id: 3,
+            bgColor: "whitesmoke",
+            Xaxis: "50%",
+            Yaxis: "50%",
+            content: "Main Instruction",
+            Hheight: "10",
+            Hwidht: "50",
+            textColor: "black",
+            borderRadius: "10px",
+            borderWidth: "5px",
+            borderColor: "gray",
         },
     },
 });
-provide("testData", testData);
+
+const ins_visibility = ref(false);
+provide("instruction_visible", ins_visibility);
+provide("Instructions", Instructions);
 </script>
 
 <template>
@@ -69,18 +95,18 @@ provide("testData", testData);
                     <templates_coponent
                         v-if="activeElem === 'templates'"
                     ></templates_coponent>
-                    <demo_component
-                        v-if="activeElem === 'demo'"
-                    ></demo_component>
+
                     <trial_component
                         v-if="activeElem === 'trial'"
                     ></trial_component>
                     <redirect_component
                         v-if="activeElem === 'redirect'"
                     ></redirect_component>
+
                     <setupgrid_component
                         v-if="activeElem === 'setupgrid'"
                     ></setupgrid_component>
+
                     <instructions_component
                         v-if="activeElem === 'instructions'"
                     ></instructions_component>

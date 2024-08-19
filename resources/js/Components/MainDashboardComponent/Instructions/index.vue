@@ -1,11 +1,48 @@
+<script setup>
+import { inject, onMounted, reactive, ref, defineEmits } from "vue";
+const _methods = {
+    hide_instruction: () => {
+        document
+            .querySelector("#selected_trial")
+            .dispatchEvent(new CustomEvent("hide_data"));
+    },
+};
+</script>
 <template>
-    <div class="relative bg-blue-50 border">asdf</div>
+    <div class="bg-white h-[100%]">
+        <ul class="max-w-md divide-y divide-gray-200 dark:divide-gray-700">
+            <div class="flex-shrink-0"></div>
+            <h4 class="bg-gray-300">Instructions Settings</h4>
+            <li class="pb-3 sm:p-2">
+                <button
+                    @click="_methods.hide_instruction"
+                    class="bg-gray-200 w-full h-[5vmin] hover:bg-yellow-300 hover:text-white"
+                >
+                    Instructions Message
+                </button>
+                <button
+                    class="bg-gray-200 w-full h-[5vmin] hover:bg-yellow-300 hover:text-white"
+                >
+                    Warning Message
+                </button>
+            </li>
+        </ul>
 
-    <!-- <div class="bg-gray-900 text-white font-bold h-[4rem]" style="padding-left: 105px; padding-top: 18px; font-size: large; font-family: Arial, Helvetica, sans-serif; ">Instructions</div>
-    <div class="bg-white box-border h-[3rem] w-[17rem] ml-4 mt-4 rounded-lg hover:bg-orange-400" style="padding-left: 10px; padding-top: 10px; font-size: large; font-family: Arial, Helvetica, sans-serif;" >Message</div>
-    <div class="bg-white box-border h-[3rem] w-[17rem] ml-4 mt-4 rounded-lg  hover:bg-orange-400" style="padding-left: 10px; padding-top: 10px; font-size: large; font-family: Arial, Helvetica, sans-serif;" >Warnings</div>
-    <div class="bg-white box-border h-[3rem] w-[17rem] ml-4 mt-4 rounded-lg  hover:bg-orange-400" style="padding-left: 10px; padding-top: 10px; font-size: large; font-family: Arial, Helvetica, sans-serif;" >Saving</div>
-    <div class="bg-white box-border h-[3rem] w-[17rem] ml-4 mt-4 rounded-lg  hover:bg-orange-400" style="padding-left: 10px; padding-top: 10px; font-size: large; font-family: Arial, Helvetica, sans-serif;" >Saving Fail</div>
-    <div class="bg-white box-border h-[3rem] w-[17rem] ml-4 mt-4 rounded-lg  hover:bg-orange-400" style="padding-left: 10px; padding-top: 10px; font-size: large; font-family: Arial, Helvetica, sans-serif;" >Practice trial</div>
-    <div class="bg-white box-border h-[3rem] w-[17rem] ml-4 mt-4 rounded-lg  hover:bg-orange-400" style="padding-left: 10px; padding-top: 10px; font-size: large; font-family: Arial, Helvetica, sans-serif;" >Loading</div> -->
+        <ul class="max-w-md divide-y divide-gray-200 dark:divide-gray-700">
+            <div class="flex-shrink-0"></div>
+            <h4 class="bg-gray-300">Images</h4>
+            <li class="pb-3 sm:p-2">
+                <button
+                    class="bg-gray-200 w-full h-[5vmin] hover:bg-yellow-300 hover:text-white"
+                >
+                    Add Images
+                </button>
+                <button
+                    class="bg-gray-200 w-full h-[5vmin] hover:bg-yellow-300 hover:text-white"
+                >
+                    Setup Image Grid
+                </button>
+            </li>
+        </ul>
+    </div>
 </template>

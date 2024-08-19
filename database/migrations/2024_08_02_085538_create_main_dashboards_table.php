@@ -12,8 +12,17 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('main_dashboards', function (Blueprint $table) {
-            $table->id();
+            $table->increments('id');
+            $table->char('uuid')->nullable();
+            $table->string('test_name')->nullable();
+            $table->char('user_id')->nullable();
+            $table->json('normal_text')->nullable();
+            $table->json('settings')->nullable();
+            $table->json('images')->nullable();
+            $table->char('status')->nullable();
+            $table->string('code')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
