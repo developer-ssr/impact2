@@ -22,13 +22,14 @@ font[size="5"] {
 }
 </style>
 <template>
-    <div class="bg-gray-100 relative h-full editor_container" id="custom_modal">
+    <div class="bg-gray-100 relative h-full editor_container">
         <div
+            id="selected_trial"
             class="fixed translate-x-[-50%] left-[50%] h-[5vmin] w-[20vmin] bg-yellow-500 text-center text-wrap inline-block align-middle rounded-b-lg"
         ></div>
 
         <select
-            id="selected_trial"
+            id="selected_Demo"
             class="float-right z-10 bg-gray-300 relative h-[4vmin] w-[20vmin]"
             v-model="demo.demoName"
             @change="_methods.displayDemo"
@@ -40,182 +41,64 @@ font[size="5"] {
             <option value="MainTrial">Main Trial</option>
         </select>
 
-        <devTools
-            v-if="vsIns"
-            v-show="divEditor"
-            @update:Height="
-                (height) => {
-                    _methods.updateHeight(height);
-                }
-            "
-            @update:Width="
-                (width) => {
-                    _methods.updateWidth(width);
-                }
-            "
-            @update:br="
-                (br) => {
-                    _methods.updateBorderSize(br);
-                }
-            "
-            @update:brWidth="
-                (brWidth) => {
-                    _methods.updateBorderWidth(brWidth);
-                }
-            "
-            @update:brColor="
-                (brColor) => {
-                    _methods.updateBorderBGColor(brColor);
-                }
-            "
-            @update:bgColor="
-                (bgColor) => {
-                    _methods.updateBgColor(bgColor);
-                }
-            "
-        />
-
-        <div v-for="(data, index) in test_Settings" :key="index">
-            <div
-                ref="content"
-                @blur="_methods.getContent()"
-                v-show="vsIns"
-                :textid="data.id"
-                class="drag fixed translate-x-[-50%] translate-y-[-50%] p-[5vmin] pointer-events-auto"
-                :style="{
-                    backgroundColor: data.bgColor,
-                    height: data.Hheight,
-                    width: data.Hwidht,
-                    top: data.Yaxis,
-                    left: data.Xaxis,
-                    borderStyle: 'solid',
-                    borderRadius: data.borderRadius,
-                    borderWidth: data.borderWidth,
-                    borderColor: data.borderColor,
-                    color: data.textColor,
-                }"
-                contenteditable="true"
-                v-html="data.content"
-            ></div>
-        </div>
+        <Instructions_Component :demo="demo.demoName" v-if="vsIns" />
+        <Warnings_Component :demo="demo.demoName" v-if="vsWarn" />
+        <Header_Component :demo="demo.demoName" v-if="vsHead" />
+        <Footer_Component :demo="demo.demoName" v-if="vsfooter" />
     </div>
 </template>
 <script setup>
-import { inject, onMounted, reactive, ref, defineEmits } from "vue";
-import devTools from "@/Components/EngineComponent/grid_editor_component/devTools.vue";
+import { onMounted, reactive, ref } from "vue";
+import Instructions_Component from "@/Components/EngineComponent/Settings/instruction_settings.vue";
+import Warnings_Component from "@/Components/EngineComponent/Settings/warning_settings.vue";
+import Header_Component from "@/Components/EngineComponent/Settings/header_settings.vue";
+import Footer_Component from "@/Components/EngineComponent/Settings/footer_settings.vue";
 
+const vsIns = ref(true);
+const vsWarn = ref(true);
+const vsHead = ref(true);
+const vsfooter = ref(true);
 const demo = reactive({
     demoName: null,
 });
 
-const vsIns = ref(true);
-const $emits = defineEmits(["vs:inst"]);
-
-const divEditor = ref(false);
-const props = inject("Instructions");
-
-const test_Settings = ref({});
-const JsonData = ref({});
-const ObjName = ref(null);
-const content = ref(null);
 const _methods = {
-    search: (obj) => {
-        Object.keys(test_Settings.value).forEach((element) => {
-            JsonData.value = props[demo.demoName];
-            if (JsonData.value[element].id == obj.id) {
-                ObjName.value = element;
-                divEditor.value = !divEditor.value;
-
-                JsonData.value[element].Xaxis = obj.PositionX + "%";
-                JsonData.value[element].Yaxis = obj.PositionY + "%";
-            }
-        });
-    },
-    updateHeight: (height) => {
-        JsonData.value[ObjName.value].Hheight = height + "%";
-    },
-
-    updateWidth: (width) => {
-        JsonData.value[ObjName.value].Hwidht = width + "%";
-    },
-    updateBgColor: (bgColor) => {
-        JsonData.value[ObjName.value].bgColor = bgColor;
-    },
-    updateBorderSize: (br) => {
-        JsonData.value[ObjName.value].borderRadius = br + "px";
-    },
-    updateBorderWidth: (brWidth) => {
-        JsonData.value[ObjName.value].borderWidth = brWidth + "px";
-    },
-
-    updateBorderBGColor: (brColor) => {
-        JsonData.value[ObjName.value].borderColor = brColor;
-    },
-
-    displayDemo: () => {
-        test_Settings.value = props[demo.demoName];
-    },
-    getContent: () => {
-        JsonData.value[ObjName.value].content = content.value[0].innerHTML;
-    },
+    displayDemo: () => {},
 };
 onMounted(() => {
-    if (test_Settings.value == null) {
-        test_Settings.value = props.practiceTrial.tests;
-    }
-
     document
         .querySelector("#selected_trial")
         .addEventListener("hide_data", () => {
             vsIns.value = !vsIns.value;
         });
 
-    window.addEventListener("click", (event) => {
-        var targetid = event.target.getAttribute("textid");
-        var PosX = event.target.getAttribute("data-current-x");
-        var PosY = event.target.getAttribute("data-current-y");
+    document
+        .querySelector("#selected_trial")
+        .addEventListener("hide_warning", () => {
+            vsWarn.value = !vsWarn.value;
+        });
 
-        _methods.search({ id: targetid, PositionX: PosX, PositionY: PosY });
-        window.onmousemove = null;
-        window.onmouseup = null;
-    });
+    document
+        .querySelector("#selected_trial")
+        .addEventListener("hide_footer", () => {
+            vsfooter.value = !vsfooter.value;
+        });
 
-    window.onmousedown = (event2) => {
-        let Newevent = event2.target;
-        let SetEvent = Newevent.classList.contains("drag");
-
-        if (SetEvent) {
-            window.onmousemove = (event) => {
-                var height = window.innerHeight;
-                var width = window.innerWidth;
-
-                var x = (event.clientX / width) * 100;
-                var y = (event.clientY / height) * 100;
-
-                Newevent.dataset.currentX = x;
-                Newevent.dataset.currentY = y;
-
-                Newevent.style.position = "fixed";
-
-                Newevent.style.top = y + "%";
-                Newevent.style.left = x + "%";
-
-                window.onmouseup = (event) => {
-                    var height = window.innerHeight;
-                    var width = window.innerWidth;
-                    var x = (event.clientX / width) * 100;
-                    var y = (event.clientY / height) * 100;
-
-                    Newevent.style.position = "fixed";
-
-                    Newevent.style.top = y + "%";
-                    Newevent.style.left = x + "%";
-
-                    window.onmousemove = null;
-                    window.onmouseup = null;
-                };
-            };
-        }
-    };
+    document
+        .querySelector("#selected_trial")
+        .addEventListener("hide_header", () => {
+            vsHead.value = !vsHead.value;
+        });
 });
 </script>
+<style scoped>
+.draggable {
+    width: 100px;
+    height: 100px;
+    background-color: lightblue;
+    text-align: center;
+    line-height: 100px;
+    cursor: pointer;
+    user-select: none;
+}
+</style>

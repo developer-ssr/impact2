@@ -163,6 +163,8 @@ Route::controller(RecordsController::class)->group(function () {
 });
 Route::controller(MainDashboardController::class)->group(function () {
     Route::get('maindashboard', 'index');
+    Route::post('store_mainsettings', 'store');
+    
     
 });
 

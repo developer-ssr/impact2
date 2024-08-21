@@ -3,257 +3,258 @@ import { router, useForm } from "@inertiajs/vue3";
 import { reactive } from "vue";
 import { provide, inject } from "vue";
 const props = inject("props");
+const Image_Settings = reactive({
+    practiceTrial: {
+        message: {
+            id: 1,
+            bgColor: "whitesmoke",
+            Xaxis: "50%",
+            Yaxis: "50%",
+            imagesrc: "Practice Header",
+            Hheight: "10",
+            Hwidht: "50",
+
+            borderRadius: "10px",
+            borderWidth: "5px",
+            borderColor: "gray",
+        },
+    },
+    DummyTrial: {
+        message: {
+            id: 2,
+            bgColor: "whitesmoke",
+            Xaxis: "50%",
+            Yaxis: "50%",
+            imagesrc: "Dummy Header",
+            Hheight: "10",
+            Hwidht: "50",
+
+            borderRadius: "10px",
+            borderWidth: "5px",
+            borderColor: "gray",
+        },
+    },
+
+    MainTrial: {
+        message: {
+            id: 3,
+            bgColor: "whitesmoke",
+            Xaxis: "50%",
+            Yaxis: "50%",
+            imagesrc: "Main Header",
+            Hheight: "10",
+            Hwidht: "50",
+
+            borderRadius: "10px",
+            borderWidth: "5px",
+            borderColor: "gray",
+        },
+    },
+});
+
+const Warning_Settings = reactive({
+    practiceTrial: {
+        message: {
+            id: 1,
+            bgColor: "whitesmoke",
+            Xaxis: "50%",
+            Yaxis: "50%",
+            content: "Practice Header Warning",
+            Hheight: "10",
+            Hwidht: "50",
+            textColor: "black",
+            borderRadius: "10px",
+            borderWidth: "5px",
+            borderColor: "gray",
+        },
+    },
+    DummyTrial: {
+        message: {
+            id: 2,
+            bgColor: "whitesmoke",
+            Xaxis: "50%",
+            Yaxis: "50%",
+            content: "Dummy Header Warning",
+            Hheight: "10",
+            Hwidht: "50",
+            textColor: "black",
+            borderRadius: "10px",
+            borderWidth: "5px",
+            borderColor: "gray",
+        },
+    },
+
+    MainTrial: {
+        message: {
+            id: 3,
+            bgColor: "whitesmoke",
+            Xaxis: "50%",
+            Yaxis: "50%",
+            content: "Main Header Warning",
+            Hheight: "10",
+            Hwidht: "50",
+            textColor: "black",
+            borderRadius: "10px",
+            borderWidth: "5px",
+            borderColor: "gray",
+        },
+    },
+});
+const Footer_Settings = reactive({
+    practiceTrial: {
+        message: {
+            id: 1,
+            bgColor: "whitesmoke",
+            Xaxis: "50%",
+            Yaxis: "92%",
+            content: "Practice Footer Text",
+            Hheight: "5vmin",
+            Hwidht: "60vmin",
+            textColor: "black",
+            borderRadius: "10px",
+            borderWidth: "5px",
+            borderColor: "gray",
+        },
+    },
+    DummyTrial: {
+        message: {
+            id: 2,
+            bgColor: "whitesmoke",
+            Xaxis: "50%",
+            Yaxis: "92%",
+            content: "Dummy Footer Text",
+            Hheight: "5vmin",
+            Hwidht: "60vmin",
+            textColor: "black",
+            borderRadius: "10px",
+            borderWidth: "5px",
+            borderColor: "gray",
+        },
+    },
+
+    MainTrial: {
+        message: {
+            id: 3,
+            bgColor: "whitesmoke",
+            Xaxis: "50%",
+            Yaxis: "92%",
+            content: "Main Footer Text",
+            Hheight: "5vmin",
+            Hwidht: "60vmin",
+            textColor: "black",
+            borderRadius: "10px",
+            borderWidth: "5px",
+            borderColor: "gray",
+        },
+    },
+});
+
+const Header_Settings = reactive({
+    practiceTrial: {
+        message: {
+            id: 1,
+            bgColor: "whitesmoke",
+            Xaxis: "50%",
+            Yaxis: "25%",
+            content: "Practice Header",
+            Hheight: "12vmin",
+            Hwidht: "60vmin",
+            textColor: "black",
+            borderRadius: "0px",
+            borderWidth: "5px",
+            borderColor: "gray",
+        },
+    },
+    DummyTrial: {
+        message: {
+            id: 2,
+            bgColor: "whitesmoke",
+            Xaxis: "50%",
+            Yaxis: "25%",
+            content: "Dummy Header",
+            Hheight: "12vmin",
+            Hwidht: "60vmin",
+            textColor: "black",
+            borderRadius: "10px",
+            borderWidth: "5px",
+            borderColor: "gray",
+        },
+    },
+
+    MainTrial: {
+        message: {
+            id: 3,
+            bgColor: "whitesmoke",
+            Xaxis: "50%",
+            Yaxis: "25%",
+            content: "Main Header",
+            Hheight: "12vmin",
+            Hwidht: "60vmin",
+            textColor: "black",
+            borderRadius: "10px",
+            borderWidth: "5px",
+            borderColor: "gray",
+        },
+    },
+});
+
+const Instructions = reactive({
+    practiceTrial: {
+        message: {
+            id: 1,
+            bgColor: "whitesmoke",
+            Xaxis: "50%",
+            Yaxis: "60%",
+            content: "Practice Instruction",
+            Hheight: "50vmin",
+            Hwidht: "50vmin",
+            textColor: "black",
+            borderRadius: "10px",
+            borderWidth: "5px",
+            borderColor: "gray",
+        },
+    },
+    DummyTrial: {
+        message: {
+            id: 2,
+            bgColor: "whitesmoke",
+            Xaxis: "50%",
+            Yaxis: "60%",
+            content: "Dummy Instruction",
+            Hheight: "50vmin",
+            Hwidht: "50vmin",
+            textColor: "black",
+            borderRadius: "10px",
+            borderWidth: "5px",
+            borderColor: "gray",
+        },
+    },
+
+    MainTrial: {
+        message: {
+            id: 3,
+            bgColor: "whitesmoke",
+            Xaxis: "50%",
+            Yaxis: "60%",
+            content: "Main Instruction",
+            Hheight: "50vmin",
+            Hwidht: "50vmin",
+            textColor: "black",
+            borderRadius: "10px",
+            borderWidth: "5px",
+            borderColor: "gray",
+        },
+    },
+});
 
 const form = useForm({
     folder_name: null,
     uuid: null,
-    quadrants: {
-        quadrant1: {
-            style: {
-                rows: 1,
-                bgColor: null,
-                class: "quadrants",
-            },
-            keys: "E",
-            rows: 1,
-            column: 3,
-        },
-
-        quadrant2: {
-            style: {
-                rows: 1,
-                bgColor: null,
-                class: "quadrants",
-            },
-            keys: "O",
-            rows: 1,
-            column: 3,
-        },
-
-        quadrant3: {
-            style: {
-                rows: 1,
-                bgColor: null,
-                class: "quadrants",
-            },
-            keys: "C",
-            rows: 1,
-            column: 3,
-        },
-
-        quadrant4: {
-            style: {
-                rows: 1,
-                bgColor: null,
-                class: "quadrants",
-            },
-            keys: "M",
-            rows: 1,
-            column: 3,
-        },
-    },
-
-    settings: {
-        pageTitle: "",
-        header: {
-            content: "HEADER HERE....",
-            style: {
-                "--componentY": null,
-                "--componentX": null,
-                "--componentW": null,
-                "--componentH": null,
-                "--componentBG": "transparent",
-                "--componentFontColor": "black",
-                "--componentFontSize": null,
-            },
-        },
-        footer: {
-            content: "FOOTER HERE....",
-            style: {
-                "--componentY": "50%",
-                "--componentX": "50%",
-                "--componentW": null,
-                "--componentH": null,
-                "--componentBG": "transparent",
-                "--componentFontColor": "black",
-                "--componentFontSize": null,
-            },
-        },
-        instruction: {
-            practice_instruction: {
-                title: "Practice Instructions",
-                message:
-                    "INSTRUCTIONS This test measures how you feel about the products.Your job is to drag and drop the word to the product that you think fits best.Let's do some practice. click start when you're ready to begin.",
-                button: "Start",
-                warnings: "<h1>WARNING</h1>Please react faster.",
-                loading: "Loading...",
-                saving: "Saving...",
-                savingFail:
-                    "Unable to connect with server. Please check your internet connection.",
-                redirect: "Preparing the next part...",
-
-                style: {
-                    "--componentY": "50%",
-                    "--componentX": "50%",
-                    "--componentW": null,
-                    "--componentH": null,
-                    "--componentBG": "transparent",
-                    "--componentFontColor": "black",
-                    "--componentFontSize": null,
-                },
-                target: {
-                    img: "",
-                    name: "",
-                    img: "",
-                    height: "",
-                    width: "",
-                    countdown: "",
-                },
-
-                quadrants: {
-                    quadrant1: {
-                        style: {
-                            rows: 1,
-                            bgColor: null,
-                            class: "quadrants",
-                        },
-                        keys: "E",
-                        rows: 1,
-                        column: 3,
-                    },
-
-                    quadrant2: {
-                        style: {
-                            rows: 1,
-                            bgColor: null,
-                            class: "quadrants",
-                        },
-                        keys: "O",
-                        rows: 1,
-                        column: 3,
-                    },
-
-                    quadrant3: {
-                        style: {
-                            rows: 1,
-                            bgColor: null,
-                            class: "quadrants",
-                        },
-                        keys: "C",
-                        rows: 1,
-                        column: 3,
-                    },
-
-                    quadrant4: {
-                        style: {
-                            rows: 1,
-                            bgColor: null,
-                            class: "quadrants",
-                        },
-                        keys: "M",
-                        rows: 1,
-                        column: 3,
-                    },
-                },
-            },
-
-            main_instruction: {
-                title: "Main Instructions",
-                message:
-                    "WELL DONE!Just do the same for the main trials. Click start when you're ready to begin.",
-                button: "Start",
-                warnings: "<h1>WARNING</h1>Please react faster.",
-                loading: "Loading...",
-                saving: "Saving...",
-                savingFail:
-                    "Unable to connect with server. Please check your internet connection.",
-                redirect: "Preparing the next part...",
-                target: {
-                    img: "",
-                    name: "",
-                    img: "",
-                    height: "",
-                    width: "",
-                    countdown: "",
-                },
-
-                style: {
-                    "--componentY": "50%",
-                    "--componentX": "50%",
-                    "--componentW": null,
-                    "--componentH": null,
-                    "--componentBG": "red",
-                    "--componentFontColor": "black",
-                    "--componentFontSize": null,
-                },
-                quadrants: {
-                    quadrant1: {
-                        style: {
-                            rows: 1,
-                            bgColor: null,
-                            class: "quadrants",
-                        },
-                        keys: "E",
-                        rows: 1,
-                        column: 3,
-                    },
-
-                    quadrant2: {
-                        style: {
-                            rows: 1,
-                            bgColor: null,
-                            class: "quadrants",
-                        },
-                        keys: "O",
-                        rows: 1,
-                        column: 3,
-                    },
-
-                    quadrant3: {
-                        style: {
-                            rows: 1,
-                            bgColor: null,
-                            class: "quadrants",
-                        },
-                        keys: "C",
-                        rows: 1,
-                        column: 3,
-                    },
-
-                    quadrant4: {
-                        style: {
-                            rows: 1,
-                            bgColor: null,
-                            class: "quadrants",
-                        },
-                        keys: "M",
-                        rows: 1,
-                        column: 3,
-                    },
-                },
-            },
-
-            qualityControl: {
-                message:
-                    "<h1>SORRY</h1>Your response time too slow. Would you like to take the test again?",
-                button: "Yes",
-                button2: "No",
-            },
-        },
-
-        ladybug: {
-            name: "",
-            img: "",
-            height: "",
-            width: "",
-            countdown: "",
-        },
-
-        custom: {
-            style: "",
-            js: "",
-        },
-    },
+    Image_Settings: Image_Settings,
+    Warning_Settings: Warning_Settings,
+    Footer_Settings: Footer_Settings,
+    Header_Settings: Header_Settings,
+    Instructions: Instructions,
 });
 
 const save = () => {

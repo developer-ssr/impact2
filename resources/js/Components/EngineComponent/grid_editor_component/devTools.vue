@@ -290,8 +290,10 @@
 </template>
 
 <script setup>
-import { inject, onMounted, reactive, ref, defineEmits } from "vue";
+import { inject, onMounted, reactive, ref, watch } from "vue";
 import { useForm } from "@inertiajs/vue3";
+const props = defineProps(["demo"]);
+
 const $emits = defineEmits([
     "update:Height",
     "update:Width",
@@ -355,6 +357,36 @@ const _methods = {
         );
     },
 };
+onMounted(() => {
+    window.onmousedown = (event2) => {
+        let Newevent = event2.target;
+        let SetEvent = Newevent.classList.contains("drag");
+        if (SetEvent) {
+            window.onmousemove = (event) => {
+                var height = window.innerHeight;
+                var width = window.innerWidth;
+                var x = (event.clientX / width) * 100;
+                var y = (event.clientY / height) * 100;
+                Newevent.style.position = "fixed";
+                Newevent.setAttribute("PositionX", x);
+                Newevent.setAttribute("PositionY", y);
+                Newevent.style.top = y + "%";
+                Newevent.style.left = x + "%";
+                window.onmouseup = (event) => {
+                    var height = window.innerHeight;
+                    var width = window.innerWidth;
+                    var x = (event.clientX / width) * 100;
+                    var y = (event.clientY / height) * 100;
+                    Newevent.style.position = "fixed";
+                    Newevent.style.top = y + "%";
+                    Newevent.style.left = x + "%";
+                    window.onmousemove = null;
+                    window.onmouseup = null;
+                };
+            };
+        }
+    };
+});
 window.addEventListener("keydown", function (event) {
     if (event.key == "]") {
         document.execCommand("fontsize", false, counter.value++);

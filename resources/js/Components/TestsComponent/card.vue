@@ -20,7 +20,7 @@ const tests = useForm({
 const _method = {
     locateProjects: (id) => {
         window.location.replace(
-            "http://newimpact2.test/test_trials/?code=" + id
+            "http://newimpact2.test/maindashboard/?code=" + id
         );
     },
 
@@ -66,6 +66,9 @@ const _method = {
         });
     },
 };
+onMounted(() => {
+    console.log(props);
+});
 </script>
 
 <template>
@@ -108,10 +111,12 @@ const _method = {
     </Notifcation>
 
     <div class="grid grid-cols-4 gap-4 pt-3 pr-2 pl-2">
-        <div class="test-container" v-for="(data, index) in props.props.data.data" :key="index">
-            <div
-             class="pl-5"
-            >
+        <div
+            class="test-container"
+            v-for="(data, index) in props.props.data.data"
+            :key="index"
+        >
+            <div class="pl-5">
                 Tests:
                 <div
                     @blur="_method.editTests(data.id, data.test_name)"
@@ -131,7 +136,7 @@ const _method = {
 
                 <button
                     @click="_method.locateProjects(data.code)"
-                    class="inline-flex items-center px-3 py-2  mr-1 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                    class="inline-flex items-center px-3 py-2 mr-1 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                 >
                     View Tests
                 </button>
@@ -146,7 +151,7 @@ const _method = {
     </div>
 </template>
 <style scoped>
-.test-container{
+.test-container {
     margin-top: 18px;
     position: relative;
     height: 180px;
@@ -156,14 +161,14 @@ const _method = {
     filter: drop-shadow(0 6px 20px rgba(0, 0, 0, 0.19));
 }
 
-.test-container::before{
-    content: '';
+.test-container::before {
+    content: "";
     position: absolute;
     top: -18px;
     width: 200px;
     height: 25px;
     background: white;
     border-radius: 25px 0 0 0;
-    clip-path: path('M 0 0 L 160 0 C 185 2, 175 16, 200 18 L 0 50 z');
+    clip-path: path("M 0 0 L 160 0 C 185 2, 175 16, 200 18 L 0 50 z");
 }
 </style>

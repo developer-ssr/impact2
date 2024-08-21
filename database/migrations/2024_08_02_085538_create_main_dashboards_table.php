@@ -16,9 +16,11 @@ return new class extends Migration
             $table->char('uuid')->nullable();
             $table->string('test_name')->nullable();
             $table->char('user_id')->nullable();
-            $table->json('normal_text')->nullable();
-            $table->json('settings')->nullable();
+            $table->json('headers')->nullable();
+            $table->json('warnings')->nullable();
+            $table->json('instructions')->nullable();
             $table->json('images')->nullable();
+             $table->json('footers')->nullable();
             $table->char('status')->nullable();
             $table->string('code')->nullable();
             $table->timestamps();

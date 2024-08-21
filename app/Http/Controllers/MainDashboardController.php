@@ -16,9 +16,24 @@ class MainDashboardController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        return Inertia::render("MainDashboardPage/Index");
+       //dd($request);
+        $uuid= $request->query('code');
+            session(['uuid' =>  $uuid]);
+        //      $menu = [
+        //    'folder'=>'Projects',
+        //    'folderlink'=>'projects_index',
+        //    'title'=> 'Tests',
+        //    'add'=>'Add Test',
+        //    'link'=>'project_index/',
+        //    'placeholder'=>'Test Name',
+        //    'save'=>'store_mainsettings'
+        // ];
+
+        return Inertia::render("MainDashboardPage/Index",[
+             'data'=>MainDashboard::where('code',$request->query('code'))->first(),
+        ]);
     }
 
     /**
@@ -34,7 +49,21 @@ class MainDashboardController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        
+         MainDashboard::create([
+            'test_name'=>$request->folder_name,
+            'uuid'=> session('uuid'),
+            'user_id'=>auth()->user()->id,
+            'status'=>1,
+            'code'=>Str::upper(Str::random(10)),
+            'headers'=>$request->Header_Settings,
+            'warnings'=>$request->Warning_Settings,
+            'images'=>$request->Image_Settings,
+            'instructions'=>$request->Instructions,
+              'footers'=>$request->Footer_Settings,
+            
+        ]);
+
     }
 
     /**

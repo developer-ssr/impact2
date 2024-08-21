@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\MainDashboard;
 use App\Models\Tests;
 use Illuminate\Http\Request;
 use App\Models\trials;
@@ -26,8 +27,9 @@ class TestsController extends Controller
      */
 
 
-    public function index(tests $tests, Request $request)
+    public function index(MainDashboard $mainDashboard, Request $request)
     {
+        // dd($request);
             $uuid= $request->query('uuid');
             session(['uuid' =>  $uuid]);
             $menu = [
@@ -37,13 +39,13 @@ class TestsController extends Controller
            'add'=>'Add Test',
            'link'=>'project_index/',
            'placeholder'=>'Test Name',
-           'save'=>'tests_store'
+           'save'=>'store_mainsettings'
         ];
         
         return Inertia::render("Tests/index",[
             'menu'=>$menu,
-            'data'=>tests::where('uuid',$request->query('uuid'))->paginate(12),
-            'Project_title'=>tests::where('uuid',$request->query('uuid'))
+            'data'=>MainDashboard::where('uuid',$request->query('uuid'))->paginate(12),
+            'Project_title'=>MainDashboard::where('uuid',$request->query('uuid'))
         ]);
     }
 
@@ -83,15 +85,18 @@ class TestsController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(tests $tests, Request $request){
-           tests::create([
+    public function store(MainDashboard $mainDashboard, Request $request){
+           MainDashboard::create([
             'test_name'=>$request->folder_name,
             'uuid'=> session('uuid'),
             'user_id'=>auth()->user()->id,
             'status'=>1,
             'code'=>Str::upper(Str::random(10)),
-            'quadrants'=>$request->quadrants,
-            'settings'=>$request->settings
+            'headers'=>$request->Header_Settings,
+            'warnings'=>$request->Warning_Settings,
+            'images'=>$request->Image_Settings,
+            'instructions'=>$request->Instructions,
+              'footers'=>$request->Footer_Settings,
         ]);
     }
 
