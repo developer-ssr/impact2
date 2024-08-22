@@ -40,7 +40,7 @@
             ref="draggableElement"
             @blur="_methods.getContent"
             :textid="data.id"
-            class="fixed p-[5vmin] translate-x-[-50%] translate-y-[-50%] pointer-events-auto"
+            class="fixed translate-x-[-50%] translate-y-[-50%] pointer-events-auto z-10"
             :style="{
                 backgroundColor: data.bgColor,
                 height: data.Hheight,

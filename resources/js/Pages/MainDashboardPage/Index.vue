@@ -19,7 +19,6 @@ const insStatus = ref(false);
 // const headerCount_Main = ref(1);
 // const demo = ref({});
 
-const ImageCount = ref(1);
 const Image_Settings = reactive({
     practiceTrial: {
         message: {
@@ -269,7 +268,6 @@ provide("Warning_Settings", props.data.warnings);
 provide("Header_Settings", props.data.headers);
 provide("Footer_Settings", props.data.footers);
 provide("Instructions", props.data.instructions);
-console.log(props);
 </script>
 
 <template>

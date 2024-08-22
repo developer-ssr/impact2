@@ -45,10 +45,12 @@ font[size="5"] {
         <Warnings_Component :demo="demo.demoName" v-if="vsWarn" />
         <Header_Component :demo="demo.demoName" v-if="vsHead" />
         <Footer_Component :demo="demo.demoName" v-if="vsfooter" />
+        <Images_Component :demo="demo.demoName" />
     </div>
 </template>
 <script setup>
 import { onMounted, reactive, ref } from "vue";
+import Images_Component from "@/Components/EngineComponent/Settings/images_settings.vue";
 import Instructions_Component from "@/Components/EngineComponent/Settings/instruction_settings.vue";
 import Warnings_Component from "@/Components/EngineComponent/Settings/warning_settings.vue";
 import Header_Component from "@/Components/EngineComponent/Settings/header_settings.vue";

@@ -37,6 +37,7 @@
                             ><img :src="img"
                         /></small>
                     </div>
+                    
                 </div>
             </div>
             <div

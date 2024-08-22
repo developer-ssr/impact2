@@ -20,6 +20,11 @@ const _methods = {
             .querySelector("#selected_trial")
             .dispatchEvent(new CustomEvent("hide_footer"));
     },
+    showgridModal: () => {
+        document
+            .querySelector("#selected_trial")
+            .dispatchEvent(new CustomEvent("show_grid_modal"));
+    },
 };
 </script>
 <template>
@@ -64,9 +69,10 @@ const _methods = {
                 <button
                     class="bg-gray-200 w-full h-[5vmin] hover:bg-yellow-300 hover:text-white"
                 >
-                    Add Images
+                    Images Settings
                 </button>
                 <button
+                    @click="_methods.showgridModal"
                     class="bg-gray-200 w-full h-[5vmin] hover:bg-yellow-300 hover:text-white"
                 >
                     Setup Image Grid
