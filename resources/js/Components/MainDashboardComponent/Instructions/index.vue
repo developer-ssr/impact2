@@ -25,13 +25,20 @@ const _methods = {
             .querySelector("#selected_trial")
             .dispatchEvent(new CustomEvent("show_grid_modal"));
     },
+    showimageModal: () => {
+        document
+            .querySelector("#selected_trial")
+            .dispatchEvent(new CustomEvent("show_image_modal"));
+    },
 };
 </script>
 <template>
     <div class="bg-white h-[100%]">
         <ul class="max-w-md divide-y divide-gray-200 dark:divide-gray-700">
             <div class="flex-shrink-0"></div>
-            <h4 class="bg-gray-300">Instructions Settings</h4>
+            <div class="bg-gray-300">
+                <h2 class="text-center p-2">Instructions Settings</h2>
+            </div>
             <li class="pb-3 sm:p-2">
                 <button
                     @click="_methods.hide_header"
@@ -64,9 +71,12 @@ const _methods = {
 
         <ul class="max-w-md divide-y divide-gray-200 dark:divide-gray-700">
             <div class="flex-shrink-0"></div>
-            <h4 class="bg-gray-300">Images</h4>
+            <div class="bg-gray-300">
+                <h2 class="text-center p-2">Images</h2>
+            </div>
             <li class="pb-3 sm:p-2">
                 <button
+                    @click="_methods.showimageModal"
                     class="bg-gray-200 w-full h-[5vmin] hover:bg-yellow-300 hover:text-white"
                 >
                     Images Settings

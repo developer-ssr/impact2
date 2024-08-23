@@ -89,6 +89,17 @@ class MainDashboardController extends Controller
     {
         //
     }
+    public function uploadImage(Request $request, MainDashboard $mainDashboard){
+       
+        if($request->hasFile("image")){
+            $file = $request->file("image");
+            $name = $file->hashName();
+            $file->move(public_path() . '\targets_images', $name);
+            return env('APP_URL').'\targets_images\\'.$name;
+            //$file->move(storage_path() . '\app\targets_images', $name);
+           // return  Storage::path('targets_images\\'.$name);
+          } 
+    }
 
     /**
      * Remove the specified resource from storage.

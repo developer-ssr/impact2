@@ -34,9 +34,11 @@
             }
         "
     />
+
+    <!-- this part should be a component -->
     <div
         v-show="modalGrid"
-        class="container bg-gray-100 fixed translate-x-[-50%] translate-y-[-50%] left-[50%] top-[50%] z-50 w-[50vmin] h-[30vmin] rounded-md"
+        class="drag container bg-gray-100 fixed translate-x-[-50%] translate-y-[-50%] left-[50%] top-[50%] z-50 w-[50vmin] h-[30vmin] rounded-md"
     >
         <div class="float-right pr-3">
             <button @click="close">Close</button>
@@ -64,24 +66,75 @@
         </div>
     </div>
 
-    <div class="container mx-auto relative">
+    <!-- this part should be a component / -->
+    <!-- this part should be a component -->
+    <div
+        v-if="imageSetVisible"
+        class="fixed z-50 bg-gray-dark translate-x-[-50%] translate-y-[-50%] left-[50%] top-[50%] h-[50vmin] w-[100vmin] rounded-lg"
+    >
+        <div class="bg-white h-[5vmin]">
+            <button
+                @click="_methods.closeImageSet"
+                class="float-right bg-gray-300 p-3 rounded-lg"
+            >
+                Close
+            </button>
+        </div>
+
         <div
-            class="bg-image bg-gray-500 translate-x-[-50%] translate-y-[-50%] fixed top-[50%] left-[50%] h-[50vmin] w-[100vmin] bg-[url('https://mma.prnewswire.com/media/2041559/Perplexity_AI_Logo.jpg?p=facebook')] bg-no-repeat bg-cover bg-center"
+            class="bg-gray-100 m-5 h-[40vmin] rounded-lg relative object-scale-down"
         >
-            <div v-for="(data, index) in inst_D" :key="index">
+            <input
+                type="file"
+                id="upload"
+                accept="image/*"
+                @change="handleImageUpload"
+            />
+
+            <img :src="imageURL" class="object-fill h-[35vmin] p-5 w-full" />
+        </div>
+    </div>
+
+    <!-- this part should be a component / -->
+    <div class="container mx-auto relative">
+        <div v-for="(data, index) in inst_D" :key="index">
+            {{ data.imagesrc }}
+            <img
+                @click="_methods.search"
+                class="bg-gray-500 translate-x-[-50%] translate-y-[-50%] fixed top-[50%] left-[50%] h-[50vmin] w-[100vmin]"
+                :src="data.imagesrc"
+            />
+            <div
+                @click="_methods.search"
+                :style="{
+                    '--imageRatio': ratio,
+                    width: data.Hwidht,
+                    height: data.Hheight,
+
+                    fontSize: '2vmin',
+                    display: 'grid',
+                    'grid-template-columns': `repeat(${grid_RC.column}, minmax(0, 1fr))`,
+                }"
+                class="bgimage translate-x-[-50%] translate-y-[-50%] fixed top-[50%] left-[50%]"
+            >
                 <div
-                    :style="{
-                        display: 'grid',
-                        'grid-template-columns': `repeat(${grid_RC.column}, minmax(0, 1fr))`,
-                    }"
+                    class="cell relative"
+                    :class="{ active: cell.active }"
+                    v-for="(cell, i) in data.cells"
+                    :key="i"
                 >
                     <div
-                        class="cell relative"
                         :class="{ active: cell.active }"
-                        v-for="(cell, i) in data.cells"
-                        :key="i"
+                        @click="
+                            _methods.detectCells({
+                                keys: cell.keys,
+                                index: i,
+                                cell: cell,
+                            })
+                        "
+                        class="bg-transparent p-5"
                     >
-                        <div class="bg-blue-500 p-5">{{ cell.index }}</div>
+                        {{ cell.index }}
                     </div>
                 </div>
             </div>
@@ -101,10 +154,12 @@ const JsonData = ref({});
 const ObjName = ref(null);
 const divEditor = ref(false);
 const demoName = ref(null);
-const ratio = ref(null);
+const imageSetVisible = ref(false);
+const img = new Image();
 const draggableElement = ref(null);
 const modalGrid = ref(false);
-
+const imageURL = ref(null);
+const ratio = ref(null);
 const grid_RC = reactive({
     rows: null,
     column: null,
@@ -112,26 +167,40 @@ const grid_RC = reactive({
 const close = () => {
     modalGrid.value = false;
 };
-const startDrag = () => {
-    const height = window.innerHeight;
-    const width = window.innerWidth;
-    const onMouseMove = (e) => {
-        var xAxis = (e.clientX / width) * 100;
-        var yAxis = (e.clientY / height) * 100;
 
-        JsonData.value["Xaxis"] = xAxis + "%";
-        JsonData.value["Yaxis"] = yAxis + "%";
-    };
+const handleImageUpload = (event) => {
+    const file = event.target.files[0];
 
-    const onMouseUp = () => {
-        document.removeEventListener("mousemove", onMouseMove);
-        document.removeEventListener("mouseup", onMouseUp);
-    };
+    if (file) {
+        const reader = new FileReader();
 
-    document.addEventListener("mousemove", onMouseMove);
-    document.addEventListener("mouseup", onMouseUp);
+        reader.onload = async (e) => {
+            var formData = new FormData();
+            formData.append("image", file);
+            const res = await axios.post("/upload_images", formData, {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                },
+            });
+
+            imageURL.value = res.data;
+            if (imageURL.value) {
+                JsonData.value["imagesrc"] = imageURL.value;
+                console.log(JsonData.value["imagesrc"]);
+            }
+
+            // Get the image ratio
+            const img = new Image();
+            img.src = e.target.result;
+            img.onload = () => {
+                ratio.value = img.width / img.height;
+                console.log(`Image ratio: ${ratio}`);
+            };
+        };
+
+        reader.readAsDataURL(file);
+    }
 };
-
 const _methods = {
     search: () => {
         divEditor.value = !divEditor.value;
@@ -141,13 +210,19 @@ const _methods = {
             ObjName.value = element;
         });
     },
+    detectCells: (obj) => {
+        // console.log(obj);
+        obj.cell.active = !obj.cell.active;
+        obj.ladybug = !obj.ladybug;
+        // console.log(obj.index);
+    },
 
     updateHeight: (height) => {
-        JsonData.value["Hheight"] = height + "%";
+        JsonData.value["Hheight"] = height + "vmin";
     },
 
     updateWidth: (width) => {
-        JsonData.value["Hwidht"] = width + "%";
+        JsonData.value["Hwidht"] = width + "vmin";
     },
     updateBgColor: (bgColor) => {
         JsonData.value["bgColor"] = bgColor;
@@ -166,29 +241,50 @@ const _methods = {
         JsonData.value["content"] = draggableElement.value[0].innerHTML;
         console.log(instruction_data);
     },
+    closeImageSet: () => {
+        imageSetVisible.value = false;
+    },
     setupGrid: () => {
         Object.keys(inst_D.value).forEach((items) => {
-            // var obj = {};
-            // obj = inst_D.value[items];
-            // console.log(obj);
             let q = inst_D.value[items];
 
             let cells = [];
-            let l = parseInt(grid_RC.column) * parseInt(grid_RC.rows);
-            for (let x = 1; x <= l; x++) {
-                let cell = {
-                    index: x,
-
-                    active: false,
-                    ladybug: false,
-                };
-                cells.push(cell);
+            for (let i = 0; i < grid_RC.rows; i++) {
+                for (let j = 0; j < grid_RC.column; j++) {
+                    let cell = {
+                        index: `(${i}, ${j})`,
+                        active: false,
+                        ladybug: false,
+                    };
+                    cells.push(cell);
+                }
             }
-            Object.assign(q, { cells: cells });
-            console.log(q);
-        });
 
-        //console.log(grid_RC);
+            Object.assign(q, { cells: cells });
+
+            const flattened = cells.map((cell) => cell.index);
+
+            flattened.sort();
+
+            const n = flattened.length;
+            let median;
+            if (n % 2 === 0) {
+                median = `(${
+                    (parseInt(flattened[n / 2 - 1][1]) +
+                        parseInt(flattened[n / 2][1])) /
+                    2
+                }, ${
+                    (parseInt(flattened[n / 2 - 1][4]) +
+                        parseInt(flattened[n / 2][4])) /
+                    2
+                })`;
+            } else {
+                median = flattened[Math.floor(n / 2)];
+            }
+
+            // console.log(`Median: ${median}`);
+            // console.log(q);
+        });
     },
 };
 
@@ -201,12 +297,6 @@ watch(
     },
     { immediate: true }
 );
-function pxToVmin(px) {
-    const vmin = Math.min(window.innerWidth, window.innerHeight) / 100;
-    return px / vmin;
-}
-
-// Usage
 
 onMounted(() => {
     document
@@ -215,13 +305,11 @@ onMounted(() => {
             modalGrid.value = !modalGrid.value;
         });
 
-    window.onload = function () {
-        const img = document.getElementById("myImage");
-
-        // const width = pxToVmin(img.naturalWidth);
-        // const height = pxToVmin(img.naturalHeight);
-        // ratio.value = width / height;
-    };
+    document
+        .querySelector("#selected_trial")
+        .addEventListener("show_image_modal", () => {
+            imageSetVisible.value = !imageSetVisible.value;
+        });
 
     if (demoName.value == null) {
         demoName.value = "practiceTrial";
@@ -234,11 +322,7 @@ onMounted(() => {
     cursor: pointer;
 }
 
-.grid-container {
-    z-index: 90;
-    display: grid;
-    width: 95vh;
-    background-color: transparent;
+.bgimage {
     aspect-ratio: var(--imageRatio, 1.5);
 }
 
@@ -249,8 +333,15 @@ onMounted(() => {
     color: white;
 }
 .cell {
+    text-align: center;
     cursor: pointer;
     /* background: rgb(255, 255, 255); */
     background: rgba(255, 255, 255, 0.2);
+}
+.cell.active {
+    text-align: center;
+    color: rgb(246, 245, 245);
+    /* background: rgb(136, 138, 87); */
+    background: rgba(136, 138, 87, 0.8);
 }
 </style>
