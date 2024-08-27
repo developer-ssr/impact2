@@ -25,21 +25,12 @@ font[size="5"] {
     <div class="bg-gray-100 relative h-full editor_container">
         <div
             id="selected_trial"
-            class="fixed translate-x-[-50%] left-[50%] h-[5vmin] w-[20vmin] bg-yellow-500 text-center text-wrap inline-block align-middle rounded-b-lg"
-        ></div>
-
-        <select
-            id="selected_Demo"
-            class="float-right z-10 bg-gray-300 relative h-[4vmin] w-[20vmin]"
-            v-model="demo.demoName"
-            @change="_methods.displayDemo"
+            class="fixed translate-x-[-50%] left-[50%] h-[5vmin] w-[20vmin] bg-yellow-500 text-center text-wrap inline-block align-middle rounded-b-lg p-3 text-white"
         >
-            <option value="practiceTrial" selected="selected">
-                Practice Trial
-            </option>
-            <option value="DummyTrial">Dummy Trial</option>
-            <option value="MainTrial">Main Trial</option>
-        </select>
+            <h1>
+                {{ demo.blockTitle }}
+            </h1>
+        </div>
 
         <Instructions_Component :demo="demo.demoName" v-if="vsIns" />
         <Warnings_Component :demo="demo.demoName" v-if="vsWarn" />
@@ -62,12 +53,30 @@ const vsHead = ref(true);
 const vsfooter = ref(true);
 const demo = reactive({
     demoName: null,
+    blockTitle: null,
 });
 
-const _methods = {
-    displayDemo: () => {},
-};
 onMounted(() => {
+    document
+        .querySelector("#selected_trial")
+        .addEventListener("display_practiceTrial", () => {
+            demo.demoName = "practiceTrial";
+            demo.blockTitle = "Practice Trial";
+        });
+    document
+        .querySelector("#selected_trial")
+        .addEventListener("display_DummyTrial", () => {
+            demo.demoName = "DummyTrial";
+            demo.blockTitle = "Dummy Trial";
+        });
+    document
+        .querySelector("#selected_trial")
+        .addEventListener("display_MainTrial", () => {
+            //vsIns.value = !vsIns.value;
+            demo.demoName = "MainTrial";
+            demo.blockTitle = "Main Trial";
+        });
+
     document
         .querySelector("#selected_trial")
         .addEventListener("hide_data", () => {

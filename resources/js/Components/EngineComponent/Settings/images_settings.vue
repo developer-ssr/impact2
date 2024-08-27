@@ -1,48 +1,57 @@
 <template>
     <!-- Mouse position is at: {{ x }}, {{ y }} -->
-    <devTools
-        v-if="vsIns"
-        v-show="divEditor"
-        @update:Height="
-            (height) => {
-                _methods.updateHeight(height);
-            }
-        "
-        @update:Width="
-            (width) => {
-                _methods.updateWidth(width);
-            }
-        "
-        @update:br="
-            (br) => {
-                _methods.updateBorderSize(br);
-            }
-        "
-        @update:brWidth="
-            (brWidth) => {
-                _methods.updateBorderWidth(brWidth);
-            }
-        "
-        @update:brColor="
-            (brColor) => {
-                _methods.updateBorderBGColor(brColor);
-            }
-        "
-        @update:bgColor="
-            (bgColor) => {
-                _methods.updateBgColor(bgColor);
-            }
-        "
-    />
+    <Teleport to="body">
+        <devTools
+            class="z-50"
+            v-if="vsIns"
+            v-show="divEditor"
+            @update:Height="
+                (height) => {
+                    _methods.updateHeight(height);
+                }
+            "
+            @update:Width="
+                (width) => {
+                    _methods.updateWidth(width);
+                }
+            "
+            @update:br="
+                (br) => {
+                    _methods.updateBorderSize(br);
+                }
+            "
+            @update:brWidth="
+                (brWidth) => {
+                    _methods.updateBorderWidth(brWidth);
+                }
+            "
+            @update:brColor="
+                (brColor) => {
+                    _methods.updateBorderBGColor(brColor);
+                }
+            "
+            @update:bgColor="
+                (bgColor) => {
+                    _methods.updateBgColor(bgColor);
+                }
+            "
+        />
+    </Teleport>
 
     <!-- this part should be a component -->
     <div
         v-show="modalGrid"
-        class="drag container bg-gray-100 fixed translate-x-[-50%] translate-y-[-50%] left-[50%] top-[50%] z-50 w-[50vmin] h-[30vmin] rounded-md"
+        class="drag container bg-gray-100 fixed translate-x-[-50%] translate-y-[-50%] left-[50%] top-[50%] z-50 w-[50vmin] h-[30vmin] rounded-md shadow-xl"
     >
-        <div class="float-right pr-3">
-            <button @click="close">Close</button>
+        <div class="bg-gray-900 h-12">
+            <button
+                @click="close"
+                class="float-right bg-gray-300 p-2 rounded-sm m-1"
+            >
+                Close
+            </button>
         </div>
+
         <div class="p-10">
             <label>Rows</label>
             <input
@@ -70,7 +79,7 @@
     <!-- this part should be a component -->
     <div
         v-if="imageSetVisible"
-        class="fixed z-50 bg-gray-dark translate-x-[-50%] translate-y-[-50%] left-[50%] top-[50%] h-[50vmin] w-[100vmin] rounded-lg"
+        class="fixed z-50 bg-gray-dark translate-x-[-50%] translate-y-[-50%] left-[50%] top-[50%] h-[50vmin] w-[100vmin] rounded-lg shadow-xl"
     >
         <div class="bg-white h-[5vmin]">
             <button
@@ -98,12 +107,12 @@
     <!-- this part should be a component / -->
     <div class="container mx-auto relative">
         <div v-for="(data, index) in inst_D" :key="index">
-            {{ data.imagesrc }}
             <img
                 @click="_methods.search"
                 class="bg-gray-500 translate-x-[-50%] translate-y-[-50%] fixed top-[50%] left-[50%] h-[50vmin] w-[100vmin]"
                 :src="data.imagesrc"
             />
+
             <div
                 @click="_methods.search"
                 :style="{
@@ -113,7 +122,7 @@
 
                     fontSize: '2vmin',
                     display: 'grid',
-                    'grid-template-columns': `repeat(${grid_RC.column}, minmax(0, 1fr))`,
+                    'grid-template-columns': `repeat(${data.column}, minmax(0, 1fr))`,
                 }"
                 class="bgimage translate-x-[-50%] translate-y-[-50%] fixed top-[50%] left-[50%]"
             >
@@ -160,6 +169,7 @@ const draggableElement = ref(null);
 const modalGrid = ref(false);
 const imageURL = ref(null);
 const ratio = ref(null);
+//const imgVisible = ref(false);
 const grid_RC = reactive({
     rows: null,
     column: null,
@@ -183,18 +193,18 @@ const handleImageUpload = (event) => {
                 },
             });
 
-            imageURL.value = res.data;
-            if (imageURL.value) {
-                JsonData.value["imagesrc"] = imageURL.value;
-                console.log(JsonData.value["imagesrc"]);
-            }
-
             // Get the image ratio
             const img = new Image();
             img.src = e.target.result;
+            imageURL.value = res.data;
+            if (imageURL.value) {
+                JsonData.value["imagesrc"] = imageURL.value;
+                //imgVisible.value = !imgVisible.value;
+            }
+
             img.onload = () => {
                 ratio.value = img.width / img.height;
-                console.log(`Image ratio: ${ratio}`);
+                //console.log(`Image ratio: ${ratio.value}`);
             };
         };
 
@@ -208,6 +218,7 @@ const _methods = {
         Object.keys(inst_D.value).forEach((element) => {
             JsonData.value = inst_D.value[element];
             ObjName.value = element;
+            console.log(JsonData.value);
         });
     },
     detectCells: (obj) => {
@@ -260,8 +271,12 @@ const _methods = {
                 }
             }
 
-            Object.assign(q, { cells: cells });
-
+            Object.assign(q, {
+                cells: cells,
+                rows: grid_RC.rows,
+                column: grid_RC.column,
+            });
+            console.log(q);
             const flattened = cells.map((cell) => cell.index);
 
             flattened.sort();
@@ -342,6 +357,6 @@ onMounted(() => {
     text-align: center;
     color: rgb(246, 245, 245);
     /* background: rgb(136, 138, 87); */
-    background: rgba(136, 138, 87, 0.8);
+    background: rgba(254, 1, 1, 0.912);
 }
 </style>

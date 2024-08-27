@@ -136,8 +136,9 @@ class TestsController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(tests $tests, Request $request){
-        tests::destroy($request->id);
+    public function destroy(MainDashboard $MainDashboard, Request $request){
+      
+        MainDashboard::destroy($request->id);
     }
 
     public function grid1(tests $tests, Request $request){

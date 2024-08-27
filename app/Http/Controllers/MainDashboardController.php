@@ -87,7 +87,15 @@ class MainDashboardController extends Controller
      */
     public function update(Request $request, MainDashboard $mainDashboard)
     {
-        //
+      
+         $mainDashboard = MainDashboard::find($request->id);
+        $mainDashboard->headers=$request->header;
+         $mainDashboard->footers=$request->footer;
+          $mainDashboard->warnings=$request->warning;
+            $mainDashboard->images=$request->images;
+            $mainDashboard->instructions=$request->instructions;
+        $mainDashboard->save();
+       // return $mainDashboard;
     }
     public function uploadImage(Request $request, MainDashboard $mainDashboard){
        

@@ -392,6 +392,8 @@ window.addEventListener("keydown", function (event) {
         document.execCommand("fontsize", false, counter.value++);
     } else if (event.key == "[") {
         document.execCommand("fontsize", false, counter.value--);
+    } else if (event.key == "z") {
+        document.execCommand("undo", false, null);
     }
     // console.log(counter.value++, event.key);
 });

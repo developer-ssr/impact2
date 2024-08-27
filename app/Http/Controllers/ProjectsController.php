@@ -91,7 +91,7 @@ class ProjectsController extends Controller
      */
     public function destroy(projects $projects,Request $request)
     {
-      
+     
           projects::destroy($request->id);
     }
 }

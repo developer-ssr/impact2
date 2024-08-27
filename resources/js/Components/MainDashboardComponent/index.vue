@@ -75,13 +75,13 @@ const showMenu = (event) => {
                     clip-rule="evenodd"
                 />
             </svg>
-            <a class="text-sm text-white">Select Demo</a>
+            <a class="text-sm text-white">Select Trial</a>
         </button>
         <!--Trials-->
 
         <button
             @click="showMenu('trial')"
-            :class="{ 'bg-[gray]': activeMenu == 'tiral' }"
+            :class="{ 'bg-[gray]': activeMenu == 'trial' }"
             type="button"
             style="width: 100%"
             class="hover:bg-orange-700"

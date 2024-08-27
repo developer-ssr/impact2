@@ -1,38 +1,52 @@
 <template>
     <div class="bg-white h-[100%]">
         <ul class="max-w-md divide-y divide-gray-200 dark:divide-gray-700">
-            <h4 class="bg-gray-300">Text Settings</h4>
-            <li class="p-1">
+            <div class="flex-shrink-0"></div>
+            <div class="bg-gray-300">
+                <h2 class="text-center p-2">Select Trial</h2>
+            </div>
+            <li class="pb-3 sm:p-2">
                 <button
-                    @click="_methods.selectDemo('practiceTrial')"
+                    @click="_methods.display_pratice"
                     class="bg-gray-200 w-full h-[5vmin] hover:bg-yellow-300 hover:text-white"
                 >
-                    Select Practice Trial
-                </button>
-                <button
-                    @click="_methods.selectDemo('DummyTrial')"
-                    class="bg-gray-200 w-full h-[5vmin] hover:bg-yellow-300 hover:text-white"
-                >
-                    Select Dummy Trial
+                    Practice Trial
                 </button>
 
                 <button
-                    @click="_methods.selectDemo('MainTrial')"
+                    @click="_methods.display_dummy"
                     class="bg-gray-200 w-full h-[5vmin] hover:bg-yellow-300 hover:text-white"
                 >
-                    Select Main Trial
+                    Dummy Trial
+                </button>
+
+                <button
+                    @click="_methods.display_main"
+                    class="bg-gray-200 w-full h-[5vmin] hover:bg-yellow-300 hover:text-white"
+                >
+                    Main Trial
                 </button>
             </li>
         </ul>
     </div>
 </template>
-<script setup>
-import { reactive, onMounted, ref, provide, inject, defineEmits } from "vue";
-const $emits = defineEmits(["select:demo"]);
 
+<script setup>
 const _methods = {
-    selectDemo: (obj) => {
-        $emits("select:demo", obj);
+    display_pratice: () => {
+        document
+            .querySelector("#selected_trial")
+            .dispatchEvent(new CustomEvent("display_practiceTrial"));
+    },
+    display_dummy: () => {
+        document
+            .querySelector("#selected_trial")
+            .dispatchEvent(new CustomEvent("display_DummyTrial"));
+    },
+    display_main: () => {
+        document
+            .querySelector("#selected_trial")
+            .dispatchEvent(new CustomEvent("display_MainTrial"));
     },
 };
 </script>

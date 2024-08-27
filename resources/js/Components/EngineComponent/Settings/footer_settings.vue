@@ -1,39 +1,42 @@
 <template>
     <!-- Mouse position is at: {{ x }}, {{ y }} -->
-    <devTools
-        v-if="vsIns"
-        v-show="divEditor"
-        @update:Height="
-            (height) => {
-                _methods.updateHeight(height);
-            }
-        "
-        @update:Width="
-            (width) => {
-                _methods.updateWidth(width);
-            }
-        "
-        @update:br="
-            (br) => {
-                _methods.updateBorderSize(br);
-            }
-        "
-        @update:brWidth="
-            (brWidth) => {
-                _methods.updateBorderWidth(brWidth);
-            }
-        "
-        @update:brColor="
-            (brColor) => {
-                _methods.updateBorderBGColor(brColor);
-            }
-        "
-        @update:bgColor="
-            (bgColor) => {
-                _methods.updateBgColor(bgColor);
-            }
-        "
-    />
+    <Teleport to="body">
+        <devTools
+            class="z-50"
+            v-if="vsIns"
+            v-show="divEditor"
+            @update:Height="
+                (height) => {
+                    _methods.updateHeight(height);
+                }
+            "
+            @update:Width="
+                (width) => {
+                    _methods.updateWidth(width);
+                }
+            "
+            @update:br="
+                (br) => {
+                    _methods.updateBorderSize(br);
+                }
+            "
+            @update:brWidth="
+                (brWidth) => {
+                    _methods.updateBorderWidth(brWidth);
+                }
+            "
+            @update:brColor="
+                (brColor) => {
+                    _methods.updateBorderBGColor(brColor);
+                }
+            "
+            @update:bgColor="
+                (bgColor) => {
+                    _methods.updateBgColor(bgColor);
+                }
+            "
+        />
+    </Teleport>
 
     <div v-for="(data, index) in inst_D" :key="index">
         <div
@@ -42,7 +45,7 @@
             @blur="_methods.getContent"
             ref="draggableElement"
             :textid="data.id"
-            class="fixed translate-x-[-50%] translate-y-[-50%] pointer-events-auto z-20"
+            class="fixed translate-x-[-50%] translate-y-[-50%] pointer-events-auto z-20 shadow-2xl"
             :style="{
                 backgroundColor: data.bgColor,
                 height: data.Hheight,
