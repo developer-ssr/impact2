@@ -18,22 +18,24 @@ class MainDashboardController extends Controller
      */
     public function index(Request $request)
     {
-       //dd($request);
+
         $uuid= $request->query('code');
             session(['uuid' =>  $uuid]);
-        //      $menu = [
-        //    'folder'=>'Projects',
-        //    'folderlink'=>'projects_index',
-        //    'title'=> 'Tests',
-        //    'add'=>'Add Test',
-        //    'link'=>'project_index/',
-        //    'placeholder'=>'Test Name',
-        //    'save'=>'store_mainsettings'
-        // ];
-
+      
         return Inertia::render("MainDashboardPage/Index",[
              'data'=>MainDashboard::where('code',$request->query('code'))->first(),
         ]);
+    }
+
+    public function PreviewSettings(Request $request, MainDashboard $mainDashboard){
+
+        return Inertia::render("PreviewSettings/index",[
+        'data'=>MainDashboard::where('code',$request->query('code'))->first(),
+        ]);
+    }
+
+    public function RecieveJsonData(Request $request, MainDashboard $mainDashboard){
+            dd($request);
     }
 
     /**

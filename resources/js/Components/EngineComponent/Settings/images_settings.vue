@@ -218,7 +218,7 @@ const _methods = {
         Object.keys(inst_D.value).forEach((element) => {
             JsonData.value = inst_D.value[element];
             ObjName.value = element;
-            console.log(JsonData.value);
+            //console.log(JsonData.value);
         });
     },
     detectCells: (obj) => {
@@ -297,7 +297,7 @@ const _methods = {
                 median = flattened[Math.floor(n / 2)];
             }
 
-            // console.log(`Median: ${median}`);
+            console.log(`Median: ${median}`);
             // console.log(q);
         });
     },

@@ -1,4 +1,4 @@
-<style scoped>
+<style>
 font[size="1"] {
     font-size: 1vmin;
 }
@@ -33,9 +33,9 @@ font[size="5"] {
         </div>
 
         <Instructions_Component :demo="demo.demoName" v-if="vsIns" />
-        <Warnings_Component :demo="demo.demoName" v-if="vsWarn" />
+        <!-- <Warnings_Component :demo="demo.demoName" v-if="vsWarn" />
         <Header_Component :demo="demo.demoName" v-if="vsHead" />
-        <Footer_Component :demo="demo.demoName" v-if="vsfooter" />
+        <Footer_Component :demo="demo.demoName" v-if="vsfooter" /> -->
         <Images_Component :demo="demo.demoName" />
     </div>
 </template>
@@ -43,9 +43,9 @@ font[size="5"] {
 import { onMounted, reactive, ref } from "vue";
 import Images_Component from "@/Components/EngineComponent/Settings/images_settings.vue";
 import Instructions_Component from "@/Components/EngineComponent/Settings/instruction_settings.vue";
-import Warnings_Component from "@/Components/EngineComponent/Settings/warning_settings.vue";
-import Header_Component from "@/Components/EngineComponent/Settings/header_settings.vue";
-import Footer_Component from "@/Components/EngineComponent/Settings/footer_settings.vue";
+// import Warnings_Component from "@/Components/EngineComponent/Settings/warning_settings.vue";
+// import Header_Component from "@/Components/EngineComponent/Settings/header_settings.vue";
+// import Footer_Component from "@/Components/EngineComponent/Settings/footer_settings.vue";
 
 const vsIns = ref(true);
 const vsWarn = ref(true);

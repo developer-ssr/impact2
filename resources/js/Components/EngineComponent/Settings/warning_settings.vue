@@ -36,10 +36,10 @@
             "
         />
     </Teleport>
+    <!-- @mousedown="startDrag" -->
     <div v-for="(data, index) in inst_D" :key="index">
         <div
             @click="_methods.search"
-            @mousedown="startDrag"
             ref="draggableElement"
             @blur="_methods.getContent"
             :textid="data.id"

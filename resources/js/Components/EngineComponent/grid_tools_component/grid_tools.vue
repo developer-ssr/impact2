@@ -10,10 +10,18 @@
 
     <div class="relative bg-gray-400 grow-2 h-15 shadow-md z-1">
         <div class="float-end relative">
-            <button class="bg-blue-600 p-2 text-white m-1" @click="save">
+            <button
+                class="bg-blue-600 p-2 text-white m-1"
+                @click="_methods.save"
+            >
                 Save
             </button>
-            <button class="bg-green-600 p-2 text-white">Preview</button>
+            <button
+                @click="_methods.preview"
+                class="bg-green-600 p-2 text-white"
+            >
+                Preview
+            </button>
         </div>
     </div>
 </template>
@@ -30,12 +38,27 @@ const props = reactive({
     footer: inject("Footer_Settings"),
     instructions: inject("Instructions"),
 });
-const save = () => {
-    router.post("/update_mainsettings", props);
-    Savenot.value = true;
-    setTimeout(() => {
-        // console.log("saved");
-        Savenot.value = false;
-    }, 5000);
+
+const _methods = {
+    save: () => {
+        router.post("/update_mainsettings", props);
+        Savenot.value = true;
+        setTimeout(() => {
+            // console.log("saved");
+            Savenot.value = false;
+        }, 5000);
+    },
+    preview: () => {
+        let url = window.location.href;
+        let urlObj = new URL(url);
+        let code = urlObj.searchParams.get("code");
+        let baseURL = "   http://newimpact2.test/PreviewTest";
+
+        let params = new URLSearchParams({ code: code });
+        let fullURL = `${baseURL}?${params.toString()}`;
+        console.log(fullURL);
+        window.location.href = fullURL;
+        //console.log(code);
+    },
 };
 </script>
