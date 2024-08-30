@@ -7,14 +7,17 @@
                 src="http://newimpact2.test/targets_images/logo.png"
                 class="max-w-[100%] max-h-[100%]"
             />
-            <div
+            <button
                 class="blockHeader fixed z-10 top-[5.2vmin] bg-[#ffc107] min-w-[20vmin] pt-[0.4vmin] pr-[3vmin] pb-[0.4vmin] pl-[3vmin] rounded-bl-[2.5vmin] rounded-br-[2.5vmin] text-[1.3vmin] text-center text-lg"
             >
                 block
-            </div>
+            </button>
         </div>
     </div>
 </template>
+<script setup>
+import { inject } from "vue";
+</script>
 <style>
 .dheader {
     display: flex;

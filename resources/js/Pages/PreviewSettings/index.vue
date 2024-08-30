@@ -18,9 +18,14 @@ font[size="5"] {
 </style>
 <template>
     <header_settings />
-    <!-- <body_settings v-if="boxCon" /> -->
-    <body_settings v-if="boxCon" />
-    <!-- <instructionBox v-if="insCon" /> -->
+    <body_settings
+        v-if="boxCon"
+        @done="
+            (res) => {
+                changeTrial(res);
+            }
+        "
+    />
 
     <div
         v-if="countVisible"
@@ -43,12 +48,13 @@ font[size="5"] {
     >
         <div
             class="bg-white h-[50vmin] w-[100vmin] shadow-lg p-5"
-            v-html="instruction"
+            v-html="objStat.instruction"
         ></div>
         <div
             class="bg-white h-[10vmin] w-[100vmin] shadow-lg p-5 flex items-center justify-center"
         >
             <button
+                id="selected_trial"
                 @click="_flow.start"
                 class="bg-orange-500 p-4 rounded-lg w-40 text-white text-[2vmin]"
             >
@@ -59,21 +65,34 @@ font[size="5"] {
 </template>
 
 <script setup>
-import { defineProps, onMounted, ref, provide } from "vue";
+import { defineProps, onMounted, ref, provide, reactive, watch } from "vue";
 import header_settings from "@/Components/PreviewSettingsComponent/header/index.vue";
 import body_settings from "@/Components/PreviewSettingsComponent/body/index.vue";
-import countdownComponent from "@/Components/PreviewSettingsComponent/others/countdown.vue";
-import instructionBox from "@/Components/PreviewSettingsComponent/others/instruction_box.vue";
 
 const props = defineProps(["data"]);
 const countVisible = ref(false);
 const boxCon = ref(false);
 const insCon = ref(true);
 const countdown = ref(3);
+const CheckStatus = ref(null);
+const collections = reactive({});
+const objStat = reactive({
+    index: 1,
+    props: null,
+    image_grid: props.data.images.practiceTrial,
+    instruction: null,
+});
 const instruction = ref(props.data.instructions.practiceTrial.message.content);
+const changeTrial = (obj) => {
+    //alert(part);
+    objStat.index = obj.part;
+    objStat.image_grid = props.data.images.DummyTrial;
+    //_flow.start();
+    console.log(obj.part);
+};
+provide("status", objStat);
 
-// provide("instructions", props.data.instructions);
-provide("image_grid", props.data.images);
+provide("image_grid", props.data.images.practiceTrial);
 const _flow = {
     start: () => {
         countVisible.value = true;
@@ -81,7 +100,6 @@ const _flow = {
         setInterval(() => {
             if (countdown.value > 1) {
                 countdown.value--;
-                //console.log(countdown.value);
             } else {
                 countVisible.value = false;
                 boxCon.value = true;
@@ -89,5 +107,39 @@ const _flow = {
         }, 1000);
     },
 };
-onMounted(() => {});
+// watch(
+//     objStat,
+//     (newDemo, oldDemo) => {
+//         if (newDemo.index == 1) {
+//             console.log(objStat);
+//             objStat.props = props.data.instructions.practiceTrial;
+//             objStat.image_grid = props.data.images.practiceTrial;
+//             objStat.instruction =
+//                 props.data.instructions.practiceTrial.message.content;
+//         } else if (newDemo.index == 2) {
+//             console.log(objStat);
+//             objStat.props = props.data.instructions.DummyTrial;
+//             objStat.image_grid = props.data.images.DummyTrial;
+//             objStat.instruction =
+//                 props.data.instructions.DummyTrial.message.content;
+//         } else {
+//             objStat.props = props.data.instructions.MainTrial;
+//             objStat.image_grid = props.data.images.MainTrial;
+//             objStat.instruction =
+//                 props.data.instructions.MainTrial.message.content;
+//         }
+
+//         if (newDemo.index != 1) {
+//             boxCon.value = false;
+//             insCon.value = true;
+//         }
+//     },
+//     { immediate: true }
+// );
+onMounted(() => {
+    console.log(props);
+    document
+        .querySelector("#selected_trial")
+        .addEventListener("manageDisplay", () => {});
+});
 </script>

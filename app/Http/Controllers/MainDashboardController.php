@@ -10,6 +10,9 @@ use App\Models\User;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\DB;
+use  Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Redirect;
+use App\Models\result; 
 
 class MainDashboardController extends Controller
 {
@@ -18,32 +21,73 @@ class MainDashboardController extends Controller
      */
     public function index(Request $request)
     {
-
         $uuid= $request->query('code');
-            session(['uuid' =>  $uuid]);
+     
+      
+        session(['uuid' =>  $uuid]);
+
+     
       
         return Inertia::render("MainDashboardPage/Index",[
              'data'=>MainDashboard::where('code',$request->query('code'))->first(),
         ]);
+
     }
 
     public function PreviewSettings(Request $request, MainDashboard $mainDashboard){
-
+      $testid = $request->query('testid');
+        session(['testid'=>$testid]);
         return Inertia::render("PreviewSettings/index",[
         'data'=>MainDashboard::where('code',$request->query('code'))->first(),
         ]);
     }
 
-    public function RecieveJsonData(Request $request, MainDashboard $mainDashboard){
-            dd($request);
+
+
+public function RecieveJsonData(Request $request, MainDashboard $mainDashboard)
+{
+    $data = $request->all();
+    $demopart = null;
+   
+    foreach ($data as $key => $value) {
+      $demopart  = $value['demoPart'];
+        $model = new result();
+
+        $model->testcode = session('uuid');
+        $model->testid = session('testid');
+        $model->demoPart = $value['demoPart'];
+        $model->devices = $value['devices'];
+        $model->browser = $value['browser'];
+        $model->OS = $value['OS'];
+        $model->index = $value['index'];
+        $model->rt = $value['rt'];
+        $model->MobileOS = $value['MobileOS'];
+        $model->save();
     }
 
+    // Return a response indicating success
+    return response()->json($demopart, 201);
+}
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        $data = $request->query();
+var_dump($data); 
+
+
+
+$jsonString = json_encode($data);
+
+
+$decodedObject = json_decode($jsonString);
+
+
+if (json_last_error() !== JSON_ERROR_NONE) {
+    echo "JSON decode error: " . json_last_error_msg();
+}
+        dd($decodedObject);
     }
 
     /**

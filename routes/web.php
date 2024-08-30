@@ -167,9 +167,8 @@ Route::controller(MainDashboardController::class)->group(function () {
     Route::post('upload_images', 'uploadImage');
     Route::post('update_mainsettings', 'update');
     Route::get('PreviewTest', 'PreviewSettings');
-     Route::post('recieve', 'RecieveJsonData');
-    
-    
+    Route::post('recieve', 'RecieveJsonData');
+     Route::post('create', 'create');
 });
 
 

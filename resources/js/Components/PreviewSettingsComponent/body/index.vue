@@ -3,7 +3,11 @@
         class="bodyBoxCon fixed z-20 translate-x-[-50%] translate-y-[-50%] left-[50%] top-[50%]"
     >
         <div class="border-2 bg-white h-[50vmin] w-[100vmin] shadow-lg">
-            <div v-for="(data, index) in props.practiceTrial" :key="index">
+            <div
+                v-for="(data, index) in props.image_grid"
+                :key="index"
+                id="selected_trial"
+            >
                 <img
                     v-if="data.imagesrc"
                     class="bg-gray-500 translate-x-[-50%] translate-y-[-50%] fixed top-[50%] left-[50%] h-[50vmin] w-[100vmin]"
@@ -27,6 +31,7 @@
                         :key="i"
                     >
                         <div
+                            id="selected_trial"
                             @click="_methods.detectCell(cell)"
                             v-if="cell.show"
                             :attrIndex="cell.index"
@@ -47,10 +52,11 @@
 </template>
 
 <script setup>
-import { inject, ref, onMounted } from "vue";
+import { inject, ref, onMounted, watch, defineEmits } from "vue";
 import { router } from "@inertiajs/vue3";
-
-const props = inject("image_grid");
+const $emits = defineEmits(["done"]);
+const props = inject("status");
+const showEndMsm = ref(false);
 const SchedCollection = ref([]);
 const shufCell = ref(null);
 const ResultCollection = ref({});
@@ -63,44 +69,55 @@ const browser = ref(null);
 const OS = ref(null);
 const MobileOS = ref(null);
 const _methods = {
-    detectCell: (cell) => {
+    detectCell: async (cell) => {
         const allHaveShowProperty = shufCell.value.every((obj) =>
             obj.hasOwnProperty("show")
         );
 
         if (allHaveShowProperty) {
-            let newCollection = Object.assign({}, collect.value);
-            router.post("/recieve", newCollection);
-            console.log("All objects have the show property.");
+            showEndMsm.value = true;
+            props.index += 1;
+            $emits("done", {
+                part: props.index,
+                onStart: () => { 
+                
+                }
+            });
+            
+                _methods.filterActiveValues();
+
+              
         }
 
         const selectRandomRow = () => {
             const availableRows = shufCell.value.filter(
-                (row) => row.hasOwnProperty("show") === false
+                (row) => !row.hasOwnProperty("show") && row.active === true
             );
+            console.log(availableRows);
+            if (availableRows.length == 0) {
+                console.log("No available rows to select from.");
+                return; // Exit the function if no available rows
+            }
 
             const randomIndex = Math.floor(
                 Math.random() * availableRows.length
             );
-
             const selectedRow = availableRows[randomIndex];
 
             selectedRow.show = true;
 
-            d.value = new Date();
-
+            const d = new Date();
             ResultCollection.value = {
                 demoPart: "Practice Trial",
                 devices: devices.value,
                 browser: browser.value,
                 OS: OS.value,
                 index: selectedRow.index,
-                rt: d.value.getMilliseconds(),
+                rt: d.getMilliseconds(),
                 MobileOS: MobileOS.value,
             };
-            collect.value.push(ResultCollection.value);
 
-            console.log(collect.value);
+            collect.value.push(ResultCollection.value);
         };
 
         selectRandomRow();
@@ -133,14 +150,12 @@ const _methods = {
         return array;
     },
     filterActiveValues: () => {
-        Object.keys(props.practiceTrial).forEach((qd) => {
-            let q = props.practiceTrial;
+        Object.keys(props.image_grid).forEach((qd) => {
+            let q = props.image_grid;
             let activeCells = q[qd]["cells"].filter(
                 (obj) => obj.active === true
             );
-            shufCell.value = _methods.shuffleActiveObject(
-                SchedCollection.value.concat(activeCells)
-            );
+            shufCell.value = _methods.shuffleActiveObject(activeCells);
         });
     },
     detectBrowser: () => {
@@ -197,6 +212,7 @@ const _methods = {
 };
 
 onMounted(() => {
+    console.log(props);
     MobileOS.value = _methods.getMobileOS();
     OS.value = _methods.getOS();
     browser.value = _methods.detectBrowser();
