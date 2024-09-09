@@ -168,7 +168,12 @@ Route::controller(MainDashboardController::class)->group(function () {
     Route::post('update_mainsettings', 'update');
     Route::get('PreviewTest', 'PreviewSettings');
     Route::post('recieve', 'RecieveJsonData');
-     Route::post('create', 'create');
+    Route::get('tests', 'test');
+    Route::get('testresult', 'testresult');
+    // Route::get('export', 'export');
+    
+    
+
 });
 
 

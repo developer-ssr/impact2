@@ -116,10 +116,9 @@
             <div
                 @click="_methods.search"
                 :style="{
-                    '--imageRatio': ratio,
                     width: data.Hwidht,
                     height: data.Hheight,
-
+                    'aspect-ratio': ratio,
                     fontSize: '2vmin',
                     display: 'grid',
                     'grid-template-columns': `repeat(${data.column}, minmax(0, 1fr))`,
@@ -127,7 +126,7 @@
                 class="bgimage translate-x-[-50%] translate-y-[-50%] fixed top-[50%] left-[50%]"
             >
                 <div
-                    class="cell relative"
+                    class="cell"
                     :class="{ active: cell.active }"
                     v-for="(cell, i) in data.cells"
                     :key="i"
@@ -145,7 +144,9 @@
                     >
                         {{ cell.index }}
                     </div>
+                    
                 </div>
+
             </div>
         </div>
     </div>
@@ -199,11 +200,14 @@ const handleImageUpload = (event) => {
             imageURL.value = res.data;
             if (imageURL.value) {
                 JsonData.value["imagesrc"] = imageURL.value;
+                JsonData.value["image_ratio"] = img.width / img.height;
                 //imgVisible.value = !imgVisible.value;
             }
 
             img.onload = () => {
                 ratio.value = img.width / img.height;
+                JsonData.value["image_ratio"] = img.width / img.height;
+                //console.log(JsonData.value["image_ratio"]);
                 //console.log(`Image ratio: ${ratio.value}`);
             };
         };
@@ -229,11 +233,11 @@ const _methods = {
     },
 
     updateHeight: (height) => {
-        JsonData.value["Hheight"] = height + "vmin";
+        JsonData.value["Hheight"] = height + "%";
     },
 
     updateWidth: (width) => {
-        JsonData.value["Hwidht"] = width + "vmin";
+        JsonData.value["Hwidht"] = width + "%";
     },
     updateBgColor: (bgColor) => {
         JsonData.value["bgColor"] = bgColor;
@@ -258,11 +262,12 @@ const _methods = {
     setupGrid: () => {
         Object.keys(inst_D.value).forEach((items) => {
             let q = inst_D.value[items];
-
+            let cellid = 1;
             let cells = [];
             for (let i = 0; i < grid_RC.rows; i++) {
                 for (let j = 0; j < grid_RC.column; j++) {
                     let cell = {
+                        cellid: `${cellid++}`,
                         index: `(${i}, ${j})`,
                         active: false,
                         ladybug: false,

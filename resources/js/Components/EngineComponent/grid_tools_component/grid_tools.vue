@@ -26,7 +26,6 @@
     </div>
 </template>
 <script setup>
-import axios from "axios";
 import { inject, onMounted, ref, reactive } from "vue";
 import { router } from "@inertiajs/vue3";
 const Savenot = ref(false);

@@ -10,6 +10,7 @@ class MainDashboard extends Model
 {
     use HasFactory;
     use SoftDeletes;
+   
     protected function casts(): array{
         return [
             'instructions' => 'array',
@@ -34,5 +35,9 @@ class MainDashboard extends Model
              'user_id',
 
     ];
+
+     public function MainDash(){
+         return $this->hasMany(MainDashboard::class);
+    }
 }
  

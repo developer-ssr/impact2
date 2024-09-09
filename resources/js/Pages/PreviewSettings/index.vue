@@ -18,6 +18,7 @@ font[size="5"] {
 </style>
 <template>
     <header_settings />
+
     <body_settings
         v-if="boxCon"
         @done="
@@ -44,7 +45,7 @@ font[size="5"] {
 
     <div
         v-if="insCon"
-        class="bodyBoxCon fixed z-20 translate-x-[-50%] translate-y-[-50%] left-[50%] top-[50%]"
+        class="bodyBoxCon fixed z-20 translate-x-[-50%] translate-y-[-50%] left-[50%] top-[50%] shadow-2xl border-gray-400"
     >
         <div
             class="bg-white h-[50vmin] w-[100vmin] shadow-lg p-5"
@@ -65,79 +66,88 @@ font[size="5"] {
 </template>
 
 <script setup>
-import { defineProps, onMounted, ref, provide, reactive, watch } from "vue";
+import {
+    defineProps,
+    onMounted,
+    ref,
+    provide,
+    reactive,
+    onUnmounted,
+} from "vue";
+
 import header_settings from "@/Components/PreviewSettingsComponent/header/index.vue";
 import body_settings from "@/Components/PreviewSettingsComponent/body/index.vue";
+import axios, { Axios } from "axios";
 
 const props = defineProps(["data"]);
 const countVisible = ref(false);
 const boxCon = ref(false);
 const insCon = ref(true);
 const countdown = ref(3);
-const CheckStatus = ref(null);
-const collections = reactive({});
+
 const objStat = reactive({
     index: 1,
     props: null,
     image_grid: props.data.images.practiceTrial,
-    instruction: null,
+    instruction: props.data.instructions.practiceTrial.message.content,
+    result: [],
+    block: "Practice Trial",
+    endmessage: "Preparing for next part. Please wait",
 });
-const instruction = ref(props.data.instructions.practiceTrial.message.content);
+
 const changeTrial = (obj) => {
-    //alert(part);
-    objStat.index = obj.part;
-    objStat.image_grid = props.data.images.DummyTrial;
-    //_flow.start();
-    console.log(obj.part);
+    if (obj.part == 2) {
+        objStat.index = obj.part;
+        objStat.image_grid = props.data.images.DummyTrial;
+        (objStat.endmessage = "Preparing for next part. Please wait"),
+            (objStat.instruction =
+                props.data.instructions.DummyTrial.message.content),
+            (objStat.block = "Dummy Trial");
+    } else if (obj.part == 3) {
+        objStat.index = obj.part;
+        (objStat.endmessage = "Preparing for last part. Please wait"),
+            (objStat.image_grid = props.data.images.MainTrial);
+        (objStat.instruction =
+            props.data.instructions.MainTrial.message.content),
+            (objStat.block = "Main Trial");
+    } else if (obj.part == 4) {
+        objStat.endmessage = "Preparing for last part. Please wait";
+    }
+    //console.log(obj.part);
 };
 provide("status", objStat);
 
-provide("image_grid", props.data.images.practiceTrial);
+//provide("image_grid", props.data.images.practiceTrial);
+const isRunning = ref(false);
+let interval = null;
+
 const _flow = {
     start: () => {
         countVisible.value = true;
         insCon.value = false;
-        setInterval(() => {
-            if (countdown.value > 1) {
+        isRunning.value = true;
+        interval = setInterval(() => {
+            if (countdown.value > 0) {
                 countdown.value--;
             } else {
+                _flow.stopTimer();
                 countVisible.value = false;
                 boxCon.value = true;
             }
         }, 1000);
     },
+    stopTimer: () => {
+        clearInterval(interval);
+        isRunning.value = false;
+        countdown.value = 3;
+    },
 };
-// watch(
-//     objStat,
-//     (newDemo, oldDemo) => {
-//         if (newDemo.index == 1) {
-//             console.log(objStat);
-//             objStat.props = props.data.instructions.practiceTrial;
-//             objStat.image_grid = props.data.images.practiceTrial;
-//             objStat.instruction =
-//                 props.data.instructions.practiceTrial.message.content;
-//         } else if (newDemo.index == 2) {
-//             console.log(objStat);
-//             objStat.props = props.data.instructions.DummyTrial;
-//             objStat.image_grid = props.data.images.DummyTrial;
-//             objStat.instruction =
-//                 props.data.instructions.DummyTrial.message.content;
-//         } else {
-//             objStat.props = props.data.instructions.MainTrial;
-//             objStat.image_grid = props.data.images.MainTrial;
-//             objStat.instruction =
-//                 props.data.instructions.MainTrial.message.content;
-//         }
 
-//         if (newDemo.index != 1) {
-//             boxCon.value = false;
-//             insCon.value = true;
-//         }
-//     },
-//     { immediate: true }
-// );
+onUnmounted(() => {
+    clearInterval(interval);
+});
 onMounted(() => {
-    console.log(props);
+    //console.log(props);
     document
         .querySelector("#selected_trial")
         .addEventListener("manageDisplay", () => {});

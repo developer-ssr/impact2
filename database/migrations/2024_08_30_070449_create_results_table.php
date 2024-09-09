@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('results', function (Blueprint $table) {
             $table->increments('id');
+            $table->char('cellid')->nullable();
            $table->char('testcode')->nullable();
             $table->char('testid')->nullable();
             $table->string('demoPart')->nullable();

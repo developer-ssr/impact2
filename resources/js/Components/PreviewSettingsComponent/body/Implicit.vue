@@ -64,7 +64,7 @@
                     >
                         <div
                             v-if="ladybug"
-                            class="active:bg-red-200"
+                            class="active:bg-red-200 "
                             @click="_methods.detectCell(cell)"
                         >
                             <img
@@ -102,7 +102,6 @@ const MobileOS = ref(null);
 const ladybug = ref(false);
 const targets = ref(false);
 const collections = ref([]);
-// const cells = ref(props.image_grid.message.cells);
 const _methods = {
     startTest: () => {
         targets.value = true;
@@ -114,110 +113,9 @@ const _methods = {
 
         insCon.value = false;
         testCon.value = true;
-        _methods.filterActiveValues();
+     
     },
-    detectCell: async (cell) => {
-        console.log(cell);
-        targets.value = true;
-        ladybug.value = false;
-
-        setTimeout(() => {
-            targets.value = false;
-            ladybug.value = true;
-        }, 1000);
-
-        const allHaveShowProperty = shufCell.value.every((obj) =>
-            obj.hasOwnProperty("show")
-        );
-
-        if (allHaveShowProperty) {
-            props.index += 1;
-
-            showModal.value = true;
-
-            setTimeout(() => {
-                showModal.value = false;
-            }, 1000);
-
-            $emits("done", {
-                part: props.index,
-                onStart: () => {},
-            });
-
-            if (props.index == 2) {
-                targets.value = true;
-                insCon.value = true;
-                testCon.value = false;
-                _methods.filterActiveValues();
-            } else if (props.index == 3) {
-                targets.value = true;
-                insCon.value = true;
-                testCon.value = false;
-                _methods.filterActiveValues();
-            } else {
-                const ObjectTopass = Object.assign(
-                    {},
-                    props.result,
-                    collections.value
-                );
-                router.post("/recieve", {
-                    data: ObjectTopass,
-                });
-            }
-        }
-
-        const selectRandomRow = () => {
-            const availableRows = shufCell.value.filter(
-                (row) => !row.hasOwnProperty("show") && row.active === true
-            );
-            // console.log(availableRows);
-            if (availableRows.length == 0) {
-                console.log("No available rows to select from.");
-                return; // Exit the function if no available rows
-            }
-
-            const randomIndex = Math.floor(
-                Math.random() * availableRows.length
-            );
-            const selectedRow = availableRows[randomIndex];
-
-            let demopart = null;
-            selectedRow.show = true;
-            if (props.index == 1) {
-                demopart = "Practice Trial";
-            } else if (props.index == 2) {
-                demopart = "Dummy Trial";
-            } else if (props.index == 3) {
-                demopart = "Main Trial";
-            }
-
-            // Object.keys(cells.value).forEach((cell) => {
-            //     let cellCollection = cells.value;
-            //     console.log(cellCollection);
-            // });
-
-            const d = new Date();
-            ResultCollection.value = {
-                cellid: cell.cellid,
-                demoPart: demopart,
-                devices: devices.value,
-                browser: browser.value,
-                OS: OS.value,
-                index: selectedRow.index,
-                rt: d.getMilliseconds(),
-                MobileOS: MobileOS.value,
-            };
-
-            collections.value.push(ResultCollection.value);
-
-            console.log(collections.value);
-        };
-
-        selectRandomRow();
-        if (cell) {
-            _methods.filterSelected(cell);
-        }
-    },
+  
 
     detectDevice: () => {
         const isMobile =
@@ -228,29 +126,9 @@ const _methods = {
         return isMobile || isSmallScreen;
     },
 
-    filterSelected: (sel) => {
-        Object.keys(shufCell.value).forEach((cll) => {
-            if (shufCell.value[cll].index == sel.index) {
-                shufCell.value[cll].show = false;
-            }
-        });
-    },
-    shuffleActiveObject: (array) => {
-        for (let i = array.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [array[i], array[j]] = [array[j], array[i]];
-        }
-        return array;
-    },
-    filterActiveValues: () => {
-        Object.keys(props.image_grid).forEach((qd) => {
-            let q = props.image_grid;
-            let activeCells = q[qd]["cells"].filter(
-                (obj) => obj.active === true
-            );
-            shufCell.value = _methods.shuffleActiveObject(activeCells);
-        });
-    },
+   
+   
+  
     detectBrowser: () => {
         const userAgent = navigator.userAgent;
 
@@ -304,32 +182,8 @@ const _methods = {
     },
 };
 
-onMounted(() => {
-    MobileOS.value = _methods.getMobileOS();
-    OS.value = _methods.getOS();
-    browser.value = _methods.detectBrowser();
 
-    if (_methods.detectDevice()) {
-        devices.value = "Mobile Phone";
-    } else {
-        devices.value = "PC";
-    }
-
-    _methods.filterActiveValues();
-    _methods.detectCell(event);
-});
 </script>
 <style>
-.bgimage {
-    aspect-ratio: var(--imageratio);
-}
-.v-enter-active,
-.v-leave-active {
-    transition: opacity 0.5s ease;
-}
 
-.v-enter-from,
-.v-leave-to {
-    opacity: 0;
-}
 </style>

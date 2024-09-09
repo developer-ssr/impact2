@@ -10,13 +10,14 @@
             <button
                 class="blockHeader fixed z-10 top-[5.2vmin] bg-[#ffc107] min-w-[20vmin] pt-[0.4vmin] pr-[3vmin] pb-[0.4vmin] pl-[3vmin] rounded-bl-[2.5vmin] rounded-br-[2.5vmin] text-[1.3vmin] text-center text-lg"
             >
-                block
+                <h4 class="text-white">{{ props.block }}</h4>
             </button>
         </div>
     </div>
 </template>
 <script setup>
 import { inject } from "vue";
+const props = inject("status");
 </script>
 <style>
 .dheader {

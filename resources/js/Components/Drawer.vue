@@ -16,6 +16,7 @@ const Image_Settings = reactive({
             borderRadius: "10px",
             borderWidth: "5px",
             borderColor: "gray",
+            image_ratio: null,
         },
     },
     DummyTrial: {
@@ -31,6 +32,7 @@ const Image_Settings = reactive({
             borderRadius: "10px",
             borderWidth: "5px",
             borderColor: "gray",
+            image_ratio: null,
         },
     },
 
@@ -47,6 +49,7 @@ const Image_Settings = reactive({
             borderRadius: "10px",
             borderWidth: "5px",
             borderColor: "gray",
+            image_ratio: null,
         },
     },
 });

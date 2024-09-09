@@ -22,4 +22,9 @@ class Result extends Model
         'rt',
         'MobileOS',
     ];
+
+    public function Result()
+    {
+        return $this->belongsTo(Result::class);
+    }
 }

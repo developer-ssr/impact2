@@ -12,6 +12,7 @@ class records extends Model
     use HasFactory;
     use SoftDeletes;
      protected $fillable = [
+           'cellid',
         'testid',
         'demoPart',
         'devices',

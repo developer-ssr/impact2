@@ -12,6 +12,21 @@ return [
     | other UI elements where an application name needs to be displayed.
     |
     */
+
+ 
+//   'providers' => [
+//     /*
+//      * Package Service Providers...
+//      */
+//     Maatwebsite\Excel\ExcelServiceProvider::class,
+//   ],
+
+// 'aliases' => [
+//     'Excel' => Maatwebsite\Excel\Facades\Excel::class,
+// ],
+
+
+
     'global_variable' => null,
 
     'name' => env('APP_NAME', 'Laravel'),
