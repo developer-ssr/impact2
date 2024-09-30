@@ -1,117 +1,80 @@
 <template>
-    <input type="file" id="upload" accept="image/*" />
-    <input
-        type="range"
-        id="resize"
-        min="1"
-        max="100"
-        value="100"
-        step="1"
-        style="display: none"
-        placeholder="  Images Size"
-    />
-    <div>
-        <canvas id="canvas" @blur="convertCanvasToBlob" tabindex="0"></canvas>
+    <button class="bg-red-500 text-white p-5" @click="_methods.start">
+        start
+    </button>
+    <button class="bg-blue-500 text-white p-5" @click="_methods.next">
+        next
+    </button>
+
+    <div v-for="(data, index) in settings.grids" :key="index">
+        {{ data }}
     </div>
 </template>
 
 <script setup>
-import { onMounted, ref } from "vue";
-
-const uploadInput = ref(null);
-const resizeInput = ref(null);
-const canvas = ref(null);
-const imageURL = ref("");
-let ctx;
-let img = new Image();
-let imgX = 0,
-    imgY = 0;
-let imgWidth, imgHeight;
-let isDragging = false;
-let startX, startY;
-
-onMounted(() => {
-    uploadInput.value = document.getElementById("upload");
-    resizeInput.value = document.getElementById("resize");
-    canvas.value = document.getElementById("canvas");
-    ctx = canvas.value.getContext("2d");
-
-    uploadInput.value.addEventListener("change", handleImageUpload);
-    resizeInput.value.addEventListener("input", handleResize);
-
-    canvas.value.addEventListener("mousedown", startDragging);
-    canvas.value.addEventListener("mousemove", dragImage);
-    canvas.value.addEventListener("mouseup", stopDragging);
-    canvas.value.addEventListener("mouseleave", stopDragging);
+import { defineProps, reactive, ref } from "vue";
+const props = defineProps(["data"]);
+const limit = ref(5);
+const count = ref(0);
+const Parts = ref(1);
+const settings = reactive({
+    instructions: null,
+    grids: null,
+    index: 1,
 });
 
-const handleImageUpload = (event) => {
-    const file = event.target.files[0];
-    if (file) {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-            img.onload = () => {
-                resizeInput.value.style.display = "block";
-                imgX = 0;
-                imgY = 0;
-                imgWidth = img.width;
-                imgHeight = img.height;
-                drawImage();
-            };
-            img.src = e.target.result;
-        };
-        reader.readAsDataURL(file);
-    }
-};
+const practiceTrial = reactive({
+    instructions: props.data.instructions.practiceTrial.message,
+    grid: props.data.images.practiceTrial.message.cells,
+});
 
-const handleResize = () => {
-    const scale = resizeInput.value.value / 100;
-    imgWidth = img.width * scale;
-    imgHeight = img.height * scale;
-    drawImage();
-};
+const DummyTrial = reactive({
+    instructions: props.data.instructions.DummyTrial.message,
+    grid: props.data.images.DummyTrial.message.cells,
+});
 
-const drawImage = () => {
-    canvas.value.width = canvas.value.clientWidth;
-    canvas.value.height = canvas.value.clientHeight;
-    ctx.clearRect(0, 0, canvas.value.width, canvas.value.height);
-    ctx.drawImage(img, imgX, imgY, imgWidth, imgHeight);
-};
+const MainTrial = reactive({
+    instructions: props.data.instructions.MainTrial.message,
+    grid: props.data.images.MainTrial.message.cells,
+});
 
-const convertCanvasToBlob = () => {
-    canvas.value.toBlob((blob) => {
-        const url = URL.createObjectURL(blob);
-        console.log("Blob:", blob);
-        imageURL.value = url;
-    }, "image/png");
-};
+const _methods = {
+    setup: () => {
+        if (Parts.value == 1) {
+            console.log("practice Trial");
+            settings.grids = practiceTrial.grid;
+            settings.instructions = practiceTrial.instructions;
+        } else if (Parts.value == 2) {
+            console.log("dummy Trial");
+            settings.grids = DummyTrial.grid;
+            settings.instructions = DummyTrial.instructions;
+        } else {
+            console.log("checking Trial");
+            _methods.Blockchecker();
+        }
+    },
+    mainTrialBlock: () => {
+        console.log("main Trial" + count.value);
+        settings.grids = MainTrial.grid;
+        settings.instructions = MainTrial.instructions;
+    },
+    Blockchecker: () => {
+        if (limit.value > count.value) {
+            count.value++;
+            _methods.mainTrialBlock();
+        } else {
+            console.log("jump to explicit part");
+            return;
+        }
+    },
 
-const startDragging = (event) => {
-    const rect = canvas.value.getBoundingClientRect();
-    startX = event.clientX - rect.left - imgX;
-    startY = event.clientY - rect.top - imgY;
-    isDragging = true;
-};
+    start: () => {
+        _methods.setup();
+    },
 
-const dragImage = (event) => {
-    if (isDragging) {
-        const rect = canvas.value.getBoundingClientRect();
-        imgX = event.clientX - rect.left - startX;
-        imgY = event.clientY - rect.top - startY;
-        drawImage();
-    }
-};
-
-const stopDragging = () => {
-    isDragging = false;
+    next: () => {
+        Parts.value++;
+        _methods.setup();
+    },
 };
 </script>
-
-<style scoped>
-#canvas {
-    height: 100%;
-    width: 100%;
-    position: absolute;
-    outline: none; /* Remove the default focus outline */
-}
-</style>

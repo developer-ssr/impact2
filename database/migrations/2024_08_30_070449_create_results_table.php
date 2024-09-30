@@ -23,6 +23,7 @@ return new class extends Migration
             $table->string('MobileOS')->nullable();
             $table->char('index')->nullable();
             $table->char('rt')->nullable();
+            $table->char('methods')->nullable();
             $table->timestamps();
             $table->softDeletes(); 
       

@@ -1,3 +1,152 @@
+<script setup>
+import {
+    defineProps,
+    onMounted,
+    ref,
+    provide,
+    reactive,
+    onUnmounted,
+} from "vue";
+
+import Modal from "@/Components/Modal.vue";
+import header_settings from "@/Components/PreviewSettingsComponent/header/index.vue";
+import body_settings from "@/Components/PreviewSettingsComponent/body/index.vue";
+import explicit_component from "@/Components/PreviewSettingsComponent/body/explicit.vue";
+const props = defineProps(["data"]);
+const countVisible = ref(false);
+const boxCon = ref(false);
+const insCon = ref(true);
+const countdown = ref(3);
+const limit = ref(props.data.images.MainTrial.message.blocknum);
+const count = ref(0);
+const explicitPart = ref(false);
+
+
+// const explicitdata = reactive({
+//     image_grid: props.data.images.ExplicitTrial,
+//     instruction: props.data.instructions.ExplicitTrial.message,
+//     block: "Explicit Trial",
+//     endmessage: "Preparing for next part. Please wait",
+// });
+const objStat = reactive({
+    index: 1,
+    props: null,
+    image_grid: props.data.images.practiceTrial,
+    instruction: props.data.instructions.practiceTrial.message.content,
+    result: [],
+    block: "Practice Trial",
+    endmessage: "Preparing for next part. Please wait",
+    blocknumber: null,
+    finalresult: {},
+});
+
+//console.log(props.data.images.MainTrial.message.blocknum);
+const changeTrial = (obj) => {
+    const Blockchecker = () => {
+        // console.log(objStat.result);
+        resetValues();
+        mainTrialBlock();
+
+        objStat.index = obj.part;
+        objStat.image_grid;
+        console.log(objStat.image_grid);
+        if (limit.value > count.value) {
+            count.value++;
+        } else {
+            resetValues();
+            explicitPart.value = true;
+            boxCon.value = false;
+
+            objStat.block = "Explicit Trial";
+            objStat.index = obj.part;
+            objStat.instruction =
+                props.data.instructions.ExplicitTrial.message.content;
+
+            objStat.endmessage = "Preparing for last part. Please wait";
+
+            objStat.image_grid = props.data.images.ExplicitTrial;
+
+            console.log("Jump to explicit part");
+            return;
+        }
+    };
+
+    const resetValues = () => {
+        objStat.index = null;
+        objStat.endmessage = null;
+        objStat.image_grid = null;
+        objStat.instruction = null;
+        // console.log(objStat.image_grid);
+        // let result = objStat.result;
+
+        // Object.keys(result).forEach((gridcell) => {
+        //     let cellid = objStat.result[gridcell].cellid;
+        //     let gridresult = objStat.image_grid.message.cells[cellid];
+        //     gridresult.active = true;
+        //     gridresult.ladybug = false;
+        // });
+    };
+
+    const mainTrialBlock = () => {
+        objStat.blocknumber = count.value;
+        objStat.index = obj.part;
+        objStat.endmessage = "Preparing for last part. Please wait";
+        objStat.image_grid = props.data.images.MainTrial;
+        objStat.instruction = props.data.instructions.MainTrial.message.content;
+        objStat.block = `Main Trial ${count.value} / ${limit.value}`;
+    };
+
+    if (obj.part == 2) {
+        resetValues();
+        objStat.index = obj.part;
+        objStat.image_grid = props.data.images.DummyTrial;
+        objStat.endmessage = "Preparing for next part. Please wait";
+        objStat.instruction =
+            props.data.instructions.DummyTrial.message.content;
+        objStat.block = "Dummy Trial";
+    } else {
+        Blockchecker();
+    }
+};
+
+provide("status", objStat);
+
+const isRunning = ref(false);
+let interval = null;
+
+const _flow = {
+    start: () => {
+        countdown.value = 3;
+        countVisible.value = true;
+        insCon.value = false;
+        isRunning.value = true;
+
+        interval = setInterval(() => {
+            if (countdown.value > 0) {
+                countdown.value--;
+            } else {
+                _flow.stopTimer();
+                countVisible.value = false;
+                boxCon.value = true;
+            }
+        }, 1000);
+    },
+    stopTimer: () => {
+        clearInterval(interval);
+        isRunning.value = false;
+        countdown.value = 3;
+    },
+};
+
+onUnmounted(() => {
+    clearInterval(interval);
+});
+// onMounted(() => {
+//     // document
+//     //     .querySelector("#selected_trial")
+//     //     .addEventListener("manageDisplay", () => {});
+// });
+</script>
 <style>
 font[size="1"] {
     font-size: 1vmin;
@@ -17,8 +166,8 @@ font[size="5"] {
 }
 </style>
 <template>
-    <header_settings />
-
+    <header_settings :blockNum="objStat.index" />
+    <explicit_component v-if="explicitPart" />
     <body_settings
         v-if="boxCon"
         @done="
@@ -64,92 +213,3 @@ font[size="5"] {
         </div>
     </div>
 </template>
-
-<script setup>
-import {
-    defineProps,
-    onMounted,
-    ref,
-    provide,
-    reactive,
-    onUnmounted,
-} from "vue";
-
-import header_settings from "@/Components/PreviewSettingsComponent/header/index.vue";
-import body_settings from "@/Components/PreviewSettingsComponent/body/index.vue";
-import axios, { Axios } from "axios";
-
-const props = defineProps(["data"]);
-const countVisible = ref(false);
-const boxCon = ref(false);
-const insCon = ref(true);
-const countdown = ref(3);
-
-const objStat = reactive({
-    index: 1,
-    props: null,
-    image_grid: props.data.images.practiceTrial,
-    instruction: props.data.instructions.practiceTrial.message.content,
-    result: [],
-    block: "Practice Trial",
-    endmessage: "Preparing for next part. Please wait",
-});
-
-const changeTrial = (obj) => {
-    if (obj.part == 2) {
-        objStat.index = obj.part;
-        objStat.image_grid = props.data.images.DummyTrial;
-        (objStat.endmessage = "Preparing for next part. Please wait"),
-            (objStat.instruction =
-                props.data.instructions.DummyTrial.message.content),
-            (objStat.block = "Dummy Trial");
-    } else if (obj.part == 3) {
-        objStat.index = obj.part;
-        (objStat.endmessage = "Preparing for last part. Please wait"),
-            (objStat.image_grid = props.data.images.MainTrial);
-        (objStat.instruction =
-            props.data.instructions.MainTrial.message.content),
-            (objStat.block = "Main Trial");
-    } else if (obj.part == 4) {
-        objStat.endmessage = "Preparing for last part. Please wait";
-    }
-    //console.log(obj.part);
-};
-provide("status", objStat);
-
-//provide("image_grid", props.data.images.practiceTrial);
-const isRunning = ref(false);
-let interval = null;
-
-const _flow = {
-    start: () => {
-        countVisible.value = true;
-        insCon.value = false;
-        isRunning.value = true;
-        interval = setInterval(() => {
-            if (countdown.value > 0) {
-                countdown.value--;
-            } else {
-                _flow.stopTimer();
-                countVisible.value = false;
-                boxCon.value = true;
-            }
-        }, 1000);
-    },
-    stopTimer: () => {
-        clearInterval(interval);
-        isRunning.value = false;
-        countdown.value = 3;
-    },
-};
-
-onUnmounted(() => {
-    clearInterval(interval);
-});
-onMounted(() => {
-    //console.log(props);
-    document
-        .querySelector("#selected_trial")
-        .addEventListener("manageDisplay", () => {});
-});
-</script>

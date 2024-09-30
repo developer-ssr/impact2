@@ -11,7 +11,7 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\DB;
-use  Illuminate\Http\RedirectResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Redirect;
 use App\Models\result; 
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -32,22 +32,25 @@ class MainDashboardController extends Controller{
       $mainDashboardCollection = MainDashboard::all(); // or however you are retrieving it
 $mainDashboard = $mainDashboardCollection->first(); // Get the first instance
 
-// Access the images
-$images = $mainDashboard->images;
-$message = $images['MainTrial']['message'];
- $cells = $message['cells'];
+// // Access the images
+// $images = $mainDashboard->images;
+// $message = $images['MainTrial']['message'];
+//  $cells = $message['cells'];
 
      
-    $result = Result::where('demoPart', 'Main Trial')->where('testcode',$request->query('code'))
-                ->groupBy('cellid') 
-                ->selectRaw('`cellid`, SUM(rt) as total_rt') 
+$result = Result::where('testcode', $request->query('code'))
+                ->where('demoPart', 3)
+                ->whereNotNull('cellid')
+                ->whereNotNull('index')
+                ->groupBy('cellid', 'index')
+                ->selectRaw('cellid, `index`, SUM(rt) as total_rt, COUNT(*) as total_records')
+                ->orderBy('index') // Add this line to sort by index
                 ->get();
 
-$avgresult = Result::where('demoPart', 'Main Trial')->where('testcode',$request->query('code'))
+$avgresult = Result::where('demoPart', 3)->where('testcode',$request->query('code'))
                     ->groupBy('cellid') 
                     ->selectRaw('`cellid`, SUM(rt) as total_rt') 
                    ->get();
-
 
 $rt_values = [
     'highest' => $avgresult->max('total_rt'),
@@ -55,18 +58,6 @@ $rt_values = [
     'median' => $avgresult->median('total_rt'),
 ];
 
-// dd($result);
-
-// foreach ($cells as $cell) {
-//     // Access the `cellid` within each cell
-//     foreach($result as $results){
-//         if($cell['cellid']==$result['cellid']){
-//  $collections[] = $cell['cellid'].":".$result['cellid'];
-//         }
-//     }
-//     //$cellid = $cell['cellid'];
-// }
-//dd($collections);
 
         return Inertia::render("MainDashboardPage/Index",[
              'data'=>MainDashboard::where('code',$request->query('code'))->first(),
@@ -96,10 +87,14 @@ $rt_values = [
 
 public function RecieveJsonData(Request $request, MainDashboard $mainDashboard){
 
-    if(session('testid')!=null){
+if(session('testid')!=null){
+
+   
+   DB::beginTransaction();
+try {
     foreach ($request->data as $key => $value) {
       
-        $model = new result();
+           $model = new result();
         $model->cellid = $value['cellid'];
         $model->testcode = session('uuid');
         $model->testid = session('testid');
@@ -110,9 +105,20 @@ public function RecieveJsonData(Request $request, MainDashboard $mainDashboard){
         $model->index = $value['index'];
         $model->rt = $value['rt'];
         $model->MobileOS = $value['MobileOS'];
+        $model->methods = $value['methods'];
         $model->save();
+       
     }
+    
+    DB::commit();
+} catch (\Exception $e) {
+    DB::rollback();
+    // Log the exception
+    Log::error($e->getMessage());
+}
+       
     // Return a response indicating success
+//    dd($request->data);
     return response()->json($request->data, 201);
 
 }
@@ -154,11 +160,11 @@ if (json_last_error() !== JSON_ERROR_NONE) {
             'user_id'=>auth()->user()->id,
             'status'=>1,
             'code'=>Str::upper(Str::random(10)),
-            'headers'=>$request->Header_Settings,
-            'warnings'=>$request->Warning_Settings,
+            // 'headers'=>$request->Header_Settings,
+            // 'warnings'=>$request->Warning_Settings,
             'images'=>$request->Image_Settings,
             'instructions'=>$request->Instructions,
-            'footers'=>$request->Footer_Settings,
+            // 'footers'=>$request->Footer_Settings,
         ]);
     }
 
@@ -281,6 +287,154 @@ $rt_values = ([
 return response()->json($result);
 
 }
+
+
+public function practice(){
+
+return Inertia::render('practice/index',[ 'data'=>MainDashboard::where('code',session('uuid'))->first(),]);
+}
   
 
+public function export() {
+    $results = Result::where('testcode', session('uuid'))->get();
+$resultdata = Result::where('demoPart', '>', 3) 
+                ->where('methods', 1)
+                ->groupBy('index')
+                ->selectRaw('`index`, sum(rt) as total_rt')
+                ->get();
+
+
+$avgresult = Result::where('demoPart', '>', 3) 
+                ->where('methods', 1)
+                ->select('rt')
+                ->get();
+
+
+
+$rt_values = ([
+    'highest'=>$avgresult->max('rt'),
+    'lowest'=>$avgresult->min('rt'),
+    'median'=>$avgresult->median('rt'),
+]);
+dd($rt_values);
+
+    $main = MainDashboard::where('code', session('uuid'))->first();
+
+    $castImages = $main->images['MainTrial'];
+    $castcontent = $castImages['message'];
+    $cells = $castcontent['cells']; 
+
+  
+    $groupedResults = [];
+    
+    foreach ($results as $result) {
+        if ($result->demoPart > 2) {
+          
+            if (!isset($groupedResults[$result->cellid])) {
+                $groupedResults[$result->cellid] = [
+                    'sum_rt' => 0,
+                    'count' => 0
+                ];
+            }
+          
+            $groupedResults[$result->cellid]['sum_rt'] += $result->rt;
+            $groupedResults[$result->cellid]['count']++;
+        }
+    }
+
+    
+    foreach ($cells as &$cellItem) {
+        $matchingResult = $results->firstWhere('cellid', $cellItem['cellid']);
+        
+        if ($matchingResult) {
+        
+            $cellItem['result_data'] = [
+                'id' => $matchingResult->id,
+                'data' => [
+                    'cellid' => $matchingResult->cellid,
+                    'rt' => $matchingResult->rt,
+                    'index' => $matchingResult->index,
+                    'demoPart' => $matchingResult->demoPart,
+                  
+                    'sum_rt' => isset($groupedResults[$matchingResult->cellid]) ? 
+                                $groupedResults[$matchingResult->cellid]['sum_rt'] : 0
+                ],
+            ];
+        }
+    }
+
+    return response()->json($cells); 
+}
+
+
+public function Results_Data() {
+    $results = Result::where('testcode', session('uuid'))->get();
+    $resultdata = Result::where('demoPart', '>', 3) 
+                ->where('methods', 1)
+                ->groupBy('index')
+                ->selectRaw('`index`, sum(rt) as total_rt')
+                ->get();
+
+
+$avgresult = Result::where('demoPart', '>', 3) 
+                ->where('methods', 1)
+                ->select('rt')
+                ->get();
+
+
+
+$rt_values = ([
+    'highest'=>$avgresult->max('rt'),
+    'lowest'=>$avgresult->min('rt'),
+    'median'=>$avgresult->median('rt'),
+]);
+dd($rt_values);
+
+    $main = MainDashboard::where('code', session('uuid'))->first();
+
+    $castImages = $main->images['MainTrial'];
+    $castcontent = $castImages['message'];
+    $cells = $castcontent['cells']; 
+
+  
+    $groupedResults = [];
+    
+    foreach ($results as $result) {
+        if ($result->demoPart > 2) {
+          
+            if (!isset($groupedResults[$result->cellid])) {
+                $groupedResults[$result->cellid] = [
+                    'sum_rt' => 0,
+                    'count' => 0
+                ];
+            }
+          
+            $groupedResults[$result->cellid]['sum_rt'] += $result->rt;
+            $groupedResults[$result->cellid]['count']++;
+        }
+    }
+
+    
+    foreach ($cells as &$cellItem) {
+        $matchingResult = $results->firstWhere('cellid', $cellItem['cellid']);
+        
+        if ($matchingResult) {
+        
+            $cellItem['result_data'] = [
+                'id' => $matchingResult->id,
+                'data' => [
+                    'cellid' => $matchingResult->cellid,
+                    'rt' => $matchingResult->rt,
+                    'index' => $matchingResult->index,
+                    'demoPart' => $matchingResult->demoPart,
+                  
+                    'sum_rt' => isset($groupedResults[$matchingResult->cellid]) ? 
+                                $groupedResults[$matchingResult->cellid]['sum_rt'] : 0
+                ],
+            ];
+        }
+    }
+
+    return response()->json($cells); 
+}
 }

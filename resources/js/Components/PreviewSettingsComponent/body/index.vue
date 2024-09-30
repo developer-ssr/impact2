@@ -37,16 +37,21 @@
                 v-for="(data, index) in props.image_grid"
                 :key="index"
                 id="selected_trial"
-                :style="{ '--imageratio': data.image_ratio }"
             >
                 <img
                     v-if="targets"
                     class="testImg bg-white translate-x-[-50%] translate-y-[-50%] fixed top-[50%] left-[50%] h-[50vmin] w-[100vmin] z-100"
                     :src="data.imagesrc"
+                    :style="{
+                        'aspect-ratio': data.image_ratio,
+                        width: data.Hwidht,
+                        height: data.Hheight,
+                    }"
                 />
 
                 <div
                     :style="{
+                        width: data.Hwidht,
                         width: data.Hwidht,
                         height: data.Hheight,
                         fontSize: '2vmin',
@@ -61,14 +66,11 @@
                         :class="{ active: cell.active }"
                         v-for="(cell, i) in data.cells"
                         :key="i"
+                        @click="_methods.detectCell(cell)"
                     >
-                        <div
-                            v-if="ladybug"
-                            class="active:bg-red-200"
-                            @click="_methods.detectCell(cell)"
-                        >
+                        <div v-if="ladybug" class="active:bg-red-200">
                             <img
-                                v-if="cell.show"
+                                v-if="cell.ladybug"
                                 id="selected_trial"
                                 class="ladybug cells z-10"
                                 src="http://newimpact2.test/targets_images/ladybug.png"
@@ -84,138 +86,82 @@
 </template>
 
 <script setup>
-import { inject, ref, onMounted, defineEmits } from "vue";
+import { inject, ref, onMounted, defineEmits, reactive } from "vue";
 import Modal from "@/Components/Modal.vue";
-import { router } from "@inertiajs/vue3";
+
 const $emits = defineEmits(["done"]);
 const props = inject("status");
-
 const showModal = ref(false);
-const shufCell = ref(null);
-const ResultCollection = ref({});
+// const shufCell = ref(null);
 const testCon = ref(true);
 const insCon = ref(false);
 const devices = ref(null);
 const browser = ref(null);
 const OS = ref(null);
 const MobileOS = ref(null);
-const ladybug = ref(false);
+const ladybug = ref(true);
 const targets = ref(false);
-const collections = ref([]);
-// const cells = ref(props.image_grid.message.cells);
+const Tempcollections = ref([]);
+const count = ref(1);
+const ResultCollection = ref({});
+const d = reactive({ rt: null, end: null });
+
 const _methods = {
     startTest: () => {
         targets.value = true;
         ladybug.value = false;
         setTimeout(() => {
+            _methods.filterActiveValues();
             targets.value = false;
             ladybug.value = true;
         }, 1000);
 
         insCon.value = false;
         testCon.value = true;
-        _methods.filterActiveValues();
     },
-    detectCell: async (cell) => {
-        console.log(cell);
-        targets.value = true;
-        ladybug.value = false;
-
-        setTimeout(() => {
-            targets.value = false;
-            ladybug.value = true;
-        }, 1000);
-
-        const allHaveShowProperty = shufCell.value.every((obj) =>
-            obj.hasOwnProperty("show")
-        );
-
-        if (allHaveShowProperty) {
-            props.index += 1;
-
+    demoPart: (parts) => {
+        let part;
+        if (parts == 1) {
+            part = "Practice Trial";
+        } else if (parts == 2) {
+            part = "Dummy Trial";
+        } else if (parts == 3) {
+            part = "Main Trial";
+        }
+        return part;
+    },
+    showMOd: () => {
+        if (props.index != 1) {
             showModal.value = true;
 
             setTimeout(() => {
                 showModal.value = false;
             }, 1000);
+        } else {
+            showModal.value = true;
 
-            $emits("done", {
-                part: props.index,
-                onStart: () => {},
-            });
-
-            if (props.index == 2) {
-                targets.value = true;
-                insCon.value = true;
-                testCon.value = false;
-                _methods.filterActiveValues();
-            } else if (props.index == 3) {
-                targets.value = true;
-                insCon.value = true;
-                testCon.value = false;
-                _methods.filterActiveValues();
-            } else {
-                const ObjectTopass = Object.assign(
-                    {},
-                    props.result,
-                    collections.value
-                );
-                router.post("/recieve", {
-                    data: ObjectTopass,
-                });
-            }
+            setTimeout(() => {
+                showModal.value = false;
+            }, 1000);
         }
+    },
+    detectCell: (cell) => {
+        if (cell.ladybug == true) {
+            targets.value = true;
+            ladybug.value = false;
 
-        const selectRandomRow = () => {
-            const availableRows = shufCell.value.filter(
-                (row) => !row.hasOwnProperty("show") && row.active === true
-            );
-            // console.log(availableRows);
-            if (availableRows.length == 0) {
-                console.log("No available rows to select from.");
-                return; // Exit the function if no available rows
-            }
+            setTimeout(() => {
+                targets.value = false;
+                ladybug.value = true;
+                d.rt = performance.now();
+            }, 1000);
 
-            const randomIndex = Math.floor(
-                Math.random() * availableRows.length
-            );
-            const selectedRow = availableRows[randomIndex];
+            const selectedCellId = cell.cellid;
+            cell.ladybug = false;
 
-            let demopart = null;
-            selectedRow.show = true;
-            if (props.index == 1) {
-                demopart = "Practice Trial";
-            } else if (props.index == 2) {
-                demopart = "Dummy Trial";
-            } else if (props.index == 3) {
-                demopart = "Main Trial";
-            }
-
-            // Object.keys(cells.value).forEach((cell) => {
-            //     let cellCollection = cells.value;
-            //     console.log(cellCollection);
-            // });
-
-            const d = new Date();
-            ResultCollection.value = {
-                cellid: cell.cellid,
-                demoPart: demopart,
-                devices: devices.value,
-                browser: browser.value,
-                OS: OS.value,
-                index: selectedRow.index,
-                rt: d.getMilliseconds(),
-                MobileOS: MobileOS.value,
-            };
-
-            collections.value.push(ResultCollection.value);
-
-            console.log(collections.value);
-        };
-
-        selectRandomRow();
-        if (cell) {
-            _methods.filterSelected(cell);
+            _methods.filterActiveValues();
+        } else {
+            return false;
         }
     },
 
@@ -228,29 +174,148 @@ const _methods = {
         return isMobile || isSmallScreen;
     },
 
-    filterSelected: (sel) => {
-        Object.keys(shufCell.value).forEach((cll) => {
-            if (shufCell.value[cll].index == sel.index) {
-                shufCell.value[cll].show = false;
-            }
-        });
-    },
+    // filterSelected: (obj) => {
+    //     const d = new Date();
+
+    //     Object.keys(props.image_grid.message.cells).forEach((cell) => {
+    //         const Propscell = props.image_grid.message.cells;
+    //         const selectedCellId = obj.cellid;
+
+    //         if (Propscell[cell].cellid == selectedCellId) {
+    //             ResultCollection.value = {
+    //                 demoPart: props.index,
+    //                 cellid: Propscell[cell].cellid,
+    //                 devices: devices.value,
+    //                 browser: browser.value,
+    //                 OS: OS.value,
+    //                 index: obj.index,
+    //                 rt: d.getMilliseconds(),
+    //                 MobileOS: MobileOS.value,
+    //                 blocknumber: props.blocknumber,
+    //                 methods: 1,
+    //             };
+    //         }
+    //     });
+    //     props.result.push(ResultCollection.value);
+    // },
+
     shuffleActiveObject: (array) => {
         for (let i = array.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
+            const j = Math.floor(Math.random() * i + 1);
             [array[i], array[j]] = [array[j], array[i]];
         }
+
         return array;
     },
+
     filterActiveValues: () => {
         Object.keys(props.image_grid).forEach((qd) => {
-            let q = props.image_grid;
-            let activeCells = q[qd]["cells"].filter(
+            const q = props.image_grid;
+
+            const activeCells = q[qd]["cells"].filter(
                 (obj) => obj.active === true
             );
-            shufCell.value = _methods.shuffleActiveObject(activeCells);
+            // console.log(activeCells);
+            if (activeCells.length === 0) {
+                props.index += 1;
+
+                const Propscelldata = props.image_grid.message.cells;
+                const tempCollection = {};
+                /*const Tempresult = Object.assign(
+                    {},
+                    Propscelldata,
+                    tempCollection
+                );*/
+                const Tempresult = {};
+                Object.assign(Tempresult, Propscelldata);
+
+                // Object.keys(props.image_grid.message.cells).forEach((index) => {
+                //     let cell = props.image_grid.message.cells;
+                //     // console.log(cell[index].cellid);
+                //     let newCellid = cell[index].cellid;
+                //     console.log(props.result[newCellid]["cellid"]);
+                //     if (props.result[newCellid]["cellid"]) {
+                //         cell[index].active = true;
+                //         cell[index].ladybug = false;
+                //     } else {
+                //         return false;
+                //     }
+                // });
+                // console.log(props.result);
+                console.log(Tempresult);
+                Object.keys(props.result).forEach((cellid) => {
+                    console.log(props.result[cellid]);
+                    const newCellId = props.result[cellid].cellid;
+
+                    if (props.result[cellid].demoPart >= 3) {
+                        /*parseInt(newCellId) - 1;*/
+
+                        let TempIndex =
+                            props.image_grid.message.cells.findIndex((o) => {
+                                return o.cellid == newCellId;
+                            });
+
+                        console.log(
+                            "mainid" +
+                                Tempresult[TempIndex].cellid +
+                                "Resultid:" +
+                                newCellId
+                        );
+                        Tempresult[TempIndex].active = true;
+                        Tempresult[TempIndex].ladybug = false;
+                    }
+                });
+                console.log(props.result);
+                testCon.value = false;
+                insCon.value = true;
+
+                $emits("done", {
+                    part: props.index, // Emitting part based on index
+                    onStart: (event) => {
+                        //console.log(event);
+                    },
+                });
+
+                _methods.showMOd();
+                return;
+            }
+
+            // Shuffle active cells to find the next one
+            function shuffle(array) {
+                for (let i = array.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [array[i], array[j]] = [array[j], array[i]];
+                }
+                return array;
+            }
+
+            const shuffledObjects = shuffle(activeCells);
+            const randomObject =
+                shuffledObjects[
+                    Math.floor(Math.random() * shuffledObjects.length)
+                ];
+            d.end = performance.now();
+            let reactiontime = d.end - d.rt;
+            randomObject.ladybug = true;
+            randomObject.active = false;
+
+            ResultCollection.value = {
+                demoPart: props.index,
+                cellid: randomObject.cellid,
+                devices: devices.value,
+                browser: browser.value,
+                OS: OS.value,
+                index: randomObject.index,
+                rt: reactiontime,
+                MobileOS: MobileOS.value,
+                blocknumber: props.blocknumber,
+                methods: 1,
+            };
+
+            props.result.push(ResultCollection.value);
         });
     },
+
     detectBrowser: () => {
         const userAgent = navigator.userAgent;
 
@@ -305,6 +370,14 @@ const _methods = {
 };
 
 onMounted(() => {
+    targets.value = true;
+    ladybug.value = false;
+    setTimeout(() => {
+        _methods.filterActiveValues();
+        targets.value = false;
+        ladybug.value = true;
+    }, 1000);
+
     MobileOS.value = _methods.getMobileOS();
     OS.value = _methods.getOS();
     browser.value = _methods.detectBrowser();
@@ -315,8 +388,7 @@ onMounted(() => {
         devices.value = "PC";
     }
 
-    _methods.filterActiveValues();
-    _methods.detectCell(event);
+    // _methods.detectCell(event);
 });
 </script>
 <style>

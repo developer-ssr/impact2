@@ -15,61 +15,37 @@ const props = defineProps(["data", "test_result", "rt_values", "mainData"]);
 
 const sidebarVisible = ref(false);
 const activeElem = ref(false);
-const insStatus = ref(false);
 const mainCell = ref(props.data.images.MainTrial.message.cells);
-const resultCell = ref({});
+const resultCellId = ref(props.test_result);
+
+const mergeObjects = (obj1, obj2) => {
+    for (const [key1, value1] of Object.entries(obj1)) {
+        for (const [key2, value2] of Object.entries(obj2)) {
+            if (value1.cellid === value2.cellid) {
+                obj1[key1].totat_rt = value2.total_rt;
+            }
+        }
+    }
+
+    return obj1;
+};
 
 provide("Image_Settings", props.data.images);
-provide("Warning_Settings", props.data.warnings);
-provide("Header_Settings", props.data.headers);
-provide("Footer_Settings", props.data.footers);
+// provide("Warning_Settings", props.data.warnings);
+// provide("Header_Settings", props.data.headers);
+// provide("Footer_Settings", props.data.footers);
 provide("Instructions", props.data.instructions);
 provide("DemoId", props.data.id);
+provide("Alldata", props.data);
 // provide("test_result", props.test_result);
 // provide("rt_values", props.rt_values);
 
-console.log(props.rt_values);
 onMounted(() => {
-    Object.keys(props.test_result).forEach((cell) => {
-        let cellid = props.test_result[cell].cellid;
-        let maincell = props.data.images.MainTrial.message.cells[cell].cellid;
-        resultCell.value = props.data.images.MainTrial.message.cells[cell];
-        // console.log(props.data.images.MainTrial.message.cells[cell]);
-        let color;
-
-        if (props.test_result[cell].total_rt == props.rt_values["median"]) {
-            color = "blue";
-        } else if (
-            props.test_result[cell].total_rt <= props.rt_values["median"]
-        ) {
-            color = "red";
-        } else if (
-            props.test_result[cell].total_rt >= props.rt_values["median"]
-        ) {
-            color = "gray";
-        }
-        let analyse = [];
-        //dre ko taman
-        if (maincell == cellid) {
-            let resultdata = {
-                index: props.data.images.MainTrial.message.cells[cell].index,
-                cellid: props.data.images.MainTrial.message.cells[cell].cellid,
-                rt: props.test_result[cell].total_rt,
-                color: color,
-            };
-            analyse.push(resultdata);
-        }
-        console.log(analyse);
-
-        // console.log(props.test_result);
-    });
-
-    // Object.keys(props.data.images.MainTrial.message.cells).forEach((cell) => {
-    //     mainCell.value = props.data.images.MainTrial.message.cells[cell];
-    //     resultCell.value = props.test_result;
-    //     // console.log(resultCell.value);
-    //     //console.log(props.data.images.MainTrial.message.cells[cell]);
-    // });
+    //console.log(resultCellId.value);
+    //console.log(mergeObjects(mainCell.value, resultCellId.value));
+    // Function to merge objects based on matching 'name' property
+    //const combinedObj = mergeObjects(obj1, obj2);
+    //console.log(combinedObj);
 });
 </script>
 

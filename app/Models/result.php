@@ -21,6 +21,7 @@ class Result extends Model
         'index',
         'rt',
         'MobileOS',
+        'methods',
     ];
 
     public function Result()

@@ -30,6 +30,12 @@ const _methods = {
             .querySelector("#selected_trial")
             .dispatchEvent(new CustomEvent("show_image_modal"));
     },
+
+    showblockModal: () => {
+        document
+            .querySelector("#selected_trial")
+            .dispatchEvent(new CustomEvent("show_block_modal"));
+    },
 };
 </script>
 <template>
@@ -72,7 +78,7 @@ const _methods = {
         <ul class="max-w-md divide-y divide-gray-200 dark:divide-gray-700">
             <div class="flex-shrink-0"></div>
             <div class="bg-gray-300">
-                <h2 class="text-center p-2">Images</h2>
+                <h2 class="text-center p-2">Images Settings</h2>
             </div>
             <li class="pb-3 sm:p-2">
                 <button
@@ -86,6 +92,35 @@ const _methods = {
                     class="bg-gray-200 w-full h-[5vmin] hover:bg-yellow-300 hover:text-white"
                 >
                     Setup Image Grid
+                </button>
+            </li>
+        </ul>
+
+        <ul class="max-w-md divide-y divide-gray-200 dark:divide-gray-700">
+            <div class="flex-shrink-0"></div>
+            <div class="bg-gray-300">
+                <h2 class="text-center p-2">Block Settings</h2>
+            </div>
+            <li class="pb-3 sm:p-2">
+                <button
+                    @click="_methods.showblockModal"
+                    class="bg-gray-200 w-full h-[5vmin] hover:bg-yellow-300 hover:text-white"
+                >
+                    Add Block
+                </button>
+            </li>
+        </ul>
+
+        <ul class="max-w-md divide-y divide-gray-200 dark:divide-gray-700">
+            <div class="flex-shrink-0"></div>
+            <div class="bg-gray-300">
+                <h2 class="text-center p-2">Ladybug Settings</h2>
+            </div>
+            <li class="pb-3 sm:p-2">
+                <button
+                    class="bg-gray-200 w-full h-[5vmin] hover:bg-yellow-300 hover:text-white"
+                >
+                    Change Ladybug
                 </button>
             </li>
         </ul>

@@ -133,7 +133,7 @@ Route::controller(TestsController::class)->group(function () {
 
 
 Route::controller(RecordsController::class)->group(function () {
-    Route::get('records/index', 'index');
+    Route::get('records_index', 'index');
     Route::get('records/edit', 'edit');
     Route::get('records/update', 'update');
     Route::get('records/store', 'store');
@@ -170,7 +170,9 @@ Route::controller(MainDashboardController::class)->group(function () {
     Route::post('recieve', 'RecieveJsonData');
     Route::get('tests', 'test');
     Route::get('testresult', 'testresult');
-    // Route::get('export', 'export');
+
+    Route::get('practice', 'practice');
+    Route::get('export', 'export');
     
     
 

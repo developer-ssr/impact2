@@ -99,7 +99,7 @@ const startDrag = () => {
 
 const _methods = {
     search: () => {
-        divEditor.value = !divEditor.value;
+        divEditor.value = true;
 
         Object.keys(inst_D.value).forEach((element) => {
             JsonData.value = inst_D.value[element];

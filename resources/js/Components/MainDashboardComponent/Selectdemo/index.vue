@@ -26,6 +26,14 @@
                 >
                     Main Trial
                 </button>
+
+                <button
+                    @click="_methods.display_explicit"
+                    class="bg-gray-200 w-full h-[5vmin] hover:bg-yellow-300 hover:text-white"
+                >
+                    Explicit Trial
+                </button>
+                
             </li>
         </ul>
     </div>
@@ -47,6 +55,12 @@ const _methods = {
         document
             .querySelector("#selected_trial")
             .dispatchEvent(new CustomEvent("display_MainTrial"));
+    },
+
+    display_explicit: () => {
+        document
+            .querySelector("#selected_trial")
+            .dispatchEvent(new CustomEvent("display_explicit"));
     },
 };
 </script>
