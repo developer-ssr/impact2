@@ -42,6 +42,7 @@ class TestsController extends Controller
            'save'=>'store_mainsettings'
         ];
         
+     
         return Inertia::render("Tests/index",[
             'menu'=>$menu,
             'data'=>MainDashboard::where('uuid',$request->query('uuid'))->paginate(12),

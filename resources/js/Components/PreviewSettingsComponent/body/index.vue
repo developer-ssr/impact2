@@ -73,7 +73,7 @@
                                 v-if="cell.ladybug"
                                 id="selected_trial"
                                 class="ladybug cells z-10"
-                                src="http://newimpact2.test/targets_images/ladybug.png"
+                                src="http://impact2.test/targets_images/ladybug.png"
                                 height="30"
                                 width="30"
                             />

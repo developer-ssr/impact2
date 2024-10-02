@@ -20,7 +20,7 @@ const tests = useForm({
 const _method = {
     locateProjects: (id) => {
         window.location.replace(
-            "http://newimpact2.test/maindashboard/?code=" + id
+            "http://impact2.test/maindashboard/?code=" + id
         );
     },
 

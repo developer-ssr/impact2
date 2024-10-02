@@ -296,6 +296,7 @@ const form = useForm({
 });
 
 const save = () => {
+    console.log(props)
     form.post(props.props.menu.save, {
         onSuccess: (success) => {
             console.log(success);

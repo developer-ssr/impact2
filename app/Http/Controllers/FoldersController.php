@@ -16,6 +16,7 @@ class FoldersController extends Controller
      */
     public function index(folders $folders)
     {
+     
     $menu = [
            'title'=> 'Folders',
            'add'=>'Add Folders',

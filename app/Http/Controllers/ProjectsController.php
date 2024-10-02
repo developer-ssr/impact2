@@ -47,6 +47,7 @@ class ProjectsController extends Controller
      */
     public function store(projects $projects , Request $request)
     {
+        dd(url(env('APP_URL')) . "/id");
     //    dd($request->folder_name);
         $projects = projects::create([
             'project_name'=>$request->folder_name,

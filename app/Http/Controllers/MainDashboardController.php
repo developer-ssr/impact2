@@ -146,13 +146,14 @@ $decodedObject = json_decode($jsonString);
 if (json_last_error() !== JSON_ERROR_NONE) {
     echo "JSON decode error: " . json_last_error_msg();
 }
-        dd($decodedObject);
+        // dd($decodedObject);
     }
 
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request){
+        // dd($request);
 
          MainDashboard::create([
             'test_name'=>$request->folder_name,
@@ -316,7 +317,7 @@ $rt_values = ([
     'lowest'=>$avgresult->min('rt'),
     'median'=>$avgresult->median('rt'),
 ]);
-dd($rt_values);
+// dd($rt_values);
 
     $main = MainDashboard::where('code', session('uuid'))->first();
 

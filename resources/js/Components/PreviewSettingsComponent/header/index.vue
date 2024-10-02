@@ -4,7 +4,7 @@
             class="dheader bg-[#fff] text-sm h-[5.3vmin] shadow-md fixed w-[100%] flex items-center justify-center"
         >
             <img
-                src="http://newimpact2.test/targets_images/logo.png"
+                src="http://impact2.test/targets_images/logo.png"
                 class="max-w-[100%] max-h-[100%]"
             />
             <button
