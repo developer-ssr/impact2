@@ -8,30 +8,41 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Eloquent\Collection;
+
 
 class ProjectsController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index(projects $projects)
-    {
-    $menu = [
-           'title'=> 'Projects',
-           'add'=>'Add Projects',
-           'link'=>'index/',
-           'placeholder'=>'Project Name',
-           'save'=>'/project_store'
-        ];
-        
-    
-        return Inertia::render("Projects/index",[
-            
-            'menu'=>$menu,
-            'data'=>projects::paginate(12),
-            // 'data'=>DB::table('users')->join('folders','folders.user_id','=','users.id')->select('users.*','folders.*')->paginate(10)
+public function index($result = null)
+{
+
+        return Inertia::render("Projects/index", [
+            'data' => projects::paginate(12),
         ]);
-    } 
+   
+    
+}
+
+public function searchProject(Request $request)
+{
+    
+    $request->validate([
+        'projectName' => 'required|string|max:255',
+    ]);
+
+   
+    $result = DB::table('projects')
+        ->where('deleted_at', null)
+        ->where('project_name', 'LIKE', '%' . $request->projectName . '%')
+        ->paginate(12);
+
+         return Inertia::render("Projects/index", [
+            'data' =>  $result,
+        ]);
+}
     
 
     /**
@@ -47,14 +58,13 @@ class ProjectsController extends Controller
      */
     public function store(projects $projects , Request $request)
     {
-    //    dd($request->folder_name);
+      
         $projects = projects::create([
-            'project_name'=>$request->folder_name,
+            'project_name'=>$request->project_name,
             'uuid' => (String) Str::uuid(),
             'user_id'=>auth()->user()->id
-          
         ]);
-
+        //return  $projects;
      
     }
 

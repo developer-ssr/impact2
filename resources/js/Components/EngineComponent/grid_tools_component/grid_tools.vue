@@ -16,12 +16,12 @@
             >
                 Save
             </button>
-            <button
-                @click="_methods.preview"
+            <a
+                :href="route('PreviewTest', { code: code })"
                 class="bg-green-600 p-2 text-white"
             >
                 Preview
-            </button>
+            </a>
         </div>
     </div>
 </template>
@@ -29,6 +29,11 @@
 import { inject, onMounted, ref, reactive } from "vue";
 import { router } from "@inertiajs/vue3";
 const Savenot = ref(false);
+
+let url = window.location.href;
+const urlObj = new URL(url);
+const code = urlObj.searchParams.get("code");
+
 const props = reactive({
     id: inject("DemoId"),
     images: inject("Image_Settings"),
@@ -48,18 +53,6 @@ const _methods = {
             Savenot.value = false;
         }, 5000);
     },
-    preview: () => {
-  let url = window.location.href;
-let urlObj = new URL(url);
-let code = urlObj.searchParams.get("code");
-let baseURL = "http://newimpact2.test/PreviewTest";
-
-let params = new URLSearchParams({ code: code });
-let fullURL = `${baseURL}?${params.toString()}`;
-
-// Open the full URL in a new tab
-window.open(fullURL, '_blank');
-        //console.log(code);
-    },
+   
 };
 </script>

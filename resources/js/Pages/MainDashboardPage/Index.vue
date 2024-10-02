@@ -18,17 +18,17 @@ const activeElem = ref(false);
 const mainCell = ref(props.data.images.MainTrial.message.cells);
 const resultCellId = ref(props.test_result);
 
-const mergeObjects = (obj1, obj2) => {
-    for (const [key1, value1] of Object.entries(obj1)) {
-        for (const [key2, value2] of Object.entries(obj2)) {
-            if (value1.cellid === value2.cellid) {
-                obj1[key1].totat_rt = value2.total_rt;
-            }
-        }
-    }
+// const mergeObjects = (obj1, obj2) => {
+//     for (const [key1, value1] of Object.entries(obj1)) {
+//         for (const [key2, value2] of Object.entries(obj2)) {
+//             if (value1.cellid === value2.cellid) {
+//                 obj1[key1].totat_rt = value2.total_rt;
+//             }
+//         }
+//     }
 
-    return obj1;
-};
+//     return obj1;
+// };
 
 provide("Image_Settings", props.data.images);
 // provide("Warning_Settings", props.data.warnings);
