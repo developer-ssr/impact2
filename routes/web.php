@@ -71,15 +71,17 @@ Route::middleware([
         Route::get('filterDetails/show', 'show');
     });
 
-    Route::controller(ProjectsController::class)->group(function () {
-        Route::get('projects_index', 'index');
-        Route::get('projects/edit', 'edit');
-        Route::post('project_update', 'update');
-        Route::post('project_store', 'store');
-        Route::delete('project_delete', 'destroy');
-        Route::get('projects/create', 'create');
-        Route::get('projects/show', 'show');
-    });
+Route::controller(ProjectsController::class)->group(function () {
+    Route::get('projects_index', 'index')->name('projects_index');
+    Route::get('projects/edit', 'edit');
+    Route::post('project_update', 'update');
+    Route::post('project_store', 'store');
+    Route::delete('project_delete', 'destroy');
+    Route::get('projects/create', 'create');
+    Route::get('projects/show', 'show');
+    Route::get('searchProject', 'searchProject')->name('searchProject');
+    
+});
 
     Route::controller(FiltersController::class)->group(function () {
         Route::get('filters/index', 'index');
@@ -112,24 +114,25 @@ Route::middleware([
         Route::get('ladybugs/show', 'show');
     });
 
-    Route::controller(TestsController::class)->group(function () {
-        Route::get('tests_index', 'index');
-        Route::get('tests_edit', 'edit');
-        Route::post('tests_update', 'update');
-        Route::post('tests_store', 'store');
-        Route::delete('tests_delete', 'destroy');
-        Route::get('tests_create', 'create');
-        Route::post('tests_show', 'show');
+Route::controller(TestsController::class)->group(function () {
+    Route::get('tests_index', 'index')->name('tests_index');
+    Route::get('tests_edit', 'edit');
+    Route::post('tests_update', 'update');
+    Route::post('tests_store', 'store')->name('tests_store');
+    Route::delete('tests_delete', 'destroy');
+    Route::get('tests_create', 'create');
+    Route::post('tests_show', 'show');
 
-
-        Route::get('test_trials', 'trials');
-        Route::get('grid1', 'grid1');
-        Route::post('updateRow', 'updateRow');
-        Route::post('deleteCollection', 'deleteCollection');
-        Route::post('updateTest', 'updateTest');
-        // Route::get('make_quadrants', 'make_quadrants');
-
-    });
+  
+    Route::get('test_trials', 'trials');
+    Route::get('grid1', 'grid1');
+    Route::post('updateRow', 'updateRow');
+    Route::post('deleteCollection', 'deleteCollection');
+    Route::post('updateTest', 'updateTest');
+  
+    // Route::get('make_quadrants', 'make_quadrants');
+    
+});
 
 
     Route::controller(RecordsController::class)->group(function () {
@@ -153,27 +156,30 @@ Route::middleware([
         Route::post('targets_store', 'store');
     });
 
-    Route::controller(PreviewController::class)->group(function () {
-        Route::get('preview_index', 'index');
-        Route::get('practicePreview', 'PracticeView');
-    });
-    Route::controller(EngineController::class)->group(function () {
-        Route::get('engine', 'index');
-    });
-    Route::controller(MainDashboardController::class)->group(function () {
-        Route::get('maindashboard', 'index');
-        Route::post('store_mainsettings', 'store');
-        Route::post('upload_images', 'uploadImage');
-        Route::post('update_mainsettings', 'update');
-        Route::get('PreviewTest', 'PreviewSettings');
-        Route::post('recieve', 'RecieveJsonData');
-        Route::get('tests', 'test');
-        Route::get('testresult', 'testresult');
+ Route::controller(PreviewController::class)->group(function () {
+    Route::get('preview_index', 'index');
+    Route::get('practicePreview', 'PracticeView');
+});
+ Route::controller(EngineController::class)->group(function () {
+    Route::get('engine', 'index');
+   
+});
+Route::controller(MainDashboardController::class)->group(function () {
+    Route::get('maindashboard', 'index')->name('maindashboard');
+    Route::post('store_mainsettings', 'store')->name('store_mainsettings');
+    Route::post('upload_images', 'uploadImage');
+    Route::post('update_mainsettings', 'update');
+    Route::get('PreviewTest', 'PreviewSettings')->name('PreviewTest');
+    Route::post('recieve', 'RecieveJsonData');
+    Route::get('tests', 'test');
+    Route::get('testresult', 'testresult');
+    Route::get('practice', 'practice');
+    Route::get('export', 'export');
+    Route::get('searchTest', 'searchTest')->name('searchTest');
+    
 
-        Route::get('practice', 'practice');
-        Route::get('export', 'export');
-    });
-    Route::controller(ExportController::class)->group(function () {
-        Route::get('export', 'index');
-    });
+});
+
+
+
 });

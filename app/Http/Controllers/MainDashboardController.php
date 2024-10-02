@@ -156,7 +156,7 @@ if (json_last_error() !== JSON_ERROR_NONE) {
         // dd($request);
 
          MainDashboard::create([
-            'test_name'=>$request->folder_name,
+            'test_name'=>$request->test_name,
             'uuid'=> session('uuid'),
             'user_id'=>auth()->user()->id,
             'status'=>1,
@@ -168,6 +168,21 @@ if (json_last_error() !== JSON_ERROR_NONE) {
             // 'footers'=>$request->Footer_Settings,
         ]);
     }
+
+public function searchTest(Request $request)
+{
+ 
+   $result = MainDashboard::whereNull('deleted_at')
+    ->where('uuid', session('uuid'))
+    ->where('test_name', 'LIKE', '%' . $request->testName . '%')
+    ->paginate(12);
+  
+    return Inertia::render("Tests/index", [
+        'data' => $result,
+       
+    ]);
+}
+
 
     /**
      * Display the specified resource.
@@ -190,7 +205,10 @@ if (json_last_error() !== JSON_ERROR_NONE) {
      * Update the specified resource in storage.
      */
     public function update(Request $request, MainDashboard $mainDashboard){
+
+
         $mainDashboard = MainDashboard::find($request->id);
+        $mainDashboard->test_name = $request->test_name;
         $mainDashboard->headers=$request->header;
         $mainDashboard->footers=$request->footer;
         $mainDashboard->warnings=$request->warning;

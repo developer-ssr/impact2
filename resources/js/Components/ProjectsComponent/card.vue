@@ -3,14 +3,15 @@ import { provide, inject, ref, onMounted } from "vue";
 import Modal from "@/Components/ProjectsComponent/Modal/Delmodal.vue";
 import moment from "moment";
 import Notifcation from "@/Components/Notification.vue";
-import { router, useForm } from "@inertiajs/vue3";
+import { useForm, router } from "@inertiajs/vue3";
 
 const props = inject("props");
+const ProjectsData = ref(props.props.data.data);
 const isModalVisible = ref(false);
 const isNotificationVisible = ref(false);
 const timer = ref(null);
 const editingText = ref(null);
-
+const searchProj = ref(null);
 const project = useForm({
     project_name: null,
     id: null,
@@ -36,17 +37,20 @@ const _method = {
 
     deleteProject: () => {
         project.delete("/project_delete", {
-            onBefore: () => {
+            preserveState: false,
+            preserveScroll: false,
+            onSuccess: (response) => {
+                console.log(response);
                 isModalVisible.value = false;
             },
         });
     },
 
-    editProject: (id) => {
+    editProject: (obj) => {
         project.project_name = document.querySelector(
-            ".ProjectText" + id
+            ".ProjectText" + obj.id
         ).textContent;
-        project.id = id;
+        project.id = obj.id;
 
         project.post("/project_update", {
             method: "post",
@@ -65,10 +69,24 @@ const _method = {
             },
         });
     },
+    SearcProject: () => {
+        router.get("searchProject", { projectName: searchProj.value });
+    },
 };
 </script>
 
 <template>
+    <div class="grid relative bg-blue-900 p-2 text-white">
+        <label> Search Project</label>
+        <input
+            type="text"
+            class="rounded-md w-[50vmin]"
+            placeholder="Project Name"
+            @keypress.enter="_method.SearcProject"
+            v-model="searchProj"
+        />
+    </div>
+
     <Modal v-show="isModalVisible" @close="_method.closeModal()">
         <template v-slot:header>
             <h1>Data Information</h1>
@@ -100,49 +118,79 @@ const _method = {
         </template>
     </Modal>
 
-    <Notifcation v-show="isNotificationVisible">
-        <template v-slot:body>
-            This project is updated to
-            <strong>{{ project.project_name }}</strong></template
-        >
-    </Notifcation>
-
-    <div class="grid grid-cols-4 gap-4">
-        <div v-for="(data, index) in props.props.data.data" :key="index">
-            <div
-            class=" pl-5 max-w-sm p-2 ml-1 mr-1 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
-
-               
+    <Teleport to="body">
+        <Notifcation v-show="isNotificationVisible">
+            <template v-slot:body>
+                This project is updated to
+                <strong>{{ project.project_name }}</strong></template
             >
-                Project:
-                <div
-                    @blur="_method.editProject(data.id, data.project_name)"
-                    contenteditable="true"
-                    :class="'ProjectText' + data.id"
-                >
-                    <h5
-                        class="truncate mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white"
-                    >
-                        {{ data.project_name }}
-                    </h5>
-                </div>
-                <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">
-                    Date: {{ _method.dateTime(data.updated_at) }}
-                </p>
+        </Notifcation>
+    </Teleport>
 
-                <button
-                    @click="_method.locateProjects(data.uuid)"
-                    class="inline-flex items-center px-3 py-2 mr-1 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+    <div class="grid grid-cols-4 gap-4 p-2">
+        <div v-for="(data, index) in ProjectsData" :key="index">
+            <div class="bg-white rounded-lg">
+                <div
+                    class="bg-gray-900 h-13 p-3 text-white rounded-lg shadow-md"
                 >
-                    View Project
-                </button>
-                <button
-                    @click="_method.showModal(data.id)"
-                    class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-red-700 rounded-lg hover:bg-red-800 focus:ring-4 focus:outline-none"
-                >
-                    Delete
-                </button>
+                    <div
+                        @blur="
+                            _method.editProject({
+                                id: data.id,
+                                project_name: data.project_name,
+                            })
+                        "
+                        contenteditable="true"
+                        :class="'ProjectText' + data.id"
+                    >
+                        <div
+                            class="bg-gradient-to-r from-teal-400 to-blue-500 hover:from-pink-500 hover:to-orange-500 w-[10vmin] pt-1 pl-5 pb-1 rounded-xl"
+                        >
+                            {{ data.project_name }}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="p-5 mb-10">
+                    Date: {{ _method.dateTime(data.updated_at) }}
+                </div>
+                <div class="bg-gray-500 p-2 rounded-sm">
+                    <a
+                        :href="route('tests_index', { uuid: data.uuid })"
+                        class="inline-flex items-center"
+                    >
+                        View
+                    </a>
+
+                    <button
+                        @click="_method.showModal(data.id)"
+                        class="inline-flex items-center"
+                    >
+                        Delete
+                    </button>
+                </div>
             </div>
         </div>
     </div>
 </template>
+<style scoped>
+.folder {
+    background: #f9d74e; /* Folder color */
+    height: 150px; /* Height of the folder */
+    width: 250px; /* Width of the folder */
+    clip-path: polygon(
+        0% 0%,
+        0% 100%,
+        100% 100%,
+        100% 11%,
+        46% 11%,
+        46% 0
+    ); /* Shape definition */
+    filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.5)); /* Shadow effect */
+    position: relative; /* Positioning context for child elements */
+}
+
+.content {
+    padding: 10px; /* Padding inside the folder */
+}
+</style>

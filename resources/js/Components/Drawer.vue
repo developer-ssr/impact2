@@ -292,54 +292,27 @@ const form = useForm({
     // Warning_Settings: Warning_Settings,
     // Footer_Settings: Footer_Settings,
     // Header_Settings: Header_Settings,
+
     Instructions: Instructions,
 });
 
 const save = () => {
-    console.log(props)
-    form.post(props.props.menu.save, {
-        onSuccess: (success) => {
-            console.log(success);
-        },
-        onError: (errors) => {
-            console.log(errors);
-        },
+    router.post("project_store", {
+        data: { form: form },
+        preserveState: false,
+        preserveScroll: false,
     });
 };
 </script>
 <template>
-    <div
-        id="drawer-right-example"
-        class="fixed top-0 right-0 z-40 h-screen p-4 overflow-y-auto transition-transform translate-x-full bg-white w-80 dark:bg-gray-800"
-        tabindex="-1"
-        aria-labelledby="drawer-right-label"
-    >
-        <h5
-            id="drawer-right-label"
-            class="inline-flex items-center mb-4 text-base font-semibold text-gray-500 dark:text-gray-400"
-        >
-            <svg
-                class="w-4 h-4 me-2.5"
-                aria-hidden="true"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-            >
-                <path
-                    d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"
-                />
-            </svg>
-        </h5>
-
-        <div class="grid grid-cols-2 gap-4">
-            <label
-                >{{ props.props.menu.placeholder }}
-                <input
-                    type="text"
-                    v-model="form.folder_name"
-                    @keyup.enter="save()"
-                />
-            </label>
-        </div>
+    <div class="p-5">
+        <label>
+            <input
+                class="rounded-lg"
+                type="text"
+                v-model="form.folder_name"
+                @keyup.enter="save()"
+            />
+        </label>
     </div>
 </template>

@@ -45,11 +45,13 @@ const _method = {
         });
     },
 
-    editTests: (id) => {
-        tests.test_name = document.querySelector(".TestsText" + id).textContent;
-        tests.id = id;
-        tests.post("/tests_update", {
-            method: "post",
+    editTests: (obj) => {
+        tests.test_name = document.querySelector(
+            ".TestsText" + obj.id
+        ).textContent;
+        tests.id = obj.id;
+        tests.post("/update_mainsettings", {
+            
             onSuccess: () => {
                 let timer = 4;
                 let interval = setInterval(() => {
@@ -65,13 +67,24 @@ const _method = {
             },
         });
     },
+
+    Searchtest: () => {
+        router.get("searchTest", { testName: tests.test_name });
+    },
 };
-onMounted(() => {
-    console.log(props);
-});
 </script>
 
 <template>
+    <div class="grid relative bg-blue-900 p-2">
+        <label class="text-white"> Search Test</label>
+        <input
+            type="text"
+            class="rounded-md w-[50vmin]"
+            placeholder="Test Test"
+            @keypress.enter="_method.Searchtest"
+            v-model="tests.test_name"
+        />
+    </div>
     <Modal v-show="isModalVisible" @close="_method.closeModal()">
         <template v-slot:header>
             <h1>Data Information</h1>
@@ -110,16 +123,23 @@ onMounted(() => {
         >
     </Notifcation>
 
-    <div class="grid grid-cols-4 gap-4 pt-3 pr-2 pl-2">
+    <div class="grid grid-cols-4 gap-4 p-5">
         <div
             class="test-container"
             v-for="(data, index) in props.props.data.data"
             :key="index"
         >
-            <div class="pl-5">
+            <div
+                class="p-2 ml-1 mr-1 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
+            >
                 Tests:
                 <div
-                    @blur="_method.editTests(data.id, data.test_name)"
+                    @blur="
+                        _method.editTests({
+                            id: data.id,
+                            test_name: data.test_name,
+                        })
+                    "
                     contenteditable="true"
                     :class="'TestsText' + data.id"
                 >
@@ -134,12 +154,12 @@ onMounted(() => {
                     Date: {{ _method.dateTime(data.updated_at) }}
                 </p>
 
-                <button
-                    @click="_method.locateProjects(data.code)"
+                <a
+                    :href="route('maindashboard', { code: data.code })"
                     class="inline-flex items-center px-3 py-2 mr-1 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                 >
                     View Tests
-                </button>
+                </a>
                 <button
                     @click="_method.showModal(data.id)"
                     class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-red-700 rounded-lg hover:bg-red-800 focus:ring-4 focus:outline-none"
@@ -150,25 +170,3 @@ onMounted(() => {
         </div>
     </div>
 </template>
-<style scoped>
-.test-container {
-    margin-top: 18px;
-    position: relative;
-    height: 180px;
-    width: 300px;
-    background-color: white;
-    border-radius: 5px 25px 25px 25px;
-    filter: drop-shadow(0 6px 20px rgba(0, 0, 0, 0.19));
-}
-
-.test-container::before {
-    content: "";
-    position: absolute;
-    top: -18px;
-    width: 200px;
-    height: 25px;
-    background: white;
-    border-radius: 25px 0 0 0;
-    clip-path: path("M 0 0 L 160 0 C 185 2, 175 16, 200 18 L 0 50 z");
-}
-</style>
