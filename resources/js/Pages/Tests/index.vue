@@ -347,7 +347,11 @@ const save = async () => {
                 class="grow-2 bg-gray-200 h-[calc(100vmin-4rem)] w-[50vmin]"
             >
                 <div class="p-5 grid bg-blue-900">
-                    <label class="text-white"> Test Name </label>
+                    <label
+                        class="text-white bg-purple-500 w-[20vmin] p-1 mb-1 rounded-md"
+                    >
+                        Test Name
+                    </label>
                     <input
                         class="rounded-lg"
                         type="text"

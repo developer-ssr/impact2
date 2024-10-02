@@ -1,16 +1,15 @@
 <script setup>
 import AppLayout from "@/Layouts/AppLayout.vue";
-import Sidebar from "@/Components/Sidebar.vue";
-import Content from "@/Components/content.vue";
+
 import Cards from "@/Components/ProjectsComponent/card.vue";
 import Pagination from "@/Components/pagination.vue";
-import Drawer from "@/Components/Drawer.vue";
+
 import { provide, ref } from "vue";
 import { router, useForm } from "@inertiajs/vue3";
 
 const props = defineProps(["menu", "data"]);
 const conbox = ref(false);
-const project_name = ref(null);
+
 provide("props", { props });
 const projects = () => {
     conbox.value = !conbox.value;
@@ -56,16 +55,18 @@ const save = async () => {
                 v-if="conbox"
                 class="grow-2 bg-gray-200 h-[calc(100vmin-4rem)] w-[50vmin]"
             >
-                <div class="p-5 grid bg-blue-900 text-white">
-                    <label>
+                <div class="p-5 grid bg-blue-900">
+                    <label
+                        class="text-white bg-purple-500 w-[20vmin] p-1 mb-1 rounded-md"
+                    >
                         Project Name
-                        <input
-                            class="rounded-lg"
-                            type="text"
-                            v-model="form.project_name"
-                            @keyup.enter="save()"
-                        />
                     </label>
+                    <input
+                        class="rounded-lg"
+                        type="text"
+                        v-model="form.project_name"
+                        @keyup.enter="save()"
+                    />
                 </div>
             </div>
 

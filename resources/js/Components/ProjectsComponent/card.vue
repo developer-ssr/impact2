@@ -18,12 +18,6 @@ const project = useForm({
 });
 
 const _method = {
-    locateProjects: (id) => {
-        window.location.replace(
-            `/tests_index/?uuid=${id}`
-        );
-    },
-
     dateTime: (value) => {
         return moment(value).format("MMMM Do YYYY, h:mm:ss a");
     },
@@ -76,8 +70,10 @@ const _method = {
 </script>
 
 <template>
-    <div class="grid relative bg-blue-900 p-2 text-white">
-        <label> Search Project</label>
+    <div class="grid relative bg-blue-900 p-2">
+        <label class="text-white bg-purple-500 w-[20vmin] p-1 mb-1 rounded-md">
+            Search Project</label
+        >
         <input
             type="text"
             class="rounded-md w-[50vmin]"
@@ -154,17 +150,17 @@ const _method = {
                 <div class="p-5 mb-10">
                     Date: {{ _method.dateTime(data.updated_at) }}
                 </div>
-                <div class="bg-gray-500 p-2 rounded-sm">
+                <div class="bg-gray-200 p-2 rounded-sm">
                     <a
                         :href="route('tests_index', { uuid: data.uuid })"
-                        class="inline-flex items-center"
+                        class="inline-flex items-center bg-blue-400 p-1 rounded-md text-white"
                     >
                         View
                     </a>
 
                     <button
                         @click="_method.showModal(data.id)"
-                        class="inline-flex items-center"
+                        class="inline-flex items-center text-white bg-red-400 p-1 rounded-md m-1 shadow-md"
                     >
                         Delete
                     </button>
