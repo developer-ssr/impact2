@@ -32,37 +32,11 @@ class MainDashboardController extends Controller{
       $mainDashboardCollection = MainDashboard::all(); // or however you are retrieving it
 $mainDashboard = $mainDashboardCollection->first(); // Get the first instance
 
-// // Access the images
-// $images = $mainDashboard->images;
-// $message = $images['MainTrial']['message'];
-//  $cells = $message['cells'];
-
-     
-$result = Result::where('testcode', $request->query('code'))
-                ->where('demoPart', 3)
-                ->whereNotNull('cellid')
-                ->whereNotNull('index')
-                ->groupBy('cellid', 'index')
-                ->selectRaw('cellid, `index`, SUM(rt) as total_rt, COUNT(*) as total_records')
-                ->orderBy('index') // Add this line to sort by index
-                ->get();
-
-$avgresult = Result::where('demoPart', 3)->where('testcode',$request->query('code'))
-                    ->groupBy('cellid') 
-                    ->selectRaw('`cellid`, SUM(rt) as total_rt') 
-                   ->get();
-
-$rt_values = [
-    'highest' => $avgresult->max('total_rt'),
-    'lowest' => $avgresult->min('total_rt'),
-    'median' => $avgresult->median('total_rt'),
-];
 
 
         return Inertia::render("MainDashboardPage/Index",[
              'data'=>MainDashboard::where('code',$request->query('code'))->first(),
-             'rt_values'=>$rt_values,
-             'test_result'=>$result,
+             
              'mainData'=>MainDashboard::where('code',$request->query('code'))->get()
         ]);
 
@@ -206,15 +180,26 @@ public function searchTest(Request $request)
      */
     public function update(Request $request, MainDashboard $mainDashboard){
 
-
         $mainDashboard = MainDashboard::find($request->id);
         $mainDashboard->test_name = $request->test_name;
-        $mainDashboard->headers=$request->header;
-        $mainDashboard->footers=$request->footer;
-        $mainDashboard->warnings=$request->warning;
+        // $mainDashboard->headers=$request->header;
+        // $mainDashboard->footers=$request->footer;
+        // $mainDashboard->warnings=$request->warning;
         $mainDashboard->images=$request->images;
         $mainDashboard->instructions=$request->instructions;
-        $mainDashboard->save();
+        $mainDashboard->save(); 
+ 
+    }
+
+    public function update_Instruction_grid(Request $request, MainDashboard $mainDashboard){
+        $mainDashboard = MainDashboard::find($request->id);
+        // $mainDashboard->test_name = $request->test_name;
+        // $mainDashboard->headers=$request->header;
+        // $mainDashboard->footers=$request->footer;
+        // $mainDashboard->warnings=$request->warning;
+        $mainDashboard->images=$request->images;
+        $mainDashboard->instructions=$request->instructions;
+        $mainDashboard->save();  
     }
     public function uploadImage(Request $request, MainDashboard $mainDashboard){
        

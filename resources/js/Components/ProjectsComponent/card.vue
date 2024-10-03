@@ -140,7 +140,7 @@ const _method = {
                         :class="'ProjectText' + data.id"
                     >
                         <div
-                            class="bg-gradient-to-r from-teal-400 to-blue-500 hover:from-pink-500 hover:to-orange-500 w-[10vmin] pt-1 pl-5 pb-1 rounded-xl"
+                            class="bg-gradient-to-r from-teal-400 to-blue-500 hover:from-pink-500 hover:to-orange-500  pt-1 pl-5 pb-1 rounded-xl"
                         >
                             {{ data.project_name }}
                         </div>

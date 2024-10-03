@@ -174,12 +174,18 @@ Route::controller(MainDashboardController::class)->group(function () {
     Route::get('tests', 'test');
     Route::get('testresult', 'testresult');
     Route::get('practice', 'practice');
-    Route::get('export', 'export');
+    //Route::get('export', 'export');
     Route::get('searchTest', 'searchTest')->name('searchTest');
+    
+   Route::post('update_Instruction_grid', 'update_Instruction_grid')->name('update_Instruction_grid');
+});
+Route::controller(ExportController::class)->group(function () {
+   
+    Route::get('export', 'index');
+   
     
 
 });
-
 
 
 });
