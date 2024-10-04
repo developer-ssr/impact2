@@ -3,6 +3,7 @@ import { provide, inject, ref, onMounted } from "vue";
 import Modal from "@/Components/ProjectsComponent/Modal/Delmodal.vue";
 import moment from "moment";
 import Notifcation from "@/Components/Notification.vue";
+import testimg from "@/Components/img/test.png";
 import { useForm, router } from "@inertiajs/vue3";
 
 const props = inject("props");
@@ -12,6 +13,7 @@ const isNotificationVisible = ref(false);
 const timer = ref(null);
 const editingText = ref(null);
 const searchProj = ref(null);
+//const testimg = require("@/assets/img/test.jpg");
 const project = useForm({
     project_name: null,
     id: null,
@@ -122,7 +124,7 @@ const _method = {
             >
         </Notifcation>
     </Teleport>
-
+    
     <div class="grid grid-cols-4 gap-4 p-2">
         <div v-for="(data, index) in ProjectsData" :key="index">
             <div class="bg-white rounded-lg">
@@ -140,7 +142,7 @@ const _method = {
                         :class="'ProjectText' + data.id"
                     >
                         <div
-                            class="bg-gradient-to-r from-teal-400 to-blue-500 hover:from-pink-500 hover:to-orange-500  pt-1 pl-5 pb-1 rounded-xl"
+                            class="bg-gradient-to-r from-teal-400 to-blue-500 hover:from-pink-500 hover:to-orange-500 pt-1 pl-5 pb-1 rounded-xl"
                         >
                             {{ data.project_name }}
                         </div>

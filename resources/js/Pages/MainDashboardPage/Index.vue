@@ -4,7 +4,7 @@ import AppLayout from "@/Layouts/AppLayout.vue";
 import MainDashboard from "@/Components/MainDashboardComponent/index.vue";
 import templates_coponent from "@/Components/MainDashboardComponent/Templates/index.vue";
 import demo_component from "@/Components/MainDashboardComponent/Selectdemo/index.vue";
-import trial_component from "@/Components/MainDashboardComponent/Trial/index.vue";
+import target_component from "@/Components/MainDashboardComponent/Target/index.vue";
 import redirect_component from "@/Components/MainDashboardComponent/Redirect/index.vue";
 import setupgrid_component from "@/Components/MainDashboardComponent/SetupGrid/index.vue";
 import instructions_component from "@/Components/MainDashboardComponent/Instructions/index.vue";
@@ -63,9 +63,9 @@ provide("Alldata", props.data);
                         v-if="activeElem === 'templates'"
                     ></templates_coponent>
 
-                    <trial_component
+                    <target_component
                         v-if="activeElem === 'trial'"
-                    ></trial_component>
+                    ></target_component>
                     <redirect_component
                         v-if="activeElem === 'redirect'"
                     ></redirect_component>

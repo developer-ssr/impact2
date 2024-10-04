@@ -17,8 +17,11 @@ use App\Http\Controllers\PreviewController;
 use App\Http\Controllers\EngineController;
 use App\Http\Controllers\ExportController;
 use App\Http\Controllers\MainDashboardController;
+use App\Http\Controllers\ExportResult;
 
 use Inertia\Inertia;
+
+Route::get('exportexcel',[ExportResult::class,'exportexcel']);
 
 Route::get('/', function () {
 

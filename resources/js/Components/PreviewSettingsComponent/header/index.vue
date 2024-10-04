@@ -4,7 +4,7 @@
             class="dheader bg-[#fff] text-sm h-[5.3vmin] shadow-md fixed w-[100%] flex items-center justify-center"
         >
             <img
-                src="http://impact2.test/targets_images/logo.png"
+                :src="logo"
                 class="max-w-[100%] max-h-[100%]"
             />
             <button
@@ -18,7 +18,7 @@
 
 <script setup>
 import { inject } from "vue";
-
+import logo from "@/Components/img/logo.png";
 const status = inject("status");
 </script>
 

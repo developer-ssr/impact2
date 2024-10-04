@@ -73,7 +73,7 @@
                                 v-if="cell.ladybug"
                                 id="selected_trial"
                                 class="ladybug cells z-10"
-                                src="http://impact2.test/targets_images/ladybug.png"
+                                :src="ladybugImg"
                                 height="30"
                                 width="30"
                             />
@@ -88,10 +88,12 @@
 <script setup>
 import { inject, ref, onMounted, defineEmits, reactive } from "vue";
 import Modal from "@/Components/Modal.vue";
+import ladybugImg from "@/Components/img/ladybug.png";
 
 const $emits = defineEmits(["done"]);
 const props = inject("status");
 const showModal = ref(false);
+
 // const shufCell = ref(null);
 const testCon = ref(true);
 const insCon = ref(false);
