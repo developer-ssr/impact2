@@ -19,7 +19,7 @@ const project = useForm({
 const _method = {
     locateProjects: (id) => {
         window.location.replace(
-            "http://newimpact2.test/tests_index/?uuid=" + id
+            "http://impact2.test/tests_index/?uuid=" + id
         );
     },
 
