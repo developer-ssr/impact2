@@ -20,6 +20,15 @@ const project = useForm({
 });
 
 const _method = {
+<<<<<<< HEAD
+    locateProjects: (id) => {
+        window.location.replace(
+            "http://impact2.test/tests_index/?uuid=" + id
+        );
+    },
+
+=======
+>>>>>>> 71c0fd903acdc37a64a0f3cf0a63b074aff5404d
     dateTime: (value) => {
         return moment(value).format("MMMM Do YYYY, h:mm:ss a");
     },

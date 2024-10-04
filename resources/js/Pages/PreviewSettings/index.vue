@@ -197,11 +197,11 @@ font[size="5"] {
         class="bodyBoxCon fixed z-20 translate-x-[-50%] translate-y-[-50%] left-[50%] top-[50%] shadow-2xl border-gray-400"
     >
         <div
-            class="bg-white h-[50vmin] w-[100vmin] shadow-lg p-5"
-            v-html="objStat.instruction"
+            class="bg-white h-[50vmin] w-[100vmin] shadow-lg p-5"v-html="objStat.instruction"
         ></div>
+        
         <div
-            class="bg-white h-[10vmin] w-[100vmin] shadow-lg p-5 flex items-center justify-center"
+            class="bg-white h-[10vmin] w-[100vmin] p-5 flex items-center justify-center"
         >
             <button
                 id="selected_trial"
@@ -212,4 +212,7 @@ font[size="5"] {
             </button>
         </div>
     </div>
+
+
+    
 </template>
