@@ -20,15 +20,6 @@ const project = useForm({
 });
 
 const _method = {
-<<<<<<< HEAD
-    locateProjects: (id) => {
-        window.location.replace(
-            "http://impact2.test/tests_index/?uuid=" + id
-        );
-    },
-
-=======
->>>>>>> 71c0fd903acdc37a64a0f3cf0a63b074aff5404d
     dateTime: (value) => {
         return moment(value).format("MMMM Do YYYY, h:mm:ss a");
     },
@@ -133,7 +124,7 @@ const _method = {
             >
         </Notifcation>
     </Teleport>
-    
+
     <div class="grid grid-cols-4 gap-4 p-2">
         <div v-for="(data, index) in ProjectsData" :key="index">
             <div class="bg-white rounded-lg">
