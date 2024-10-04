@@ -3,6 +3,7 @@ import { provide, inject, ref, onMounted } from "vue";
 import Modal from "@/Components/ProjectsComponent/Modal/Delmodal.vue";
 import moment from "moment";
 import Notifcation from "@/Components/Notification.vue";
+import testimg from "@/Components/img/test.png";
 import { useForm, router } from "@inertiajs/vue3";
 
 const props = inject("props");
@@ -12,18 +13,13 @@ const isNotificationVisible = ref(false);
 const timer = ref(null);
 const editingText = ref(null);
 const searchProj = ref(null);
+//const testimg = require("@/assets/img/test.jpg");
 const project = useForm({
     project_name: null,
     id: null,
 });
 
 const _method = {
-    locateProjects: (id) => {
-        window.location.replace(
-            `/tests_index/?uuid=${id}`
-        );
-    },
-
     dateTime: (value) => {
         return moment(value).format("MMMM Do YYYY, h:mm:ss a");
     },
@@ -76,8 +72,10 @@ const _method = {
 </script>
 
 <template>
-    <div class="grid relative bg-blue-900 p-2 text-white">
-        <label> Search Project</label>
+    <div class="grid relative bg-blue-900 p-2">
+        <label class="text-white bg-purple-500 w-[20vmin] p-1 mb-1 rounded-md">
+            Search Project</label
+        >
         <input
             type="text"
             class="rounded-md w-[50vmin]"
@@ -144,7 +142,7 @@ const _method = {
                         :class="'ProjectText' + data.id"
                     >
                         <div
-                            class="bg-gradient-to-r from-teal-400 to-blue-500 hover:from-pink-500 hover:to-orange-500 w-[10vmin] pt-1 pl-5 pb-1 rounded-xl"
+                            class="bg-gradient-to-r from-teal-400 to-blue-500 hover:from-pink-500 hover:to-orange-500 pt-1 pl-5 pb-1 rounded-xl"
                         >
                             {{ data.project_name }}
                         </div>
@@ -154,17 +152,17 @@ const _method = {
                 <div class="p-5 mb-10">
                     Date: {{ _method.dateTime(data.updated_at) }}
                 </div>
-                <div class="bg-gray-500 p-2 rounded-sm">
+                <div class="bg-gray-200 p-2 rounded-sm">
                     <a
                         :href="route('tests_index', { uuid: data.uuid })"
-                        class="inline-flex items-center"
+                        class="inline-flex items-center bg-blue-400 p-1 rounded-md text-white"
                     >
                         View
                     </a>
 
                     <button
                         @click="_method.showModal(data.id)"
-                        class="inline-flex items-center"
+                        class="inline-flex items-center text-white bg-red-400 p-1 rounded-md m-1 shadow-md"
                     >
                         Delete
                     </button>

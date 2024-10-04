@@ -85,7 +85,7 @@ const vsExpl = ref(false);
 const vsWarn = ref(false);
 const vsHead = ref(false);
 const vsfooter = ref(false);
-
+console.log(props);
 const saveBlock = () => {
     props.images.MainTrial.message.blocknum = blockSettings.blockNumber;
     console.log(props.images.MainTrial.message);

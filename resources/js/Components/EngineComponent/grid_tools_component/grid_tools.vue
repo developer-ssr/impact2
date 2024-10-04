@@ -26,33 +26,42 @@
     </div>
 </template>
 <script setup>
-import { inject, onMounted, ref, reactive } from "vue";
-import { router } from "@inertiajs/vue3";
+import { inject, onMounted, ref, defineProps } from "vue";
+import { router, useForm } from "@inertiajs/vue3";
 const Savenot = ref(false);
 
 let url = window.location.href;
 const urlObj = new URL(url);
 const code = urlObj.searchParams.get("code");
 
-const props = reactive({
-    id: inject("DemoId"),
-    images: inject("Image_Settings"),
-    // warning: inject("Warning_Settings"),
-    // header: inject("Header_Settings"),
-    // footer: inject("Footer_Settings"),
-    instructions: inject("Instructions"),
+// const form = useForm({
+//     id: inject("DemoId"),
+//     images: inject("Image_Settings"),
+//     // warning: inject("Warning_Settings"),
+//     // header: inject("Header_Settings"),
+//     // footer: inject("Footer_Settings"),
+//     instructions: inject("Instructions"),
+// });
+
+const form = useForm({
+    id: null,
+    images: null,
+    instructions: null,
 });
+
+form.id = inject("DemoId");
+form.images = inject("Image_Settings");
+form.instructions = inject("Instructions");
 
 const _methods = {
     save: () => {
-        router.post("/update_mainsettings", props);
+        form.post("/update_Instruction_grid");
         Savenot.value = true;
-        console.log(props);
+
         setTimeout(() => {
             // console.log("saved");
             Savenot.value = false;
         }, 5000);
     },
-   
 };
 </script>

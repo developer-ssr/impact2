@@ -1,6 +1,6 @@
 <template>
     <Modal :show="showModal">
-        <div class="h-[50vmin]">
+        <div class="h-[25vmin]">
             <div
                 class="translate-x-[-50%] translate-y-[-50%] relative top-[50%] left-[80%]"
             >
@@ -10,28 +10,44 @@
     </Modal>
     <div
         class="bodyBoxCon fixed translate-x-[-50%] translate-y-[-50%] left-[50%] top-[50%] border-slate-800"
+        :style="{
+          width: bgimageWidth,
+          height: bgimageHeight
+        }"
     >
-        <div v-if="insCon">
+    <div v-if="insCon">
             <div
-                class="border-2 bg-white h-[50vmin] w-[100vmin] shadow-2xl border-gray-300"
+                class="bg-white shadow-2xl border-gray-300"
                 v-html="props.instruction"
+                :style="{
+                  height: bgimageHeight,
+                  width: bgimageWidth
+                }"
             ></div>
             <div
-                class="bg-white h-[10vmin] w-[100vmin] shadow-lg p-5 flex items-center justify-center"
+                class="bg-white shadow-lg p-5 flex items-center justify-center"
+                :style="{
+                  height: '10vmin',
+                  width: bgimageWidth
+                }"
             >
                 <button
                     id="selected_trial"
                     @click="_methods.startTest"
                     class="bg-orange-500 p-4 rounded-lg w-40 text-white text-[2vmin]"
                 >
-                    Start
+               Start
                 </button>
             </div>
         </div>
 
         <div
             v-if="testCon"
-            class="border-2 bg-white h-[50vmin] w-[100vmin] shadow-2xl border-gray-300"
+            class="border-2 bg-white shadow-2xl border-gray-300"
+            :style="{
+              height: bgimageHeight,
+              width: bgimageWidth
+            }"
         >
             <div
                 v-for="(data, index) in props.image_grid"
@@ -40,18 +56,19 @@
             >
                 <img
                     v-if="targets"
-                    class="testImg bg-white translate-x-[-50%] translate-y-[-50%] fixed top-[50%] left-[50%] h-[50vmin] w-[100vmin] z-100"
+                    class="testImg bg-white translate-x-[-50%] translate-y-[-50%] fixed top-[50%] left-[50%] z-100"
                     :src="data.imagesrc"
                     :style="{
                         'aspect-ratio': data.image_ratio,
                         width: data.Hwidht,
                         height: data.Hheight,
+                        
                     }"
                 />
 
                 <div
                     :style="{
-                        width: data.Hwidht,
+                        // width: data.Hwidht,
                         width: data.Hwidht,
                         height: data.Hheight,
                         fontSize: '2vmin',
@@ -73,11 +90,12 @@
                                 v-if="cell.ladybug"
                                 id="selected_trial"
                                 class="ladybug cells z-10"
-                                src="http://impact2.test/targets_images/ladybug.png"
+                                :src="ladybugImg"
                                 height="30"
                                 width="30"
                             />
                         </div>
+                         <!-- {{ cell.index }} -->
                     </div>
                 </div>
             </div>
@@ -88,10 +106,12 @@
 <script setup>
 import { inject, ref, onMounted, defineEmits, reactive } from "vue";
 import Modal from "@/Components/Modal.vue";
+import ladybugImg from "@/Components/img/ladybug.png";
 
 const $emits = defineEmits(["done"]);
 const props = inject("status");
 const showModal = ref(false);
+
 // const shufCell = ref(null);
 const testCon = ref(true);
 const insCon = ref(false);
@@ -105,6 +125,8 @@ const Tempcollections = ref([]);
 const count = ref(1);
 const ResultCollection = ref({});
 const d = reactive({ rt: null, end: null });
+const bgimageWidth = ref('100vmin');
+const bgimageHeight = ref('50vmin');
 
 const _methods = {
     startTest: () => {
@@ -370,6 +392,11 @@ const _methods = {
 };
 
 onMounted(() => {
+    bgimageWidth.value = document.querySelector(".bgimage").offsetWidth + 'px';
+    bgimageHeight.value = document.querySelector(".bgimage").offsetHeight + 'px';
+});
+
+onMounted(() => {
     targets.value = true;
     ladybug.value = false;
     setTimeout(() => {
@@ -391,7 +418,11 @@ onMounted(() => {
     // _methods.detectCell(event);
 });
 </script>
+
+
 <style>
+
+
 .bgimage {
     aspect-ratio: var(--imageratio);
 }

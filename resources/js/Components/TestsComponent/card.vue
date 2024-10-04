@@ -1,5 +1,5 @@
 <script setup>
-import { provide, inject, ref, onMounted } from "vue";
+import { provide, inject, ref, onMounted, reactive } from "vue";
 import Modal from "@/Components/TestsComponent/Modal/Delmodal.vue";
 import moment from "moment";
 import Notifcation from "@/Components/Notification.vue";
@@ -12,18 +12,301 @@ const isNotificationVisible = ref(false);
 const timer = ref(null);
 const editingText = ref(null);
 
+const Image_Settings = reactive({
+    practiceTrial: {
+        message: {
+            id: 1,
+            bgColor: "whitesmoke",
+            Xaxis: "50%",
+            Yaxis: "50%",
+            imagesrc: null,
+            Hheight: "10",
+            Hwidht: "50",
+            borderRadius: "10px",
+            borderWidth: "5px",
+            borderColor: "gray",
+            image_ratio: null,
+        },
+    },
+    DummyTrial: {
+        message: {
+            id: 2,
+            bgColor: "whitesmoke",
+            Xaxis: "50%",
+            Yaxis: "50%",
+            imagesrc: null,
+            Hheight: "10",
+            Hwidht: "50",
+
+            borderRadius: "10px",
+            borderWidth: "5px",
+            borderColor: "gray",
+            image_ratio: null,
+        },
+    },
+
+    MainTrial: {
+        message: {
+            id: 3,
+            bgColor: "whitesmoke",
+            Xaxis: "50%",
+            Yaxis: "50%",
+            imagesrc: null,
+            Hheight: "10",
+            Hwidht: "50",
+            borderRadius: "10px",
+            borderWidth: "5px",
+            borderColor: "gray",
+            image_ratio: null,
+            blocknum: null,
+        },
+    },
+    ExplicitTrial: {
+        message: {
+            id: 4,
+            bgColor: "whitesmoke",
+            Xaxis: "50%",
+            Yaxis: "50%",
+            imagesrc: null,
+            Hheight: "10",
+            Hwidht: "50",
+            borderRadius: "10px",
+            borderWidth: "5px",
+            borderColor: "gray",
+            image_ratio: null,
+        },
+    },
+});
+
+// const Warning_Settings = reactive({
+//     practiceTrial: {
+//         message: {
+//             id: 1,
+//             bgColor: "whitesmoke",
+//             Xaxis: "50%",
+//             Yaxis: "50%",
+//             content: "Practice Header Warning",
+//             Hheight: "10",
+//             Hwidht: "50",
+//             textColor: "black",
+//             borderRadius: "10px",
+//             borderWidth: "5px",
+//             borderColor: "gray",
+//         },
+//     },
+//     DummyTrial: {
+//         message: {
+//             id: 2,
+//             bgColor: "whitesmoke",
+//             Xaxis: "50%",
+//             Yaxis: "50%",
+//             content: "Dummy Header Warning",
+//             Hheight: "10",
+//             Hwidht: "50",
+//             textColor: "black",
+//             borderRadius: "10px",
+//             borderWidth: "5px",
+//             borderColor: "gray",
+//         },
+//     },
+
+//     MainTrial: {
+//         message: {
+//             id: 3,
+//             bgColor: "whitesmoke",
+//             Xaxis: "50%",
+//             Yaxis: "50%",
+//             content: "Main Header Warning",
+//             Hheight: "10",
+//             Hwidht: "50",
+//             textColor: "black",
+//             borderRadius: "10px",
+//             borderWidth: "5px",
+//             borderColor: "gray",
+//         },
+//     },
+// });
+// const Footer_Settings = reactive({
+//     practiceTrial: {
+//         message: {
+//             id: 1,
+//             bgColor: "whitesmoke",
+//             Xaxis: "50%",
+//             Yaxis: "92%",
+//             content: "Practice Footer Text",
+//             Hheight: "5vmin",
+//             Hwidht: "60vmin",
+//             textColor: "black",
+//             borderRadius: "10px",
+//             borderWidth: "5px",
+//             borderColor: "gray",
+//         },
+//     },
+//     DummyTrial: {
+//         message: {
+//             id: 2,
+//             bgColor: "whitesmoke",
+//             Xaxis: "50%",
+//             Yaxis: "92%",
+//             content: "Dummy Footer Text",
+//             Hheight: "5vmin",
+//             Hwidht: "60vmin",
+//             textColor: "black",
+//             borderRadius: "10px",
+//             borderWidth: "5px",
+//             borderColor: "gray",
+//         },
+//     },
+
+//     MainTrial: {
+//         message: {
+//             id: 3,
+//             bgColor: "whitesmoke",
+//             Xaxis: "50%",
+//             Yaxis: "92%",
+//             content: "Main Footer Text",
+//             Hheight: "5vmin",
+//             Hwidht: "60vmin",
+//             textColor: "black",
+//             borderRadius: "10px",
+//             borderWidth: "5px",
+//             borderColor: "gray",
+//         },
+//     },
+// });
+
+// const Header_Settings = reactive({
+//     practiceTrial: {
+//         message: {
+//             id: 1,
+//             bgColor: "whitesmoke",
+//             Xaxis: "50%",
+//             Yaxis: "25%",
+//             content: "Practice Header",
+//             Hheight: "12vmin",
+//             Hwidht: "60vmin",
+//             textColor: "black",
+//             borderRadius: "0px",
+//             borderWidth: "5px",
+//             borderColor: "gray",
+//         },
+//     },
+//     DummyTrial: {
+//         message: {
+//             id: 2,
+//             bgColor: "whitesmoke",
+//             Xaxis: "50%",
+//             Yaxis: "25%",
+//             content: "Dummy Header",
+//             Hheight: "12vmin",
+//             Hwidht: "60vmin",
+//             textColor: "black",
+//             borderRadius: "10px",
+//             borderWidth: "5px",
+//             borderColor: "gray",
+//         },
+//     },
+
+//     MainTrial: {
+//         message: {
+//             id: 3,
+//             bgColor: "whitesmoke",
+//             Xaxis: "50%",
+//             Yaxis: "25%",
+//             content: "Main Header",
+//             Hheight: "12vmin",
+//             Hwidht: "60vmin",
+//             textColor: "black",
+//             borderRadius: "10px",
+//             borderWidth: "5px",
+//             borderColor: "gray",
+//         },
+//     },
+// });
+
+const Instructions = reactive({
+    practiceTrial: {
+        message: {
+            id: 1,
+            bgColor: "whitesmoke",
+            Xaxis: "50%",
+            Yaxis: "60%",
+            blockTitle: "Practice Trial",
+            content: "Practice Instruction",
+            Hheight: "50vmin",
+            Hwidht: "50vmin",
+            textColor: "black",
+            borderRadius: "10px",
+            borderWidth: "5px",
+            borderColor: "gray",
+        },
+    },
+    DummyTrial: {
+        message: {
+            id: 2,
+            bgColor: "whitesmoke",
+            Xaxis: "50%",
+            Yaxis: "60%",
+            blockTitle: "Dummy Trial",
+            content: "Dummy Instruction",
+            Hheight: "50vmin",
+            Hwidht: "50vmin",
+            textColor: "black",
+            borderRadius: "10px",
+            borderWidth: "5px",
+            borderColor: "gray",
+        },
+    },
+
+    MainTrial: {
+        message: {
+            id: 3,
+            bgColor: "whitesmoke",
+            Xaxis: "50%",
+            Yaxis: "60%",
+            blockTitle: "Main Trial",
+            content: "Main Instruction",
+            Hheight: "50vmin",
+            Hwidht: "50vmin",
+            textColor: "black",
+            borderRadius: "10px",
+            borderWidth: "5px",
+            borderColor: "gray",
+            blocknum: null,
+        },
+    },
+
+    ExplicitTrial: {
+        message: {
+            id: 4,
+            bgColor: "whitesmoke",
+            Xaxis: "50%",
+            Yaxis: "60%",
+            blockTitle: "Explicit Trial",
+            content: "Explicit Instruction",
+            Hheight: "50vmin",
+            Hwidht: "50vmin",
+            textColor: "black",
+            borderRadius: "10px",
+            borderWidth: "5px",
+            borderColor: "gray",
+        },
+    },
+});
+
 const tests = useForm({
-    test_name: null,
     id: null,
+    test_name: null,
+    uuid: null,
+    Image_Settings: Image_Settings,
+    // Warning_Settings: Warning_Settings,
+    // Footer_Settings: Footer_Settings,
+    // Header_Settings: Header_Settings,
+
+    Instructions: Instructions,
 });
 
 const _method = {
-    locateProjects: (id) => {
-        window.location.replace(
-            "http://impact2.test/maindashboard/?code=" + id
-        );
-    },
-
     dateTime: (value) => {
         return moment(value).format("MMMM Do YYYY, h:mm:ss a");
     },
@@ -51,7 +334,6 @@ const _method = {
         ).textContent;
         tests.id = obj.id;
         tests.post("/update_mainsettings", {
-            
             onSuccess: () => {
                 let timer = 4;
                 let interval = setInterval(() => {
@@ -76,11 +358,13 @@ const _method = {
 
 <template>
     <div class="grid relative bg-blue-900 p-2">
-        <label class="text-white"> Search Test</label>
+        <label class="text-white bg-purple-500 w-[20vmin] p-1 mb-1 rounded-md">
+            Search Test</label
+        >
         <input
             type="text"
             class="rounded-md w-[50vmin]"
-            placeholder="Test Test"
+            placeholder="Test name"
             @keypress.enter="_method.Searchtest"
             v-model="tests.test_name"
         />
@@ -129,10 +413,7 @@ const _method = {
             v-for="(data, index) in props.props.data.data"
             :key="index"
         >
-            <div
-                class="p-2 ml-1 mr-1 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
-            >
-                Tests:
+            <div class="bg-white rounded-lg">
                 <div
                     @blur="
                         _method.editTests({
@@ -143,29 +424,34 @@ const _method = {
                     contenteditable="true"
                     :class="'TestsText' + data.id"
                 >
-                    <h5
-                        class="truncate mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white"
+                    <div
+                        class="bg-gray-900 h-13 p-3 text-white rounded-lg shadow-xl"
                     >
-                        {{ data.test_name }}
-                    </h5>
+                        <div
+                            class="bg-gradient-to-r from-teal-400 to-blue-500 hover:from-pink-500 hover:to-orange-500 pt-1 pl-5 pb-1 rounded-xl"
+                        >
+                            {{ data.test_name }}
+                        </div>
+                    </div>
                 </div>
-                <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">
+                <div class="p-5 mb-10">
                     Code:{{ data.code }}<br />
                     Date: {{ _method.dateTime(data.updated_at) }}
-                </p>
-
-                <a
-                    :href="route('maindashboard', { code: data.code })"
-                    class="inline-flex items-center px-3 py-2 mr-1 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                >
-                    View Tests
-                </a>
-                <button
-                    @click="_method.showModal(data.id)"
-                    class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-red-700 rounded-lg hover:bg-red-800 focus:ring-4 focus:outline-none"
-                >
-                    Delete
-                </button>
+                </div>
+                <div class="bg-gray-200 p-2 rounded-sm">
+                    <a
+                        :href="route('maindashboard', { code: data.code })"
+                        class="inline-flex items-center bg-blue-400 p-1 rounded-md text-white"
+                    >
+                        View Tests
+                    </a>
+                    <button
+                        @click="_method.showModal(data.id)"
+                        class="inline-flex items-center text-white bg-red-400 p-1 rounded-md m-1 shadow-md"
+                    >
+                        Delete
+                    </button>
+                </div>
             </div>
         </div>
     </div>
