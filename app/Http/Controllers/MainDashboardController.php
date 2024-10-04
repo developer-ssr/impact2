@@ -32,37 +32,11 @@ class MainDashboardController extends Controller{
       $mainDashboardCollection = MainDashboard::all(); // or however you are retrieving it
 $mainDashboard = $mainDashboardCollection->first(); // Get the first instance
 
-// // Access the images
-// $images = $mainDashboard->images;
-// $message = $images['MainTrial']['message'];
-//  $cells = $message['cells'];
-
-     
-$result = Result::where('testcode', $request->query('code'))
-                ->where('demoPart', 3)
-                ->whereNotNull('cellid')
-                ->whereNotNull('index')
-                ->groupBy('cellid', 'index')
-                ->selectRaw('cellid, `index`, SUM(rt) as total_rt, COUNT(*) as total_records')
-                ->orderBy('index') // Add this line to sort by index
-                ->get();
-
-$avgresult = Result::where('demoPart', 3)->where('testcode',$request->query('code'))
-                    ->groupBy('cellid') 
-                    ->selectRaw('`cellid`, SUM(rt) as total_rt') 
-                   ->get();
-
-$rt_values = [
-    'highest' => $avgresult->max('total_rt'),
-    'lowest' => $avgresult->min('total_rt'),
-    'median' => $avgresult->median('total_rt'),
-];
 
 
         return Inertia::render("MainDashboardPage/Index",[
              'data'=>MainDashboard::where('code',$request->query('code'))->first(),
-             'rt_values'=>$rt_values,
-             'test_result'=>$result,
+             
              'mainData'=>MainDashboard::where('code',$request->query('code'))->get()
         ]);
 
@@ -146,16 +120,17 @@ $decodedObject = json_decode($jsonString);
 if (json_last_error() !== JSON_ERROR_NONE) {
     echo "JSON decode error: " . json_last_error_msg();
 }
-        dd($decodedObject);
+        // dd($decodedObject);
     }
 
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request){
+        // dd($request);
 
          MainDashboard::create([
-            'test_name'=>$request->folder_name,
+            'test_name'=>$request->test_name,
             'uuid'=> session('uuid'),
             'user_id'=>auth()->user()->id,
             'status'=>1,
@@ -167,6 +142,21 @@ if (json_last_error() !== JSON_ERROR_NONE) {
             // 'footers'=>$request->Footer_Settings,
         ]);
     }
+
+public function searchTest(Request $request)
+{
+ 
+   $result = MainDashboard::whereNull('deleted_at')
+    ->where('uuid', session('uuid'))
+    ->where('test_name', 'LIKE', '%' . $request->testName . '%')
+    ->paginate(12);
+  
+    return Inertia::render("Tests/index", [
+        'data' => $result,
+       
+    ]);
+}
+
 
     /**
      * Display the specified resource.
@@ -189,13 +179,27 @@ if (json_last_error() !== JSON_ERROR_NONE) {
      * Update the specified resource in storage.
      */
     public function update(Request $request, MainDashboard $mainDashboard){
+
         $mainDashboard = MainDashboard::find($request->id);
-        $mainDashboard->headers=$request->header;
-        $mainDashboard->footers=$request->footer;
-        $mainDashboard->warnings=$request->warning;
+        $mainDashboard->test_name = $request->test_name;
+        // $mainDashboard->headers=$request->header;
+        // $mainDashboard->footers=$request->footer;
+        // $mainDashboard->warnings=$request->warning;
         $mainDashboard->images=$request->images;
         $mainDashboard->instructions=$request->instructions;
-        $mainDashboard->save();
+        $mainDashboard->save(); 
+ 
+    }
+
+    public function update_Instruction_grid(Request $request, MainDashboard $mainDashboard){
+        $mainDashboard = MainDashboard::find($request->id);
+        // $mainDashboard->test_name = $request->test_name;
+        // $mainDashboard->headers=$request->header;
+        // $mainDashboard->footers=$request->footer;
+        // $mainDashboard->warnings=$request->warning;
+        $mainDashboard->images=$request->images;
+        $mainDashboard->instructions=$request->instructions;
+        $mainDashboard->save();  
     }
     public function uploadImage(Request $request, MainDashboard $mainDashboard){
        
@@ -316,7 +320,7 @@ $rt_values = ([
     'lowest'=>$avgresult->min('rt'),
     'median'=>$avgresult->median('rt'),
 ]);
-dd($rt_values);
+// dd($rt_values);
 
     $main = MainDashboard::where('code', session('uuid'))->first();
 

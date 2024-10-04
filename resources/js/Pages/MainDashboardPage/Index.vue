@@ -15,20 +15,20 @@ const props = defineProps(["data", "test_result", "rt_values", "mainData"]);
 
 const sidebarVisible = ref(false);
 const activeElem = ref(false);
-const mainCell = ref(props.data.images.MainTrial.message.cells);
-const resultCellId = ref(props.test_result);
+// const mainCell = ref(props.data.images.MainTrial.message.cells);
+// const resultCellId = ref(props.test_result);
 
-const mergeObjects = (obj1, obj2) => {
-    for (const [key1, value1] of Object.entries(obj1)) {
-        for (const [key2, value2] of Object.entries(obj2)) {
-            if (value1.cellid === value2.cellid) {
-                obj1[key1].totat_rt = value2.total_rt;
-            }
-        }
-    }
+// const mergeObjects = (obj1, obj2) => {
+//     for (const [key1, value1] of Object.entries(obj1)) {
+//         for (const [key2, value2] of Object.entries(obj2)) {
+//             if (value1.cellid === value2.cellid) {
+//                 obj1[key1].totat_rt = value2.total_rt;
+//             }
+//         }
+//     }
 
-    return obj1;
-};
+//     return obj1;
+// };
 
 provide("Image_Settings", props.data.images);
 // provide("Warning_Settings", props.data.warnings);
@@ -37,16 +37,6 @@ provide("Image_Settings", props.data.images);
 provide("Instructions", props.data.instructions);
 provide("DemoId", props.data.id);
 provide("Alldata", props.data);
-// provide("test_result", props.test_result);
-// provide("rt_values", props.rt_values);
-
-onMounted(() => {
-    //console.log(resultCellId.value);
-    //console.log(mergeObjects(mainCell.value, resultCellId.value));
-    // Function to merge objects based on matching 'name' property
-    //const combinedObj = mergeObjects(obj1, obj2);
-    //console.log(combinedObj);
-});
 </script>
 
 <template>

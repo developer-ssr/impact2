@@ -27,7 +27,7 @@
                 <button
                     class="bg-gray-200 w-full h-[5vmin] hover:bg-yellow-300 hover:text-white"
                 >
-                    <a :href="'tests'"> All Reponses </a>
+                    <a :href="'export'"> All Reponses </a>
                 </button>
                 <button
                     class="bg-gray-200 w-full h-[5vmin] hover:bg-yellow-300 hover:text-white"

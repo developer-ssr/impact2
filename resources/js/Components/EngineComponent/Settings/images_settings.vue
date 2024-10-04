@@ -232,7 +232,8 @@ const _methods = {
                     })`
                     : flattened[Math.floor(flattened.length / 2)];
 
-            console.log(`Median: ${median}`);
+            // console.log(`Median: ${median}`);
+            console.log(instruction_data);
         });
     },
 };

@@ -42,12 +42,33 @@ class TestsController extends Controller
            'save'=>'store_mainsettings'
         ];
         
+     
         return Inertia::render("Tests/index",[
             'menu'=>$menu,
             'data'=>MainDashboard::where('uuid',$request->query('uuid'))->paginate(12),
             'Project_title'=>MainDashboard::where('uuid',$request->query('uuid'))
         ]);
     }
+
+    public function searchTest(Request $request)
+{
+   
+    $request->validate([
+        'test_name' => 'required|string|max:255',
+    ]);
+
+   
+    $result = DB::table('MainDashboard')
+        ->where('deleted_at', null)
+        ->where('test_name', 'LIKE', '%' . $request->test_name . '%')
+        ->paginate(12);
+ dd($result);
+        // return Inertia::render("Tests/index",[
+           
+        //     'data'=>MainDashboard::where('uuid',$request->query('uuid'))->paginate(12),
+        //     'Project_title'=>MainDashboard::where('uuid',$request->query('uuid'))
+        // ]);
+}
 
     /**
      * Show the form for creating a new resource.
@@ -96,7 +117,7 @@ class TestsController extends Controller
             'warnings'=>$request->Warning_Settings,
             'images'=>$request->Image_Settings,
             'instructions'=>$request->Instructions,
-              'footers'=>$request->Footer_Settings,
+            'footers'=>$request->Footer_Settings,
         ]);
     }
 

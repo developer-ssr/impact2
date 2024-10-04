@@ -32,17 +32,27 @@ onMounted(() => {
     initPopovers();
     initTabs();
     initTooltips();
-
-    
 });
 </script>
 
+<style scoped>
+.containerSidebar {
+    height: 200vmin;
+    width: 400px;
+    background-color: gray;
+    position: fixed;
+    z-index: 9;
+    left: 0px;
+    transform: translateX(0%);
+    padding-left: 6rem;
+    padding-top: 64px;
+    top: 0px;
+}
+</style>
 <template>
-    <div class="bg-gray-200 min-h-screen flex">
+    <div class="bg-gray-200 flex absolute w-full h-full">
         <!-- Sidebar -->
-        <div
-            class="bg-gray-900 text-gray-100 flex-shrink-0 w-16 sm:w-32 md:w-48"
-        >
+        <div class="bg-gray-900 text-gray-100 w-[20vmin]">
             <ul class="space-y-2 font-medium">
                 <li>
                     <a
@@ -83,10 +93,8 @@ onMounted(() => {
             </ul>
         </div>
 
-        <!-- Main content -->
-        <div class="flex-1">
-            <!-- Content goes here -->
+        
             <Content />
-        </div>
+      
     </div>
 </template>

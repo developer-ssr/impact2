@@ -16,50 +16,52 @@
             >
                 Save
             </button>
-            <button
-                @click="_methods.preview"
+            <a
+                :href="route('PreviewTest', { code: code })"
                 class="bg-green-600 p-2 text-white"
             >
                 Preview
-            </button>
+            </a>
         </div>
     </div>
 </template>
 <script setup>
-import { inject, onMounted, ref, reactive } from "vue";
-import { router } from "@inertiajs/vue3";
+import { inject, onMounted, ref, defineProps } from "vue";
+import { router, useForm } from "@inertiajs/vue3";
 const Savenot = ref(false);
-const props = reactive({
-    id: inject("DemoId"),
-    images: inject("Image_Settings"),
-    // warning: inject("Warning_Settings"),
-    // header: inject("Header_Settings"),
-    // footer: inject("Footer_Settings"),
-    instructions: inject("Instructions"),
+
+let url = window.location.href;
+const urlObj = new URL(url);
+const code = urlObj.searchParams.get("code");
+
+// const form = useForm({
+//     id: inject("DemoId"),
+//     images: inject("Image_Settings"),
+//     // warning: inject("Warning_Settings"),
+//     // header: inject("Header_Settings"),
+//     // footer: inject("Footer_Settings"),
+//     instructions: inject("Instructions"),
+// });
+
+const form = useForm({
+    id: null,
+    images: null,
+    instructions: null,
 });
+
+form.id = inject("DemoId");
+form.images = inject("Image_Settings");
+form.instructions = inject("Instructions");
 
 const _methods = {
     save: () => {
-        router.post("/update_mainsettings", props);
+        form.post("/update_Instruction_grid");
         Savenot.value = true;
-        console.log(props);
+
         setTimeout(() => {
             // console.log("saved");
             Savenot.value = false;
         }, 5000);
-    },
-    preview: () => {
-  let url = window.location.href;
-let urlObj = new URL(url);
-let code = urlObj.searchParams.get("code");
-let baseURL = "http://newimpact2.test/PreviewTest";
-
-let params = new URLSearchParams({ code: code });
-let fullURL = `${baseURL}?${params.toString()}`;
-
-// Open the full URL in a new tab
-window.open(fullURL, '_blank');
-        //console.log(code);
     },
 };
 </script>
