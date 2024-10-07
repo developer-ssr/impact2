@@ -10,44 +10,31 @@
     </Modal>
     <div
         class="bodyBoxCon fixed translate-x-[-50%] translate-y-[-50%] left-[50%] top-[50%] border-slate-800"
-        :style="{
-          width: bgimageWidth,
-          height: bgimageHeight
-        }"
     >
-    <div v-if="insCon">
+        <div v-if="insCon" class="bg-white shadow-2xl border-gray-300">
             <div
-                class="bg-white shadow-2xl border-gray-300"
                 v-html="props.instruction"
                 :style="{
-                  height: bgimageHeight,
-                  width: bgimageWidth
+                    width: props.image_grid.message.Hwidht,
+                    'aspect-ratio': props.image_grid.message.image_ratio,
                 }"
             ></div>
             <div
-                class="bg-white shadow-lg p-5 flex items-center justify-center"
-                :style="{
-                  height: '10vmin',
-                  width: bgimageWidth
-                }"
+                class=" p-5 flex items-center justify-center"
             >
-                <button
-                    id="selected_trial"
-                    @click="_methods.startTest"
-                    class="bg-orange-500 p-4 rounded-lg w-40 text-white text-[2vmin]"
-                >
-               Start
-                </button>
+            <button
+                id="selected_trial"
+                @click="_methods.startTest"
+                class="bg-orange-500 p-4 rounded-lg w-40 text-white text-[2vmin]"
+            >
+                Start
+            </button>
             </div>
         </div>
 
         <div
             v-if="testCon"
             class="border-2 bg-white shadow-2xl border-gray-300"
-            :style="{
-              height: bgimageHeight,
-              width: bgimageWidth
-            }"
         >
             <div
                 v-for="(data, index) in props.image_grid"
@@ -61,8 +48,6 @@
                     :style="{
                         'aspect-ratio': data.image_ratio,
                         width: data.Hwidht,
-                        height: data.Hheight,
-                        
                     }"
                 />
 
@@ -76,7 +61,6 @@
                         'aspect-ratio': `${data.image_ratio}`,
                         'grid-template-columns': `repeat(${data.column}, minmax(0, 1fr))`,
                     }"
-                    class="bgimage translate-x-[-50%] translate-y-[-50%] fixed top-[50%] left-[50%] z-10"
                 >
                     <div
                         class="cell relative flex items-center justify-center"
@@ -89,13 +73,13 @@
                             <img
                                 v-if="cell.ladybug"
                                 id="selected_trial"
-                                class="ladybug cells z-10"
+                                class="ladybug cells z-99"
                                 :src="ladybugImg"
                                 height="30"
                                 width="30"
                             />
                         </div>
-                         <!-- {{ cell.index }} -->
+                        <!-- {{ cell.index }} -->
                     </div>
                 </div>
             </div>
@@ -125,8 +109,8 @@ const Tempcollections = ref([]);
 const count = ref(1);
 const ResultCollection = ref({});
 const d = reactive({ rt: null, end: null });
-const bgimageWidth = ref('100vmin');
-const bgimageHeight = ref('50vmin');
+const bgimageWidth = ref("100vmin");
+const bgimageHeight = ref("50vmin");
 
 const _methods = {
     startTest: () => {
@@ -391,10 +375,11 @@ const _methods = {
     },
 };
 
-onMounted(() => {
-    bgimageWidth.value = document.querySelector(".bgimage").offsetWidth + 'px';
-    bgimageHeight.value = document.querySelector(".bgimage").offsetHeight + 'px';
-});
+// onMounted(() => {
+//     bgimageWidth.value = document.querySelector(".bgimage").offsetWidth + "px";
+//     bgimageHeight.value =
+//         document.querySelector(".bgimage").offsetHeight + "px";
+// });
 
 onMounted(() => {
     targets.value = true;
@@ -419,10 +404,7 @@ onMounted(() => {
 });
 </script>
 
-
 <style>
-
-
 .bgimage {
     aspect-ratio: var(--imageratio);
 }

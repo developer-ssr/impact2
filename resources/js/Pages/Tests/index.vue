@@ -3,7 +3,7 @@ import AppLayout from "@/Layouts/AppLayout.vue";
 
 import Cards from "@/Components/TestsComponent/card.vue";
 import Pagination from "@/Components/pagination.vue";
-
+import practiceImg from "@/Components/img/practice.jpg";
 import { provide, ref, reactive } from "vue";
 import { router, useForm } from "@inertiajs/vue3";
 
@@ -22,13 +22,40 @@ const Image_Settings = reactive({
             bgColor: "whitesmoke",
             Xaxis: "50%",
             Yaxis: "50%",
-            imagesrc: null,
-            Hheight: "10",
-            Hwidht: "50",
+            imagesrc: practiceImg,
+            Hheight: "10vmin",
+            Hwidht: "50vmin",
             borderRadius: "10px",
             borderWidth: "5px",
             borderColor: "gray",
             image_ratio: null,
+            column: 2,
+            cells: [
+                {
+                    cellid: "1",
+                    index: "(0, 0)",
+                    active: false,
+                    ladybug: false,
+                },
+                {
+                    cellid: "2",
+                    index: "(0, 1)",
+                    active: false,
+                    ladybug: false,
+                },
+                {
+                    cellid: "3",
+                    index: "(1, 0)",
+                    active: false,
+                    ladybug: false,
+                },
+                {
+                    cellid: "4",
+                    index: "(1, 1)",
+                    active: false,
+                    ladybug: false,
+                },
+            ],
         },
     },
     DummyTrial: {
@@ -37,14 +64,41 @@ const Image_Settings = reactive({
             bgColor: "whitesmoke",
             Xaxis: "50%",
             Yaxis: "50%",
-            imagesrc: null,
-            Hheight: "10",
-            Hwidht: "50",
+            imagesrc: practiceImg,
+            Hheight: "10vmin",
+            Hwidht: "50vmin",
 
             borderRadius: "10px",
             borderWidth: "5px",
             borderColor: "gray",
             image_ratio: null,
+            column: 2,
+            cells: [
+                {
+                    cellid: "1",
+                    index: "(0, 0)",
+                    active: false,
+                    ladybug: false,
+                },
+                {
+                    cellid: "2",
+                    index: "(0, 1)",
+                    active: false,
+                    ladybug: false,
+                },
+                {
+                    cellid: "3",
+                    index: "(1, 0)",
+                    active: false,
+                    ladybug: false,
+                },
+                {
+                    cellid: "4",
+                    index: "(1, 1)",
+                    active: false,
+                    ladybug: false,
+                },
+            ],
         },
     },
 
@@ -54,14 +108,41 @@ const Image_Settings = reactive({
             bgColor: "whitesmoke",
             Xaxis: "50%",
             Yaxis: "50%",
-            imagesrc: null,
-            Hheight: "10",
-            Hwidht: "50",
+            imagesrc: practiceImg,
+            Hheight: "10vmin",
+            Hwidht: "50vmin",
             borderRadius: "10px",
             borderWidth: "5px",
             borderColor: "gray",
             image_ratio: null,
             blocknum: null,
+            column: 2,
+            cells: [
+                {
+                    cellid: "1",
+                    index: "(0, 0)",
+                    active: false,
+                    ladybug: false,
+                },
+                {
+                    cellid: "2",
+                    index: "(0, 1)",
+                    active: false,
+                    ladybug: false,
+                },
+                {
+                    cellid: "3",
+                    index: "(1, 0)",
+                    active: false,
+                    ladybug: false,
+                },
+                {
+                    cellid: "4",
+                    index: "(1, 1)",
+                    active: false,
+                    ladybug: false,
+                },
+            ],
         },
     },
     ExplicitTrial: {
@@ -70,13 +151,40 @@ const Image_Settings = reactive({
             bgColor: "whitesmoke",
             Xaxis: "50%",
             Yaxis: "50%",
-            imagesrc: null,
-            Hheight: "10",
-            Hwidht: "50",
+            imagesrc: practiceImg,
+            Hheight: "10vmin",
+            Hwidht: "50vmin",
             borderRadius: "10px",
             borderWidth: "5px",
             borderColor: "gray",
             image_ratio: null,
+            column: 2,
+            cells: [
+                {
+                    cellid: "1",
+                    index: "(0, 0)",
+                    active: false,
+                    ladybug: false,
+                },
+                {
+                    cellid: "2",
+                    index: "(0, 1)",
+                    active: false,
+                    ladybug: false,
+                },
+                {
+                    cellid: "3",
+                    index: "(1, 0)",
+                    active: false,
+                    ladybug: false,
+                },
+                {
+                    cellid: "4",
+                    index: "(1, 1)",
+                    active: false,
+                    ladybug: false,
+                },
+            ],
         },
     },
 });
@@ -307,6 +415,7 @@ const form = useForm({
 
     Instructions: Instructions,
 });
+
 const save = async () => {
     form.post("store_mainsettings", {
         preserveState: false,
@@ -315,7 +424,6 @@ const save = async () => {
             console.log(response);
         },
     });
-    console.log(props);
 };
 </script>
 

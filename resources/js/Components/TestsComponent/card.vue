@@ -3,6 +3,7 @@ import { provide, inject, ref, onMounted, reactive } from "vue";
 import Modal from "@/Components/TestsComponent/Modal/Delmodal.vue";
 import moment from "moment";
 import Notifcation from "@/Components/Notification.vue";
+import practiceImg from "@/Components/img/practice.jpg";
 import { router, useForm } from "@inertiajs/vue3";
 
 const props = inject("props");
@@ -19,13 +20,39 @@ const Image_Settings = reactive({
             bgColor: "whitesmoke",
             Xaxis: "50%",
             Yaxis: "50%",
-            imagesrc: null,
+            imagesrc: practiceImg,
             Hheight: "10",
             Hwidht: "50",
             borderRadius: "10px",
             borderWidth: "5px",
             borderColor: "gray",
             image_ratio: null,
+            cells: [
+                {
+                    cellid: "1",
+                    index: "(0, 0)",
+                    active: false,
+                    ladybug: false,
+                },
+                {
+                    cellid: "2",
+                    index: "(0, 1)",
+                    active: false,
+                    ladybug: false,
+                },
+                {
+                    cellid: "3",
+                    index: "(1, 0)",
+                    active: false,
+                    ladybug: false,
+                },
+                {
+                    cellid: "4",
+                    index: "(1, 1)",
+                    active: false,
+                    ladybug: false,
+                },
+            ],
         },
     },
     DummyTrial: {
@@ -42,6 +69,32 @@ const Image_Settings = reactive({
             borderWidth: "5px",
             borderColor: "gray",
             image_ratio: null,
+            cells: [
+                {
+                    cellid: "1",
+                    index: "(0, 0)",
+                    active: false,
+                    ladybug: false,
+                },
+                {
+                    cellid: "2",
+                    index: "(0, 1)",
+                    active: false,
+                    ladybug: false,
+                },
+                {
+                    cellid: "3",
+                    index: "(1, 0)",
+                    active: false,
+                    ladybug: false,
+                },
+                {
+                    cellid: "4",
+                    index: "(1, 1)",
+                    active: false,
+                    ladybug: false,
+                },
+            ],
         },
     },
 
@@ -59,6 +112,32 @@ const Image_Settings = reactive({
             borderColor: "gray",
             image_ratio: null,
             blocknum: null,
+            cells: [
+                {
+                    cellid: "1",
+                    index: "(0, 0)",
+                    active: false,
+                    ladybug: false,
+                },
+                {
+                    cellid: "2",
+                    index: "(0, 1)",
+                    active: false,
+                    ladybug: false,
+                },
+                {
+                    cellid: "3",
+                    index: "(1, 0)",
+                    active: false,
+                    ladybug: false,
+                },
+                {
+                    cellid: "4",
+                    index: "(1, 1)",
+                    active: false,
+                    ladybug: false,
+                },
+            ],
         },
     },
     ExplicitTrial: {
@@ -74,6 +153,32 @@ const Image_Settings = reactive({
             borderWidth: "5px",
             borderColor: "gray",
             image_ratio: null,
+            cells: [
+                {
+                    cellid: "1",
+                    index: "(0, 0)",
+                    active: false,
+                    ladybug: false,
+                },
+                {
+                    cellid: "2",
+                    index: "(0, 1)",
+                    active: false,
+                    ladybug: false,
+                },
+                {
+                    cellid: "3",
+                    index: "(1, 0)",
+                    active: false,
+                    ladybug: false,
+                },
+                {
+                    cellid: "4",
+                    index: "(1, 1)",
+                    active: false,
+                    ladybug: false,
+                },
+            ],
         },
     },
 });
@@ -298,11 +403,10 @@ const tests = useForm({
     id: null,
     test_name: null,
     uuid: null,
-    Image_Settings: Image_Settings,
+    images: Image_Settings,
     // Warning_Settings: Warning_Settings,
     // Footer_Settings: Footer_Settings,
     // Header_Settings: Header_Settings,
-
     Instructions: Instructions,
 });
 
@@ -333,6 +437,7 @@ const _method = {
             ".TestsText" + obj.id
         ).textContent;
         tests.id = obj.id;
+
         tests.post("/update_mainsettings", {
             onSuccess: () => {
                 let timer = 4;

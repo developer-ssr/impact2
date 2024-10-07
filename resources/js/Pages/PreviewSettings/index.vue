@@ -18,9 +18,8 @@ const boxCon = ref(false);
 const insCon = ref(true);
 const countdown = ref(3);
 const limit = ref(props.data.images.MainTrial.message.blocknum);
-const count = ref(0);
+const count = ref(1);
 const explicitPart = ref(false);
-
 
 // const explicitdata = reactive({
 //     image_grid: props.data.images.ExplicitTrial,
@@ -197,9 +196,10 @@ font[size="5"] {
         class="bodyBoxCon fixed z-20 translate-x-[-50%] translate-y-[-50%] left-[50%] top-[50%] shadow-2xl border-gray-400"
     >
         <div
-            class="bg-white h-[50vmin] w-[100vmin] shadow-lg p-5"v-html="objStat.instruction"
+            class="bg-white h-[50vmin] w-[100vmin] shadow-lg p-5"
+            v-html="objStat.instruction"
         ></div>
-        
+
         <div
             class="bg-white h-[10vmin] w-[100vmin] p-5 flex items-center justify-center"
         >
@@ -212,7 +212,4 @@ font[size="5"] {
             </button>
         </div>
     </div>
-
-
-    
 </template>

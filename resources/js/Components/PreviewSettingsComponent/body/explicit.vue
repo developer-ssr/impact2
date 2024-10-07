@@ -8,6 +8,7 @@
                 class="bg-white h-[50vmin] w-[100vmin] shadow-xl border-2 border-gray-200"
                 v-html="props.instruction"
             ></div>
+
             <div class="p-5 flex items-center justify-center">
                 <button
                     id="selected_trial"
@@ -25,20 +26,18 @@
             <div v-for="(data, index) in props.image_grid" :key="index">
                 <img
                     @click="_methods.search"
-                    class="testImg bg-white translate-x-[-50%] translate-y-[-50%] fixed top-[50%] left-[50%] h-[50vmin] w-[100vmin] z-100"
+                    class="testImg bg-white translate-x-[-50%] translate-y-[-50%] fixed top-[50%] left-[50%] z-100"
                     :src="data.imagesrc"
                     :style="{
                         'aspect-ratio': data.image_ratio,
                         width: data.Hwidht,
-                       
                     }"
                 />
 
                 <div
                     :style="{
                         width: data.Hwidht,
-                        width: data.Hwidht,
-                        height: data.Hheight,
+
                         fontSize: '2vmin',
                         display: 'grid',
                         'aspect-ratio': `${data.image_ratio}`,

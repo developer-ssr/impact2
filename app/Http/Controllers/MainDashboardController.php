@@ -179,7 +179,7 @@ public function searchTest(Request $request)
      * Update the specified resource in storage.
      */
     public function update(Request $request, MainDashboard $mainDashboard){
-
+// dd($request);
         $mainDashboard = MainDashboard::find($request->id);
         $mainDashboard->test_name = $request->test_name;
         // $mainDashboard->headers=$request->header;
