@@ -9,11 +9,16 @@ import { router, useForm } from "@inertiajs/vue3";
 
 const props = defineProps(["menu", "data"]);
 const conbox = ref(false);
+const settingsBox = ref(false);
 
 provide("props", { props });
 const projects = () => {
     conbox.value = !conbox.value;
 };
+const settings = () => {
+    settingsBox.value = !settingsBox.value;
+};
+
 const form = useForm({
     project_name: null,
 });
@@ -47,7 +52,11 @@ const save = async () => {
                             Add Projects
                         </button>
                     </li>
-                    <li><a href="#" class="block p-4">Settings</a></li>
+                    <li>
+                        <button @click="settings" class="block p-4">
+                            Settings
+                        </button>
+                    </li>
                 </ul>
             </div>
 
@@ -70,7 +79,14 @@ const save = async () => {
                 </div>
             </div>
 
-            <div class="grow-3 bg-gray-300 h-[calc(100vmin-4rem)] w-[200vmin]">
+            <div
+                v-if="settingsBox"
+                class="grow-3 bg-gray-200 h-[calc(100vmin-4rem)] w-[50vmin]"
+            >
+                sdfgsfgsdf
+            </div>
+
+            <div class="grow-4 bg-gray-300 h-[calc(100vmin-4rem)] w-[200vmin]">
                 <Cards> </Cards>
                 <Pagination />
             </div>
