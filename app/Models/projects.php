@@ -10,11 +10,16 @@ class projects extends Model
     use HasFactory;
     use SoftDeletes;
 
+    protected $casts = [
+    'settings' => 'array',
+];
+
      protected $fillable = [
         'id',
         'uuid',
         'project_name',
         'status',
         'user_id',
+        'settings',
     ];
 }

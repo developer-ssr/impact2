@@ -18,7 +18,7 @@ return new class extends Migration
             $table->char('uuid')->nullable();
             $table->char('user_id')->nullable();
             $table->string('project_name');
-            $table->MediumText('settings')->nullable();
+            $table->json('settings')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

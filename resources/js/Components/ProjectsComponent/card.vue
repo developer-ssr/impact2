@@ -17,8 +17,16 @@ const searchProj = ref(null);
 const project = useForm({
     project_name: null,
     id: null,
+
+    cards: {
+        cardHeaderBg: null,
+        cardBodyBg: null,
+        textColor: null,
+        textBgcolor: null,
+    },
 });
 
+// console.log(props.props.data.data);
 const _method = {
     dateTime: (value) => {
         return moment(value).format("MMMM Do YYYY, h:mm:ss a");

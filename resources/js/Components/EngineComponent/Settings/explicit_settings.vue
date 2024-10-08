@@ -114,7 +114,7 @@
                 :style="{
                     'aspect-ratio': data.image_ratio,
                     width: data.Hwidht,
-                    height: data.Hheight,
+              
                 }"
             />
 
@@ -122,7 +122,7 @@
                 @click="_methods.search"
                 :style="{
                     width: data.Hwidht,
-                    height: data.Hheight,
+                 
                     'aspect-ratio': data.image_ratio,
                     fontSize: '1vmin',
                     display: 'grid',

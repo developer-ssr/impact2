@@ -14,13 +14,28 @@ const settingsBox = ref(false);
 provide("props", { props });
 const projects = () => {
     conbox.value = !conbox.value;
-};
-const settings = () => {
-    settingsBox.value = !settingsBox.value;
+    settingsBox.value = false;
 };
 
+const settings = () => {
+    settingsBox.value = !settingsBox.value;
+    conbox.value = false;
+};
+
+// const obj = {};
+// Object.assign(obj, props.data.data);
+// // console.log(props.data.data.settings);
+// console.log(obj);
 const form = useForm({
     project_name: null,
+    settings: {
+        cards: {
+            cardHeaderBg: null,
+            cardBodyBg: null,
+            textColor: null,
+            textBgcolor: null,
+        },
+    },
 });
 const save = async () => {
     form.post("project_store", {

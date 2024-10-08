@@ -102,6 +102,7 @@ const closeBlock = () => {
 };
 
 onMounted(() => {
+   
     //console.log(props.instructions.MainTrial.message);
     document
         .querySelector("#selected_trial")
