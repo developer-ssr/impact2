@@ -3,10 +3,10 @@ import AppLayout from "@/Layouts/AppLayout.vue";
 
 import Cards from "@/Components/ProjectsComponent/card.vue";
 import Pagination from "@/Components/pagination.vue";
-
+import Addmodal from "@/Addmodal.vue";
 import { provide, ref } from "vue";
 import { router, useForm } from "@inertiajs/vue3";
-
+import logo from "@/Components/img/logo.png";
 const props = defineProps(["menu", "data"]);
 const conbox = ref(false);
 const settingsBox = ref(false);
@@ -52,10 +52,14 @@ const save = async () => {
     <AppLayout>
         <div class="flex">
             <!-- Sidebar -->
+
             <div
                 class="grow-0 w-[20vmin] bg-gray-800 h-[calc(100vmin-4rem)] text-white relative"
             >
                 <ul>
+                    <li>
+                        <img :src="logo" class="block p-4" />
+                    </li>
                     <li>
                         <a :href="route('projects_index')" class="block p-4"
                             >Home</a
@@ -74,7 +78,7 @@ const save = async () => {
                     </li>
                 </ul>
             </div>
-
+            <!-- 
             <div
                 v-if="conbox"
                 class="grow-2 bg-gray-200 h-[calc(100vmin-4rem)] w-[50vmin]"
@@ -92,7 +96,33 @@ const save = async () => {
                         @keyup.enter="save()"
                     />
                 </div>
-            </div>
+            </div> -->
+
+            <Addmodal v-if="conbox">
+                <template #header> Add Project </template>
+                <template #main>
+                    <label>Project Name</label>
+                    <input
+                        class="rounded-lg w-full"
+                        type="text"
+                        v-model="form.project_name"
+                        @keyup.enter="save()"
+                /></template>
+                <template #footer>
+                    <button
+                        @click="conbox = false"
+                        class="rounded bg-blue-500 px-4 py-2 text-white transition duration-200 hover:bg-blue-600"
+                    >
+                        Cancel
+                    </button>
+                    <button
+                        @click="save()"
+                        class="ml-2 rounded bg-green-500 px-4 py-2 text-white transition duration-200 hover:bg-green-600"
+                    >
+                        Add
+                    </button>
+                </template>
+            </Addmodal>
 
             <div
                 v-if="settingsBox"

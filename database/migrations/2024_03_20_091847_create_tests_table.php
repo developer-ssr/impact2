@@ -23,6 +23,7 @@ return new class extends Migration
             $table->json('settings')->nullable();
             $table->char('status')->nullable();
             $table->string('code')->nullable();
+            $table->string('createby')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

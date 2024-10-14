@@ -59,12 +59,12 @@ public function searchProject(Request $request)
     public function store(projects $projects , Request $request)
     {
 
-
         $projects = projects::create([
             'project_name'=>$request->project_name,
             'uuid' => (String) Str::uuid(),
             'user_id'=>auth()->user()->id,
-            'settings'=>$request->settings 
+            'settings'=>$request->settings,
+            'createby'=>auth()->user()->name
         ]);
       
         //return  $projects;

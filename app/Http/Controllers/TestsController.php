@@ -39,7 +39,8 @@ class TestsController extends Controller
            'add'=>'Add Test',
            'link'=>'project_index/',
            'placeholder'=>'Test Name',
-           'save'=>'store_mainsettings'
+           'save'=>'store_mainsettings',
+          
         ];
         
      
@@ -118,6 +119,7 @@ class TestsController extends Controller
             'images'=>$request->Image_Settings,
             'instructions'=>$request->Instructions,
             'footers'=>$request->Footer_Settings,
+             'createby'=>auth()->user()->name
         ]);
     }
 

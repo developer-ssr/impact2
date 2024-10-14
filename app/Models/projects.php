@@ -21,5 +21,6 @@ class projects extends Model
         'status',
         'user_id',
         'settings',
+        'createby'
     ];
 }

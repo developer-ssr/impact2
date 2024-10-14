@@ -140,6 +140,7 @@ if (json_last_error() !== JSON_ERROR_NONE) {
             'images'=>$request->Image_Settings,
             'instructions'=>$request->Instructions,
             // 'footers'=>$request->Footer_Settings,
+              'createby'=>auth()->user()->name,
         ]);
     }
 

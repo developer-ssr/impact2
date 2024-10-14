@@ -33,6 +33,7 @@ class MainDashboard extends Model
           'footers',
           'uuid',
              'user_id',
+               'createby'
 
     ];
 

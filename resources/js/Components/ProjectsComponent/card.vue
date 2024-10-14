@@ -135,11 +135,16 @@ const _method = {
 
     <div class="grid grid-cols-4 gap-4 p-2">
         <div v-for="(data, index) in ProjectsData" :key="index">
-            <div class="bg-white rounded-lg">
+            <div
+                class="max-w-md mx-auto bg-gray-100 rounded-lg shadow-md overflow-hidden transform transition-all duration-300 hover:scale-105"
+            >
+                <!-- Folder Flap -->
                 <div
-                    class="bg-gray-900 h-13 p-3 text-white rounded-lg shadow-md"
+                    class="bg-gradient-to-r from-blue-400 to-blue-500 px-4 py-2 flex items-center border-b-2 border-blue-600"
                 >
+                    📁
                     <div
+                        class="font-bold text-lg text-white text-[1vw]"
                         @blur="
                             _method.editProject({
                                 id: data.id,
@@ -149,32 +154,37 @@ const _method = {
                         contenteditable="true"
                         :class="'ProjectText' + data.id"
                     >
-                        <div
-                            class="bg-gradient-to-r from-teal-400 to-blue-500 hover:from-pink-500 hover:to-orange-500 pt-1 pl-5 pb-1 rounded-xl"
-                        >
-                            {{ data.project_name }}
-                        </div>
+                        {{ data.project_name }}
                     </div>
                 </div>
 
-                <div class="p-5 mb-10">
-                    Date: {{ _method.dateTime(data.updated_at) }}
-                </div>
-                <div class="bg-gray-200 p-2 rounded-sm">
+                <!-- Card Body -->
+                <div class="px-4 py-3">
+                    <p class="text-gray-700 mb-2 text-[.5vw]">
+                        Content inside the folder.
+                    </p>
+                    <ul
+                        class="list-disc list-inside text-gray-600 mb-2 text-[.7vw]"
+                    >
+                        <li>Date: {{ _method.dateTime(data.updated_at) }}</li>
+                        <li>Created by: {{ data.createby }}</li>
+                    </ul>
+
                     <a
                         :href="route('tests_index', { uuid: data.uuid })"
-                        class="inline-flex items-center bg-blue-400 p-1 rounded-md text-white"
+                        class="bg-green-600 hover:bg-green-700 text-white font-bold py-1.5 px-3 rounded-full transition duration-200 ease-in-out shadow-md hover:shadow-lg text-[.7vw]"
                     >
-                        View
+                        View Project
                     </a>
-
                     <button
                         @click="_method.showModal(data.id)"
-                        class="inline-flex items-center text-white bg-red-400 p-1 rounded-md m-1 shadow-md"
+                        class="bg-red-600 hover:bg-red-700 text-white font-bold py-1 px-3 rounded-full transition duration-200 ease-in-out w-[10vmin] shadow-md hover:shadow-lg mr-1 text-[.7vw]"
                     >
                         Delete
                     </button>
                 </div>
+
+                <!-- Card Footer -->
             </div>
         </div>
     </div>

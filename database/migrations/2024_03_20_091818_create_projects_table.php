@@ -19,6 +19,7 @@ return new class extends Migration
             $table->char('user_id')->nullable();
             $table->string('project_name');
             $table->json('settings')->nullable();
+            $table->string('createby');
             $table->timestamps();
             $table->softDeletes();
         });
