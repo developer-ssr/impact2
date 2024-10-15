@@ -248,6 +248,8 @@ watch(
 );
 
 onMounted(() => {
+   
+
     document
         .querySelector("#selected_trial")
         .addEventListener("show_grid_modal", () => {

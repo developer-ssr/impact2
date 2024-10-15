@@ -4,17 +4,40 @@ import AppLayout from "@/Layouts/AppLayout.vue";
 import Cards from "@/Components/TestsComponent/card.vue";
 import Pagination from "@/Components/pagination.vue";
 import practiceImg from "@/Components/img/practice.jpg";
-import { provide, ref, reactive } from "vue";
-import { router, useForm } from "@inertiajs/vue3";
+import { provide, ref, reactive, onMounted } from "vue";
+import { useForm } from "@inertiajs/vue3";
+import logo from "@/Components/img/logo.png";
 import Addmodal from "@/Addmodal.vue";
 const props = defineProps(["menu", "data"]);
 const conbox = ref(false);
-import logo from "@/Components/img/logo.png";
+const imagesRatio = ref(null);
 
 provide("props", { props });
 const testname = () => {
     conbox.value = !conbox.value;
 };
+const getImageSize = () => {
+    return new Promise((resolve, reject) => {
+        const img = new Image();
+
+        img.onload = () => {
+            // Image has loaded, resolve with width and height
+            resolve({ width: img.width, height: img.height });
+        };
+
+        img.onerror = () => {
+            // Handle error if image fails to load
+            reject(new Error(`Could not load image at ${logo}`));
+        };
+
+        // Set the source of the image
+        img.src = logo;
+
+        return (imagesRatio.value = img.width / img.height);
+        //console.log(img.width/ img.height);
+    });
+};
+getImageSize();
 
 const Image_Settings = reactive({
     practiceTrial: {
@@ -29,8 +52,9 @@ const Image_Settings = reactive({
             borderRadius: "10px",
             borderWidth: "5px",
             borderColor: "gray",
-            image_ratio: null,
+            image_ratio: imagesRatio.value,
             column: 2,
+            status: 1,
             cells: [
                 {
                     cellid: "1",
@@ -72,8 +96,9 @@ const Image_Settings = reactive({
             borderRadius: "10px",
             borderWidth: "5px",
             borderColor: "gray",
-            image_ratio: null,
+            image_ratio: imagesRatio.value,
             column: 2,
+            status: 1,
             cells: [
                 {
                     cellid: "1",
@@ -115,9 +140,10 @@ const Image_Settings = reactive({
             borderRadius: "10px",
             borderWidth: "5px",
             borderColor: "gray",
-            image_ratio: null,
-            blocknum: null,
+            image_ratio: imagesRatio.value,
+            blocknum: 1,
             column: 2,
+            status: 1,
             cells: [
                 {
                     cellid: "1",
@@ -158,8 +184,9 @@ const Image_Settings = reactive({
             borderRadius: "10px",
             borderWidth: "5px",
             borderColor: "gray",
-            image_ratio: null,
+            image_ratio: imagesRatio.value,
             column: 2,
+            status: 1,
             cells: [
                 {
                     cellid: "1",
@@ -413,11 +440,11 @@ const form = useForm({
     // Warning_Settings: Warning_Settings,
     // Footer_Settings: Footer_Settings,
     // Header_Settings: Header_Settings,
-
     Instructions: Instructions,
 });
 
 const save = async () => {
+    // console.log(imagesRatio.value);
     form.post("store_mainsettings", {
         preserveState: false,
         preserveScroll: false,

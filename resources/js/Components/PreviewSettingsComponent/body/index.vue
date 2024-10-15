@@ -19,16 +19,14 @@
                     'aspect-ratio': props.image_grid.message.image_ratio,
                 }"
             ></div>
-            <div
-                class=" p-5 flex items-center justify-center"
-            >
-            <button
-                id="selected_trial"
-                @click="_methods.startTest"
-                class="bg-orange-500 p-4 rounded-lg w-40 text-white text-[2vmin]"
-            >
-                Start
-            </button>
+            <div class="p-5 flex items-center justify-center">
+                <button
+                    id="selected_trial"
+                    @click="_methods.startTest"
+                    class="bg-orange-500 p-4 rounded-lg w-40 text-white text-[2vmin]"
+                >
+                    Start
+                </button>
             </div>
         </div>
 
@@ -105,12 +103,9 @@ const OS = ref(null);
 const MobileOS = ref(null);
 const ladybug = ref(true);
 const targets = ref(false);
-const Tempcollections = ref([]);
-const count = ref(1);
+
 const ResultCollection = ref({});
 const d = reactive({ rt: null, end: null });
-const bgimageWidth = ref("100vmin");
-const bgimageHeight = ref("50vmin");
 
 const _methods = {
     startTest: () => {
@@ -227,33 +222,25 @@ const _methods = {
 
                 const Propscelldata = props.image_grid.message.cells;
                 const tempCollection = {};
+
                 /*const Tempresult = Object.assign(
                     {},
                     Propscelldata,
                     tempCollection
                 );*/
+
                 const Tempresult = {};
                 Object.assign(Tempresult, Propscelldata);
 
-                // Object.keys(props.image_grid.message.cells).forEach((index) => {
-                //     let cell = props.image_grid.message.cells;
-                //     // console.log(cell[index].cellid);
-                //     let newCellid = cell[index].cellid;
-                //     console.log(props.result[newCellid]["cellid"]);
-                //     if (props.result[newCellid]["cellid"]) {
-                //         cell[index].active = true;
-                //         cell[index].ladybug = false;
-                //     } else {
-                //         return false;
-                //     }
-                // });
-                // console.log(props.result);
-                console.log(Tempresult);
+               
+                //console.log(Tempresult);
+
                 Object.keys(props.result).forEach((cellid) => {
                     console.log(props.result[cellid]);
                     const newCellId = props.result[cellid].cellid;
 
                     if (props.result[cellid].demoPart >= 3) {
+
                         /*parseInt(newCellId) - 1;*/
 
                         let TempIndex =
@@ -287,6 +274,7 @@ const _methods = {
             }
 
             // Shuffle active cells to find the next one
+            
             function shuffle(array) {
                 for (let i = array.length - 1; i > 0; i--) {
                     const j = Math.floor(Math.random() * (i + 1));
@@ -382,6 +370,7 @@ const _methods = {
 // });
 
 onMounted(() => {
+    //console.log((props.index += 1));
     targets.value = true;
     ladybug.value = false;
     setTimeout(() => {

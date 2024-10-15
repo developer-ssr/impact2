@@ -1,14 +1,6 @@
 <script setup>
-import {
-    defineProps,
-    onMounted,
-    ref,
-    provide,
-    reactive,
-    onUnmounted,
-} from "vue";
+import { defineProps, ref, provide, reactive, onUnmounted } from "vue";
 
-import Modal from "@/Components/Modal.vue";
 import header_settings from "@/Components/PreviewSettingsComponent/header/index.vue";
 import body_settings from "@/Components/PreviewSettingsComponent/body/index.vue";
 import explicit_component from "@/Components/PreviewSettingsComponent/body/explicit.vue";
@@ -18,53 +10,56 @@ const boxCon = ref(false);
 const insCon = ref(true);
 const countdown = ref(3);
 const limit = ref(props.data.images.MainTrial.message.blocknum);
-const count = ref(1);
+const count = ref(0);
 const explicitPart = ref(false);
+const imagesgrid = ref(null);
+const instruction = ref(null);
+const indexPart = ref(null);
 
-// const explicitdata = reactive({
-//     image_grid: props.data.images.ExplicitTrial,
-//     instruction: props.data.instructions.ExplicitTrial.message,
-//     block: "Explicit Trial",
-//     endmessage: "Preparing for next part. Please wait",
-// });
+const block = ref(null);
+
+let status = props.data.images.practiceTrial.message.status;
+if (status == 1) {
+    indexPart.value = 1;
+    imagesgrid.value = props.data.images.practiceTrial;
+    instruction.value = props.data.instructions.practiceTrial.message.content;
+    block.value = props.data.instructions.practiceTrial.message.blockTitle;
+} else {
+    indexPart.value = 2;
+    imagesgrid.value = props.data.images.DummyTrial;
+    instruction.value = props.data.instructions.DummyTrial.message.content;
+    block.value = props.data.instructions.DummyTrial.message.blockTitle;
+}
+
 const objStat = reactive({
-    index: 1,
+    index: indexPart.value,
     props: null,
-    image_grid: props.data.images.practiceTrial,
-    instruction: props.data.instructions.practiceTrial.message.content,
+    image_grid: imagesgrid.value,
+    instruction: instruction.value,
     result: [],
-    block: "Practice Trial",
+    block: block.value,
     endmessage: "Preparing for next part. Please wait",
     blocknumber: null,
     finalresult: {},
 });
 
-//console.log(props.data.images.MainTrial.message.blocknum);
 const changeTrial = (obj) => {
     const Blockchecker = () => {
-        // console.log(objStat.result);
         resetValues();
         mainTrialBlock();
-
         objStat.index = obj.part;
-        objStat.image_grid;
-        console.log(objStat.image_grid);
         if (limit.value > count.value) {
             count.value++;
         } else {
             resetValues();
             explicitPart.value = true;
             boxCon.value = false;
-
             objStat.block = "Explicit Trial";
             objStat.index = obj.part;
             objStat.instruction =
                 props.data.instructions.ExplicitTrial.message.content;
-
             objStat.endmessage = "Preparing for last part. Please wait";
-
             objStat.image_grid = props.data.images.ExplicitTrial;
-
             console.log("Jump to explicit part");
             return;
         }
@@ -75,15 +70,6 @@ const changeTrial = (obj) => {
         objStat.endmessage = null;
         objStat.image_grid = null;
         objStat.instruction = null;
-        // console.log(objStat.image_grid);
-        // let result = objStat.result;
-
-        // Object.keys(result).forEach((gridcell) => {
-        //     let cellid = objStat.result[gridcell].cellid;
-        //     let gridresult = objStat.image_grid.message.cells[cellid];
-        //     gridresult.active = true;
-        //     gridresult.ladybug = false;
-        // });
     };
 
     const mainTrialBlock = () => {
@@ -130,6 +116,7 @@ const _flow = {
             }
         }, 1000);
     },
+
     stopTimer: () => {
         clearInterval(interval);
         isRunning.value = false;
@@ -140,11 +127,6 @@ const _flow = {
 onUnmounted(() => {
     clearInterval(interval);
 });
-// onMounted(() => {
-//     // document
-//     //     .querySelector("#selected_trial")
-//     //     .addEventListener("manageDisplay", () => {});
-// });
 </script>
 <style>
 font[size="1"] {

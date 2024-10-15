@@ -22,10 +22,10 @@
                 </button>
 
                 <button
-                    @click="_methods.display_pratice"
+                    @click="_methods.Ctrltrial"
                     class="bg-gray-200 hover:bg-yellow-300 hover:text-white rounded-md h-8 mr-1"
                 >
-                    Enable
+                    {{ trialText }}
                 </button>
             </div>
 
@@ -45,7 +45,6 @@
                 </button>
 
                 <button
-                    @click="_methods.display_dummy"
                     class="bg-gray-200 hover:bg-yellow-300 hover:text-white rounded-md h-8 mr-1"
                 >
                     Enable
@@ -68,7 +67,6 @@
                 </button>
 
                 <button
-                    @click="_methods.display_main"
                     class="bg-gray-200 hover:bg-yellow-300 hover:text-white rounded-md h-8 mr-1"
                 >
                     Enable
@@ -91,7 +89,6 @@
                 </button>
 
                 <button
-                    @click="_methods.display_explicit"
                     class="bg-gray-200 hover:bg-yellow-300 hover:text-white rounded-md h-8 mr-1"
                 >
                     Enable
@@ -102,8 +99,35 @@
 </template>
 
 <script setup>
-import { onMounted } from "vue";
+import { ref, inject, onMounted } from "vue";
+const props = inject("Alldata");
+const trialbol = ref(true);
+const trialText = ref("Enable");
+
 const _methods = {
+    Ctrltrial: () => {
+        // console.log(props.images.practiceTrial.message.status);
+        // if (props.images.practiceTrial.message.status == 0) {
+        //     trialbol.value = false;
+        //     trialText.value = "Disable";
+        // } else {
+        //     trialbol.value = true;
+        //     trialText.value = "Enable";
+        // }
+
+        trialbol.value = !trialbol.value;
+        trialText.value = trialbol.value ? "Enable" : "Disable";
+        if (trialbol.value == false) {
+            props.images.practiceTrial.message.status = 0;
+        } else {
+            props.images.practiceTrial.message.status = 1;
+        }
+        console.log(props.images.practiceTrial.message.status);
+        // document
+        //     .querySelector("#selected_trial")
+        //     .dispatchEvent(new CustomEvent("disablePractice"));
+    },
+
     display_pratice: () => {
         document
             .querySelector("#selected_trial")
@@ -126,4 +150,11 @@ const _methods = {
             .dispatchEvent(new CustomEvent("display_explicit"));
     },
 };
+onMounted(() => {
+    if (props.images.practiceTrial.message.status == 0) {
+        trialText.value = "Disable";
+    } else {
+        trialText.value = "Enable";
+    }
+});
 </script>

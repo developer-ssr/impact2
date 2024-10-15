@@ -48,6 +48,7 @@ font[size="5"] {
                     </select>
                 </div>
             </div>
+            
         </div>
     </Modal>
     <div class="bg-gray-100 relative h-full editor_container">
@@ -102,7 +103,18 @@ const closeBlock = () => {
 };
 
 onMounted(() => {
-   
+    let bol = true;
+    document
+        .querySelector("#selected_trial")
+        .addEventListener("disablePractice", () => {
+            bol = !bol;
+            if (bol == false) {
+                props.images.practiceTrial.message.status = 0;
+            } else {
+                props.images.practiceTrial.message.status = 1;
+            }
+        });
+
     //console.log(props.instructions.MainTrial.message);
     document
         .querySelector("#selected_trial")
