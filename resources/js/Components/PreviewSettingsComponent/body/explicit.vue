@@ -136,19 +136,64 @@ const _methods = {
         if (counter.value == 3) {
             let temp = {};
 
-            let finalresult = {
-                id: null,
-                test_code: null,
-                participant_id: null,
-                config: {
-                    device: _methods.detectDevice(),
-                    browser: _methods.detectBrowser(),
-                    OS: _methods.getOS(),
-                },
-                result_data: Object.assign(temp, props.result),
-            };
+            // let finalresult = {
+            //     id: null,
+            //     test_code: null,
+            //     participant_id: null,
+            //     config: {
+            //         device: _methods.detectDevice(),
+            //         browser: _methods.detectBrowser(),
+            //         OS: _methods.getOS(),
+            //     },
+            //     result_data: Object.assign(temp, props.result),
+            // };
 
-            console.log(finalresult);
+            //             {
+            //     "id": 1,
+            //     "test_code": "jkasd",
+            //     "participant_id": "SLZC2YFHQ9",
+            //     "config": {
+            //         "device": "PC",
+            //         "browser": "Google Chrome",
+            //         "OS": "Windows"
+            //     },
+            //     "result_data": [
+            //         {
+            //             "trial": "Practice",
+            //             "cell_id": [60, 47, 65],
+            //             "index": ["(4, 2)", "(5, 9)", "(2, 8)"],
+            //             "rt": [7867.0999, 1000.899, 1190.7999]
+            //         },
+            //         {
+            //             "trial": "MainTrial",
+            //             "data":
+            //             [
+            //                 {
+            //                     "block": 1,
+            //                     "cell_id": [60, 47, 65],
+            //                     "index": ["(4, 2)", "(5, 9)", "(2, 8)"],
+            //                     "rt": [7867.0999, 1000.899, 1190.7999]
+            //                 },
+            //                 {
+            //                     "block": 2,
+            //                     "cell_id": [60, 47, 65],
+            //                     "index": ["(4, 2)", "(5, 9)", "(2, 8)"],
+            //                     "rt": [7867.0999, 1000.899, 1190.7999]
+            //                 }
+            //             ]
+            //         },
+            //         {
+            //             "trial": "Explicit",
+            //             "cell_id": [60, 47, 65],
+            //             "index": ["(4, 2)", "(5, 9)", "(2, 8)"],
+            //             "rt": [7867.0999, 1000.899, 1190.7999]
+            //         }
+            //     ],
+            //     "created_at": "2024-10-01 07:05:50",
+            //     "updated_at": "2024-10-01 07:05:50"
+            // }
+
+            console.log(props.result.join([,]));
 
             // axios({
             //     headers: { "X-Requested-With": "XMLHttpRequest" },

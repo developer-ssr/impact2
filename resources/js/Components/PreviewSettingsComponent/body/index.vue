@@ -246,7 +246,6 @@ const _methods = {
                                 return o.cellid == newCellId;
                             });
 
-                        
                         Tempresult[TempIndex].active = true;
                         Tempresult[TempIndex].ladybug = false;
                     }
@@ -286,7 +285,14 @@ const _methods = {
             let reactiontime = d.end - d.rt;
             randomObject.ladybug = true;
             randomObject.active = false;
+            let temp = {
+                resultdata: {
+                    rt: null,
+                    index: null,
 
+                    cellid: null,
+                },
+            };
             ResultCollection.value = {
                 demoPart: props.index,
                 cellid: randomObject.cellid,
@@ -301,6 +307,20 @@ const _methods = {
             };
 
             props.result.push(ResultCollection.value);
+            let rt = [];
+            let index = [];
+            let cellid = [];
+
+            Object.keys(props.result).forEach((obj) => {
+                props.result[obj].rt;
+                rt.push(props.result[obj].rt);
+                index.push(props.result[obj].index);
+                cellid.push(props.result[obj].cellid);
+            });
+            temp.resultdata.rt = rt;
+            temp.resultdata.index = index;
+            temp.resultdata.cellid = cellid;
+            console.log(temp);
         });
     },
 

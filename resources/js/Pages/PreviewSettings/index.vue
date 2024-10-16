@@ -60,7 +60,7 @@ const changeTrial = (obj) => {
                 props.data.instructions.ExplicitTrial.message.content;
             objStat.endmessage = "Preparing for last part. Please wait";
             objStat.image_grid = props.data.images.ExplicitTrial;
-            console.log(obj.result);
+            // console.log(obj.result);
             return;
         }
     };
