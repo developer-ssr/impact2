@@ -134,14 +134,30 @@ const _methods = {
         });
         console.log(counter.value);
         if (counter.value == 3) {
-            axios({
-                headers: { "X-Requested-With": "XMLHttpRequest" },
-                method: "post",
-                url: "/recieve",
-                data: { data: props.result },
-                responseType: "json",
-            });
-            alert("save data");
+            let temp = {};
+
+            let finalresult = {
+                id: null,
+                test_code: null,
+                participant_id: null,
+                config: {
+                    device: _methods.detectDevice(),
+                    browser: _methods.detectBrowser(),
+                    OS: _methods.getOS(),
+                },
+                result_data: Object.assign(temp, props.result),
+            };
+
+            console.log(finalresult);
+
+            // axios({
+            //     headers: { "X-Requested-With": "XMLHttpRequest" },
+            //     method: "post",
+            //     url: "/recieve",
+            //     data: { data: props.result },
+            //     responseType: "json",
+            // });
+            // alert("save data");
         }
     },
 

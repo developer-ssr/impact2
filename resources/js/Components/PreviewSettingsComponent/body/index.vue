@@ -232,15 +232,13 @@ const _methods = {
                 const Tempresult = {};
                 Object.assign(Tempresult, Propscelldata);
 
-               
                 //console.log(Tempresult);
 
                 Object.keys(props.result).forEach((cellid) => {
-                    console.log(props.result[cellid]);
+                    //console.log(props.result[cellid]);
                     const newCellId = props.result[cellid].cellid;
 
                     if (props.result[cellid].demoPart >= 3) {
-
                         /*parseInt(newCellId) - 1;*/
 
                         let TempIndex =
@@ -248,22 +246,18 @@ const _methods = {
                                 return o.cellid == newCellId;
                             });
 
-                        console.log(
-                            "mainid" +
-                                Tempresult[TempIndex].cellid +
-                                "Resultid:" +
-                                newCellId
-                        );
+                        
                         Tempresult[TempIndex].active = true;
                         Tempresult[TempIndex].ladybug = false;
                     }
                 });
-                console.log(props.result);
+                // console.log(props.result);
                 testCon.value = false;
                 insCon.value = true;
 
                 $emits("done", {
                     part: props.index, // Emitting part based on index
+                    result: props.result,
                     onStart: (event) => {
                         //console.log(event);
                     },
@@ -274,7 +268,7 @@ const _methods = {
             }
 
             // Shuffle active cells to find the next one
-            
+
             function shuffle(array) {
                 for (let i = array.length - 1; i > 0; i--) {
                     const j = Math.floor(Math.random() * (i + 1));
@@ -296,13 +290,13 @@ const _methods = {
             ResultCollection.value = {
                 demoPart: props.index,
                 cellid: randomObject.cellid,
-                devices: devices.value,
-                browser: browser.value,
-                OS: OS.value,
+                // devices: devices.value,
+                // browser: browser.value,
+                // OS: OS.value,
                 index: randomObject.index,
                 rt: reactiontime,
-                MobileOS: MobileOS.value,
-                blocknumber: props.blocknumber,
+                // MobileOS: MobileOS.value,
+                // blocknumber: props.blocknumber,
                 methods: 1,
             };
 
