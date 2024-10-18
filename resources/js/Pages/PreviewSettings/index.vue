@@ -44,13 +44,19 @@ const objStat = reactive({
 });
 
 const changeTrial = (obj) => {
+
+
     const Blockchecker = () => {
         resetValues();
+
         mainTrialBlock();
+
         objStat.index = obj.part;
+
         if (limit.value > count.value) {
             count.value++;
         } else {
+            
             resetValues();
             explicitPart.value = true;
             boxCon.value = false;
@@ -64,6 +70,7 @@ const changeTrial = (obj) => {
             return;
         }
     };
+
 
     const resetValues = () => {
         objStat.index = null;

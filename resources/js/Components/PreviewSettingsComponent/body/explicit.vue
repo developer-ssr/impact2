@@ -97,8 +97,37 @@ const $emits = defineEmits(["done"]);
 const props = inject("status");
 const expligrid = ref(false);
 const expliIns = ref(true);
-const ResultCollector = ref({});
 const counter = ref(0);
+const Countlimit = 1;
+const setdata = {
+    practiceTrial: {
+        demopart: null,
+        result: {
+            index: null,
+            rt: null,
+            cellid: null,
+        },
+    },
+
+    dummyTrial: {
+        demopart: null,
+        result: {
+            index: null,
+            rt: null,
+            cellid: null,
+        },
+    },
+
+    expliTrial: {
+        demopart: null,
+        result: {
+            index: null,
+            rt: null,
+            cellid: null,
+        },
+    },
+};
+
 const _methods = {
     startTest: () => {
         expliIns.value = false;
@@ -106,6 +135,7 @@ const _methods = {
     },
 
     detectCell: (obj) => {
+        const temp1 = [];
         counter.value++;
         const d = new Date();
         if (!Array.isArray(props.result)) {
@@ -132,69 +162,106 @@ const _methods = {
                 props.result.push(collectionItem);
             }
         });
-        console.log(counter.value);
+        //console.log(counter.value);
         if (counter.value == 3) {
-            let temp = {};
+            // console.log(props.blocknumber);
 
-            // let finalresult = {
-            //     id: null,
-            //     test_code: null,
-            //     participant_id: null,
-            //     config: {
-            //         device: _methods.detectDevice(),
-            //         browser: _methods.detectBrowser(),
-            //         OS: _methods.getOS(),
-            //     },
-            //     result_data: Object.assign(temp, props.result),
-            // };
+            const index = [];
+            const rt = [];
+            const cellid = [];
 
-            //             {
-            //     "id": 1,
-            //     "test_code": "jkasd",
-            //     "participant_id": "SLZC2YFHQ9",
-            //     "config": {
-            //         "device": "PC",
-            //         "browser": "Google Chrome",
-            //         "OS": "Windows"
-            //     },
-            //     "result_data": [
-            //         {
-            //             "trial": "Practice",
-            //             "cell_id": [60, 47, 65],
-            //             "index": ["(4, 2)", "(5, 9)", "(2, 8)"],
-            //             "rt": [7867.0999, 1000.899, 1190.7999]
-            //         },
-            //         {
-            //             "trial": "MainTrial",
-            //             "data":
-            //             [
-            //                 {
-            //                     "block": 1,
-            //                     "cell_id": [60, 47, 65],
-            //                     "index": ["(4, 2)", "(5, 9)", "(2, 8)"],
-            //                     "rt": [7867.0999, 1000.899, 1190.7999]
-            //                 },
-            //                 {
-            //                     "block": 2,
-            //                     "cell_id": [60, 47, 65],
-            //                     "index": ["(4, 2)", "(5, 9)", "(2, 8)"],
-            //                     "rt": [7867.0999, 1000.899, 1190.7999]
-            //                 }
-            //             ]
-            //         },
-            //         {
-            //             "trial": "Explicit",
-            //             "cell_id": [60, 47, 65],
-            //             "index": ["(4, 2)", "(5, 9)", "(2, 8)"],
-            //             "rt": [7867.0999, 1000.899, 1190.7999]
-            //         }
-            //     ],
-            //     "created_at": "2024-10-01 07:05:50",
-            //     "updated_at": "2024-10-01 07:05:50"
-            // }
+            let index1 = [];
+            let rt1 = [];
+            let cellid1 = [];
 
-            console.log(props.result.join([,]));
+            let index2 = [];
+            let rt2 = [];
+            let cellid2 = [];
 
+            const index3 = [];
+            const rt3 = [];
+            const cellid3 = [];
+            let counter = 1;
+
+            Object.keys(props.result).forEach((keys) => {
+                const currentResult = props.result[keys];
+
+                if (currentResult.demoPart === 1) {
+                    index1.push(currentResult.index);
+                    rt1.push(currentResult.rt);
+                    cellid1.push(currentResult.cellid);
+
+                    setdata.practiceTrial.demopart = currentResult.demoPart;
+                    setdata.practiceTrial.result.index = index1;
+                    setdata.practiceTrial.result.rt = rt1;
+                    setdata.practiceTrial.result.cellid = cellid1;
+
+                    //console.log(setdata);
+                } else if (currentResult.demoPart === 2) {
+                    index2.push(currentResult.index);
+                    rt2.push(currentResult.rt);
+                    cellid2.push(currentResult.cellid);
+
+                    setdata.dummyTrial.demopart = currentResult.demoPart;
+                    setdata.dummyTrial.result.index = index2;
+                    setdata.dummyTrial.result.rt = rt2;
+                    setdata.dummyTrial.result.cellid = cellid2;
+
+                    //console.log(setdata);
+                } else {
+                    if (counter <= props.blocknumber) {
+                    //    _methods.createTemp(
+                    //     [currentResult.index],
+                    //     [currentResult.rt],
+                    //     [currentResult.cellid]
+                    //    );
+                    console.log(_methods.createTemp(
+                        [currentResult.index],
+                        [currentResult.rt],
+                        [currentResult.cellid]
+                       ))
+                    }
+                    counter++;
+
+                    
+                    //console.log(temp);
+                    // const temp = {
+                    //     index: [],
+                    //     rt: [],
+                    //     cellid: [],
+                    // };
+
+                    // temp.index.push(currentResult.index)
+                    // console.log(temp)
+
+                    //     index3.push(currentResult.index);
+                    //     rt3.push(currentResult.rt);
+                    //     cellid3.push(currentResult.cellid);
+                    //     //console.log(currentResult);
+                    //     if (counter <= props.blocknumber) {
+                    //         for (let i = 0; i < props.blocknumber; i++) {
+                    //             const trialKey = `MainTrial${i}`;
+                    //             // Ensure we are pushing data into the correct trial
+                    //             if (!setdata[trialKey]) {
+                    //                 setdata[trialKey] = {
+                    //                     demoPart: currentResult.demoPart,
+                    //                     result: { index: [], rt: [], cellid: [] },
+                    //                 };
+                    //             }
+                    //             // Push accumulated data into the respective trial
+                    //             setdata[trialKey].result.index.push(
+                    //                 currentResult.index
+                    //             );
+                    //             setdata[trialKey].result.rt.push(currentResult.rt);
+                    //             setdata[trialKey].result.cellid.push(
+                    //                 currentResult.cellid
+                    //             );
+                    //         }
+                    //         counter++; // Increment counter after processing all trials
+                    //     }
+                }
+            });
+            console.log(setdata);
             // axios({
             //     headers: { "X-Requested-With": "XMLHttpRequest" },
             //     method: "post",
@@ -204,6 +271,13 @@ const _methods = {
             // });
             // alert("save data");
         }
+    },
+    createTemp: (index = [], rt = [], cellid = []) => {
+        return {
+            index: index,
+            rt: rt,
+            cellid: cellid,
+        };
     },
 
     detectDevice: () => {

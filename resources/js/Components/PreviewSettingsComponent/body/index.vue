@@ -103,10 +103,12 @@ const OS = ref(null);
 const MobileOS = ref(null);
 const ladybug = ref(true);
 const targets = ref(false);
-
+let starttime;
+const colletedData = ref({});
 const ResultCollection = ref({});
-const d = reactive({ rt: null, end: null });
-
+const limit = ref(props.blocknumber);
+const count = ref(1);
+console.log(props);
 const _methods = {
     startTest: () => {
         targets.value = true;
@@ -147,6 +149,7 @@ const _methods = {
         }
     },
     detectCell: (cell) => {
+        starttime = new Date();
         if (cell.ladybug == true) {
             targets.value = true;
             ladybug.value = false;
@@ -154,13 +157,13 @@ const _methods = {
             setTimeout(() => {
                 targets.value = false;
                 ladybug.value = true;
-                d.rt = performance.now();
             }, 1000);
 
-            const selectedCellId = cell.cellid;
+            //const selectedCellId = cell.cellid;
             cell.ladybug = false;
 
             _methods.filterActiveValues();
+            //_methods.filterSelected(cell);
         } else {
             return false;
         }
@@ -176,7 +179,7 @@ const _methods = {
     },
 
     // filterSelected: (obj) => {
-    //     const d = new Date();
+    //     //const d = new Date();
 
     //     Object.keys(props.image_grid.message.cells).forEach((cell) => {
     //         const Propscell = props.image_grid.message.cells;
@@ -185,19 +188,22 @@ const _methods = {
     //         if (Propscell[cell].cellid == selectedCellId) {
     //             ResultCollection.value = {
     //                 demoPart: props.index,
-    //                 cellid: Propscell[cell].cellid,
     //                 devices: devices.value,
     //                 browser: browser.value,
     //                 OS: OS.value,
+
+    //                 cellid: Propscell[cell].cellid,
     //                 index: obj.index,
-    //                 rt: d.getMilliseconds(),
+    //                 rt: starttime.getMilliseconds(),
     //                 MobileOS: MobileOS.value,
     //                 blocknumber: props.blocknumber,
     //                 methods: 1,
     //             };
     //         }
     //     });
+
     //     props.result.push(ResultCollection.value);
+    //     console.log(props.result);
     // },
 
     shuffleActiveObject: (array) => {
@@ -221,13 +227,6 @@ const _methods = {
                 props.index += 1;
 
                 const Propscelldata = props.image_grid.message.cells;
-                const tempCollection = {};
-
-                /*const Tempresult = Object.assign(
-                    {},
-                    Propscelldata,
-                    tempCollection
-                );*/
 
                 const Tempresult = {};
                 Object.assign(Tempresult, Propscelldata);
@@ -235,22 +234,18 @@ const _methods = {
                 //console.log(Tempresult);
 
                 Object.keys(props.result).forEach((cellid) => {
-                    //console.log(props.result[cellid]);
                     const newCellId = props.result[cellid].cellid;
-
                     if (props.result[cellid].demoPart >= 3) {
-                        /*parseInt(newCellId) - 1;*/
-
                         let TempIndex =
                             props.image_grid.message.cells.findIndex((o) => {
                                 return o.cellid == newCellId;
                             });
-
                         Tempresult[TempIndex].active = true;
                         Tempresult[TempIndex].ladybug = false;
                     }
                 });
-                // console.log(props.result);
+
+                //console.log(props.result);
                 testCon.value = false;
                 insCon.value = true;
 
@@ -277,22 +272,17 @@ const _methods = {
             }
 
             const shuffledObjects = shuffle(activeCells);
+
             const randomObject =
                 shuffledObjects[
                     Math.floor(Math.random() * shuffledObjects.length)
                 ];
-            d.end = performance.now();
-            let reactiontime = d.end - d.rt;
+            const d = new Date();
+            //d.end = performance.now();
+            //let reactiontime = d.end - d.rt;
             randomObject.ladybug = true;
             randomObject.active = false;
-            let temp = {
-                resultdata: {
-                    rt: null,
-                    index: null,
 
-                    cellid: null,
-                },
-            };
             ResultCollection.value = {
                 demoPart: props.index,
                 cellid: randomObject.cellid,
@@ -300,29 +290,87 @@ const _methods = {
                 // browser: browser.value,
                 // OS: OS.value,
                 index: randomObject.index,
-                rt: reactiontime,
+                rt: d.getMilliseconds(),
                 // MobileOS: MobileOS.value,
                 // blocknumber: props.blocknumber,
                 methods: 1,
             };
 
             props.result.push(ResultCollection.value);
-            let rt = [];
-            let index = [];
-            let cellid = [];
 
-            Object.keys(props.result).forEach((obj) => {
-                props.result[obj].rt;
-                rt.push(props.result[obj].rt);
-                index.push(props.result[obj].index);
-                cellid.push(props.result[obj].cellid);
-            });
-            temp.resultdata.rt = rt;
-            temp.resultdata.index = index;
-            temp.resultdata.cellid = cellid;
-            console.log(temp);
+            // console.log(props.result);
+            // let rt = [];
+            // let index = [];
+            // let cellid = [];
+            // let collecttrial = [];
+
+            // let rtDemo = [];
+            // let indexDemo = [];
+            // let cellidDemo = [];
+            // let rtMain = [];
+            // let indexMain = [];
+            // let cellidMain = [];
+
+            // let mainTrialCount = 0;
+
+            //     Object.keys(props.result).forEach((obj) => {
+
+            //         let demoPart = props.result[obj].demoPart;
+
+            //         if (demoPart == 2) {
+            //             rtDemo.push(props.result[obj].rt);
+            //             indexDemo.push(props.result[obj].index);
+            //             cellidDemo.push(props.result[obj].cellid);
+
+            //             _methods.SetdummyTrial({
+            //                 rt: rtDemo,
+            //                 index: indexDemo,
+            //                 cellid: cellidDemo,
+            //             });
+            //         } else if (demoPart == 3) {
+            //             //console.log(props.blocknumber);
+            //             rtMain.push(props.result[obj].rt);
+            //             indexMain.push(props.result[obj].index);
+            //             cellidMain.push(props.result[obj].cellid);
+
+            //             _methods.SetmainTrial({
+            //                 rt: rtMain,
+            //                 index: indexMain,
+            //                 cellid: cellidMain,
+            //             });
+
+            //             rtMain = [];
+            //             indexMain = [];
+            //             cellidMain = [];
+            //         }
+            //     });
         });
     },
+
+    // SetdummyTrial: (obj) => {
+    //     Object.assign(colletedData.value, {
+    //         DummyTrial: {
+    //             index: obj.index,
+    //             rt: obj.rt,
+    //             cellid: obj.cellid,
+    //         },
+    //     });
+    //     console.log(colletedData.value);
+    // },
+
+    // SetmainTrial: (obj) => {
+    //     //const mainTrialKey = `MainTrial${obj.block}`;
+    //     Object.assign(colletedData.value, {
+    //         Maintrial: {
+    //             // block: obj.block,
+    //             index: obj.index,
+    //             rt: obj.rt,
+    //             cellid: obj.cellid,
+    //         },
+    //     });
+
+    //     console.log(colletedData.value);
+    // },
 
     detectBrowser: () => {
         const userAgent = navigator.userAgent;
@@ -384,9 +432,11 @@ const _methods = {
 // });
 
 onMounted(() => {
+    //console.log(props);
     //console.log((props.index += 1));
     targets.value = true;
     ladybug.value = false;
+
     setTimeout(() => {
         _methods.filterActiveValues();
         targets.value = false;
